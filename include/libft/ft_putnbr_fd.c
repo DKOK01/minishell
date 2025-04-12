@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/11/05 13:51:46 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/11/10 10:39:41 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+void	ft_putnbr_fd(int n, int fd)
 {
-	char *input;
-	char **tokens;
-	int i;
+	char	c;
 
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
+	if (n == -2147483648)
 	{
-		printf("Token %d: %s\n", i, tokens[i]);
-		i++;
+		write (fd, "-2147483648", 11);
+		return ;
 	}
+	if (n < 0)
+	{
+		write (fd, "-", 1);
+		n = -n;
+	}
+	if (n >= 10)
+	{
+		ft_putnbr_fd((n / 10), fd);
+	}
+	c = (n % 10) + '0';
+	write (fd, &c, 1);
 }

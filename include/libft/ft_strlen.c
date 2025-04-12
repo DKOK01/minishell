@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/10/26 13:19:02 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/11/14 17:43:09 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+size_t	ft_strlen(const char *s)
 {
-	char *input;
-	char **tokens;
-	int i;
+	size_t	i;
 
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
+	i = 0;
+	while (s[i] != '\0')
 	{
-		printf("Token %d: %s\n", i, tokens[i]);
 		i++;
 	}
+	return (i);
 }

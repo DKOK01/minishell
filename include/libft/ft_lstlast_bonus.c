@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/11/11 11:30:07 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/11/14 10:39:54 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+t_list	*ft_lstlast(t_list *lst)
 {
-	char *input;
-	char **tokens;
-	int i;
+	t_list	*tmp;
 
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
+	if (!lst)
+		return (NULL);
+	tmp = lst;
+	while (tmp->next != NULL)
 	{
-		printf("Token %d: %s\n", i, tokens[i]);
-		i++;
+		tmp = tmp->next;
 	}
+	return (tmp);
 }

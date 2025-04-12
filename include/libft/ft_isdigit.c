@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/10/26 13:19:56 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/10/27 20:51:40 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+int	ft_isdigit(int c)
 {
-	char *input;
-	char **tokens;
-	int i;
-
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
-	{
-		printf("Token %d: %s\n", i, tokens[i]);
-		i++;
-	}
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
 }

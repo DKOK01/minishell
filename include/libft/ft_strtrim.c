@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/11/02 10:04:53 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/11/14 14:21:24 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+char	*ft_strtrim(char const *s1, char const *set)
 {
-	char *input;
-	char **tokens;
-	int i;
+	size_t	start;
+	size_t	end;
 
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
-	{
-		printf("Token %d: %s\n", i, tokens[i]);
-		i++;
-	}
+	if (!s1 || !set)
+		return (NULL);
+	start = 0;
+	while (s1[start] && ft_strchr(set, s1[start]))
+		start++;
+	end = ft_strlen(s1);
+	while (end > start && ft_strchr(set, s1[end - 1]))
+		end--;
+	return (ft_substr(s1, start, end - start));
 }

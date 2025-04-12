@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/11/11 13:06:08 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/11/13 15:58:11 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	char *input;
-	char **tokens;
-	int i;
+	t_list	*tmp;
 
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
+	if (!lst || !new)
+		return ;
+	if (*lst == NULL)
 	{
-		printf("Token %d: %s\n", i, tokens[i]);
-		i++;
+		*lst = new;
+		return ;
 	}
+	tmp = ft_lstlast(*lst);
+	tmp->next = new;
 }

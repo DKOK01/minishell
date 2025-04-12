@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/10/28 12:16:49 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/11/15 08:47:28 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+char	*ft_strrchr(const char *s, int c)
 {
-	char *input;
-	char **tokens;
-	int i;
+	int	i;
 
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
+	i = ft_strlen(s);
+	while (i >= 0)
 	{
-		printf("Token %d: %s\n", i, tokens[i]);
-		i++;
+		if (s[i] == (unsigned char)c)
+			return ((char *)s + i);
+		i--;
 	}
+	return (NULL);
 }

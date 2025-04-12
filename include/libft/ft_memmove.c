@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/10/26 14:06:56 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/11/15 13:59:31 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	char *input;
-	char **tokens;
-	int i;
+	unsigned char		*d;
+	const unsigned char	*s;
 
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
+	d = (unsigned char *)dest;
+	s = (const unsigned char *)src;
+	if (d == s || n == 0)
+		return (dest);
+	if (d < s)
+		return (ft_memcpy(dest, src, n));
+	else
 	{
-		printf("Token %d: %s\n", i, tokens[i]);
-		i++;
+		while (n > 0)
+		{
+			n--;
+			d[n] = s[n];
+		}
 	}
+	return (dest);
 }

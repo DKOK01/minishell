@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/10/23 10:36:52 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/11/15 12:30:21 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	char *input;
-	char **tokens;
-	int i;
+	size_t			i;
+	unsigned char	*str;
 
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
+	i = 0;
+	str = (unsigned char *)s;
+	while (i < n)
 	{
-		printf("Token %d: %s\n", i, tokens[i]);
+		str[i] = (unsigned char)c;
 		i++;
 	}
+	return (s);
 }

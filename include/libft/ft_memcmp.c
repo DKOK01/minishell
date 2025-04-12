@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/10/30 18:39:16 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/10/31 11:52:48 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	char *input;
-	char **tokens;
-	int i;
+	size_t			i;
+	unsigned char	*str1;
+	unsigned char	*str2;
 
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
+	i = 0;
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	while (i < n)
 	{
-		printf("Token %d: %s\n", i, tokens[i]);
+		if (str1[i] != str2[i])
+		{
+			return (str1[i] - str2[i]);
+		}
 		i++;
 	}
+	return (0);
 }

@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:13:52 by aysadeq          ###   ########.fr       */
+/*   Created: 2024/10/27 10:03:40 by aysadeq           #+#    #+#             */
+/*   Updated: 2024/11/14 18:40:03 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "libft.h"
 
-int main(void)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	char *input;
-	char **tokens;
-	int i;
+	size_t	dest_len;
+	size_t	src_len;
+	size_t	i;
 
-	input = "echo \"hello world\" > out.txt";
-	tokens = tokenize_input(input);
-	while (tokens[i])
+	src_len = ft_strlen(src);
+	if (!size)
+		return (src_len);
+	dest_len = ft_strlen(dst);
+	i = 0;
+	if (size <= dest_len)
+		return (size + src_len);
+	while (src[i] != '\0' && (dest_len + i) < (size - 1))
 	{
-		printf("Token %d: %s\n", i, tokens[i]);
+		dst[dest_len + i] = src[i];
 		i++;
 	}
+	dst[dest_len + i] = '\0';
+	return (dest_len + src_len);
 }
