@@ -6,11 +6,11 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:15:17 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:23:10 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/04/12 18:47:54 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "../../include/minishell.h"
 
 char	**tokenize_input(char *input)
 {
@@ -18,6 +18,7 @@ char	**tokenize_input(char *input)
 	int		i;
 	int		j;
 	int		start;
+	char	quote;
 
 	tokens = malloc(sizeof(char *) * 100);
 	if (!tokens)
@@ -29,4 +30,22 @@ char	**tokenize_input(char *input)
 		skip_spaces(input, &i);
 		if (input[i] == '\0')
 			break ;
-		if 
+		if (input[i] == '\"' || input[i] == '\'')
+		{
+			quote = input[i++];
+			start = i;
+			while (input[i] && input[i] != quote)
+				i++;
+			tokens[j++] = ft_substr(input, start, i - start);
+			if (input[i] == quote)
+				i++;
+		}
+		else if ((input[i] == '>' || input[i] == '<') && input[i] == input[i + 1])
+		{
+			tokens[j++] = ft_substr(input, i, 2);
+			i += 2;
+		}
+		else if (
+
+
+
