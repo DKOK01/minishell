@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:15:17 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/30 10:26:29 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/04/30 10:52:48 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,24 @@ int	is_special(char c)
 	return (c == '>' || c == '<' || c == '|');
 }
 
-static char	*get_quoted_string(char *s, int *i)
+char	*get_quoted_string(char *s, int *i)
 {
 	char	quote = s[*i];
 	int		start;
 
-	(*i)++; // skip the quote
+	(*i)++;
 	start = *i;
 	while (s[*i] && s[*i] != quote)
 		(*i)++;
-	return (ft_substr(s, start, (*i)++)); // skip closing quote too
+	if (s[*i] == quote)
+	{
+		char *result = ft_substr(s, start, *i - start);
+		(*i)++;
+		return result;
+	}
+	return ft_substr(s, start, *i - start);
 }
+
 
 char	**init_token_array(void)
 {
@@ -59,12 +66,12 @@ char	**tokenize_input(char *s)
 			tokens[j++] = get_quoted_string(s, &i);
 		else if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1])
 		{
-			tokens[j++] = ft_substr(s, i, i + 2);
+			tokens[j++] = ft_substr(s, i, 2);
 			i += 2;
 		}
 		else if (is_special(s[i]))
 		{
-			tokens[j++] = ft_substr(s, i, i + 1);
+			tokens[j++] = ft_substr(s, i, 1);
 			i++;
 		}
 		else
