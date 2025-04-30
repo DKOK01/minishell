@@ -6,46 +6,69 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:15:17 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/12 18:47:54 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/04/30 09:22:28 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../include/minishell.h"
 
-char	**tokenize_input(char *input)
+static void	skip_spaces(char *s, int *i)
 {
-	char	**tokens;
-	int		i;
-	int		j;
+	while (s[*i] && ft_isspace(s[*i]))
+		(*i)++;
+}
+
+static int	is_special(char c)
+{
+	return (c == '>' || c == '<' || c == '|');
+}
+
+static char	*get_quoted_string(char *s, int *i)
+{
+	char	quote = s[*i];
 	int		start;
-	char	quote;
 
-	tokens = malloc(sizeof(char *) * 100);
-	if (!tokens)
+	(*i)++; // skip the quote
+	start = *i;
+	while (s[*i] && s[*i] != quote)
+		(*i)++;
+	return (ft_substr(s, start, (*i)++)); // skip closing quote too
+}
+
+static char	**init_token_array(void)
+{
+	char	**tokens = malloc(sizeof(char *) * 1024);
+	if (tokens)
+		tokens[0] = NULL;
+	return (tokens);
+}
+
+char	**tokenize(char *s)
+{
+	int		i = 0, j = 0, start;
+	char	**tokens = init_token_array();
+
+	if (!tokens || !s)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (input[i])
+	while (s[i])
 	{
-		skip_spaces(input, &i);
-		if (input[i] == '\0')
-			break ;
-		if (input[i] == '\"' || input[i] == '\'')
+		skip_spaces(s, &i);
+		if (!s[i])
+			break;
+		if (s[i] == '\'' || s[i] == '"')
+			tokens[j++] = get_quoted_string(s, &i);
+		else if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1])
+			tokens[j++] = ft_substr(s, i, i++ + 2);
+		else if (is_special(s[i]))
+			tokens[j++] = ft_substr(s, i, i++ + 1);
+		else
 		{
-			quote = input[i++];
 			start = i;
-			while (input[i] && input[i] != quote)
+			while (s[i] && !isspace(s[i]) && !is_special(s[i]))
 				i++;
-			tokens[j++] = ft_substr(input, start, i - start);
-			if (input[i] == quote)
-				i++;
+			tokens[j++] = ft_substr(s, start, i);
 		}
-		else if ((input[i] == '>' || input[i] == '<') && input[i] == input[i + 1])
-		{
-			tokens[j++] = ft_substr(input, i, 2);
-			i += 2;
-		}
-		else if (
-
-
-
+	}
+	tokens[j] = NULL;
+	return (tokens);
+}
