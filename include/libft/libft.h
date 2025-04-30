@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 11:02:11 by aysadeq           #+#    #+#             */
-/*   Updated: 2024/11/14 20:10:29 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/04/30 09:34:12 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 
 int		ft_isalpha(int c);
+int		ft_isspace(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 int		ft_isascii(int c);
