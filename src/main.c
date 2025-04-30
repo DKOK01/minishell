@@ -6,17 +6,17 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/30 09:51:29 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/04/30 11:35:03 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int main(void)
+int	main(void)
 {
-	char *line;
-	char **tokens;
-	int i;
+	char	*line;
+	char	**tokens;
+	int		i;
 
 	while (1)
 	{
@@ -24,7 +24,7 @@ int main(void)
 		if (!line)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (*line)
 		{

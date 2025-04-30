@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:15:17 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/30 11:02:39 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/04/30 11:40:57 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,62 +25,80 @@ int	is_special(char c)
 
 char	*get_quoted_string(char *s, int *i)
 {
-	char	quote = s[*i];
+	char	quote;
 	int		start;
+	char	*result;
 
+	quote = s[*i];
 	(*i)++;
 	start = *i;
 	while (s[*i] && s[*i] != quote)
 		(*i)++;
 	if (s[*i] == quote)
 	{
-		char *result = ft_substr(s, start, *i - start);
+		result = ft_substr(s, start, *i - start);
 		(*i)++;
-		return result;
+		return (result);
 	}
-	return ft_substr(s, start, *i - start);
+	return (ft_substr(s, start, *i - start));
 }
-
 
 char	**init_token_array(void)
 {
-	char	**tokens = malloc(sizeof(char *) * 1024);
+	char	**tokens;
+
+	tokens = malloc(sizeof(char *) * 1024);
 	if (tokens)
 		tokens[0] = NULL;
 	return (tokens);
 }
 
+void	handle_redir(char *s, int *i, char **tokens, int *j)
+{
+	if ((s[*i] == '>' || s[*i] == '<') && s[*i] == s[*i + 1])
+	{
+		tokens[(*j)++] = ft_substr(s, *i, 2);
+		*i += 2;
+	}
+	else
+	{
+		tokens[(*j)++] = ft_substr(s, *i, 1);
+		(*i)++;
+	}
+}
+
+void	handle_word(char *s, int *i, char **tokens, int *j)
+{
+	int	start;
+
+	start = *i;
+	while (s[*i] && !ft_isspace(s[*i]) && !is_special(s[*i]))
+		(*i)++;
+	tokens[(*j)++] = ft_substr(s, start, *i - start);
+}
+
 char	**tokenize_input(char *s)
 {
-	int		i = 0, j = 0, start;
-	char	**tokens = init_token_array();
+	int		i;
+	int		j;
+	char	**tokens;
 
+	i = 0;
+	j = 0;
+	tokens = init_token_array();
 	if (!tokens || !s)
 		return (NULL);
 	while (s[i])
 	{
 		skip_spaces(s, &i);
 		if (!s[i])
-			break;
+			break ;
 		if (s[i] == '\'' || s[i] == '"')
 			tokens[j++] = get_quoted_string(s, &i);
-		else if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1])
-		{
-			tokens[j++] = ft_substr(s, i, 2);
-			i += 2;
-		}
 		else if (is_special(s[i]))
-		{
-			tokens[j++] = ft_substr(s, i, 1);
-			i++;
-		}
+			handle_redir(s, &i, tokens, &j);
 		else
-		{
-			start = i;
-			while (s[i] && !ft_isspace(s[i]) && !is_special(s[i]))
-				i++;
-			tokens[j++] = ft_substr(s, start, i - start);
-		}
+			handle_word(s, &i, tokens, &j);
 	}
 	tokens[j] = NULL;
 	return (tokens);
