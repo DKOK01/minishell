@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:15:17 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/30 10:52:48 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/04/30 11:02:39 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ char	**tokenize_input(char *s)
 		else
 		{
 			start = i;
-			while (s[i] && !isspace(s[i]) && !is_special(s[i]))
+			while (s[i] && !ft_isspace(s[i]) && !is_special(s[i]))
 				i++;
-			tokens[j++] = ft_substr(s, start, i);
+			tokens[j++] = ft_substr(s, start, i - start);
 		}
 	}
 	tokens[j] = NULL;
