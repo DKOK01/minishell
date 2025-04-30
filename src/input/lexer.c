@@ -6,19 +6,19 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:15:17 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/30 09:31:42 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/04/30 10:26:29 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	skip_spaces(char *s, int *i)
+void	skip_spaces(char *s, int *i)
 {
 	while (s[*i] && ft_isspace(s[*i]))
 		(*i)++;
 }
 
-static int	is_special(char c)
+int	is_special(char c)
 {
 	return (c == '>' || c == '<' || c == '|');
 }
@@ -35,7 +35,7 @@ static char	*get_quoted_string(char *s, int *i)
 	return (ft_substr(s, start, (*i)++)); // skip closing quote too
 }
 
-static char	**init_token_array(void)
+char	**init_token_array(void)
 {
 	char	**tokens = malloc(sizeof(char *) * 1024);
 	if (tokens)
@@ -43,7 +43,7 @@ static char	**init_token_array(void)
 	return (tokens);
 }
 
-char	**tokenize(char *s)
+char	**tokenize_input(char *s)
 {
 	int		i = 0, j = 0, start;
 	char	**tokens = init_token_array();
@@ -58,9 +58,15 @@ char	**tokenize(char *s)
 		if (s[i] == '\'' || s[i] == '"')
 			tokens[j++] = get_quoted_string(s, &i);
 		else if ((s[i] == '>' || s[i] == '<') && s[i] == s[i + 1])
-			tokens[j++] = ft_substr(s, i, i++ + 2);
+		{
+			tokens[j++] = ft_substr(s, i, i + 2);
+			i += 2;
+		}
 		else if (is_special(s[i]))
-			tokens[j++] = ft_substr(s, i, i++ + 1);
+		{
+			tokens[j++] = ft_substr(s, i, i + 1);
+			i++;
+		}
 		else
 		{
 			start = i;
