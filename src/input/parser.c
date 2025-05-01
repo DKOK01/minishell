@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:46:59 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/01 09:33:26 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/01 15:00:50 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,10 @@ char	**create_arg_list(char *token)
 	return (new_args);
 }
 
-static char	**add_arg(char **args, char *token)
+char	**add_arg(char **args, char *token)
 {
 	int		i;
+	int		j;
 	char	**new_args;
 
 	if (!args)
@@ -50,13 +51,14 @@ static char	**add_arg(char **args, char *token)
 	i = 0;
 	while (args[i])
 		i++;
+	j = i;
 	new_args = malloc(sizeof(char *) * (i + 2));
 	if (!new_args)
 		return (NULL);
 	while (--i >= 0)
 		new_args[i] = args[i];
-	new_args[++i] = ft_strdup(token);
-	new_args[i + 1] = NULL;
+	new_args[j] = ft_strdup(token);
+	new_args[j + 1] = NULL;
 	free(args);
 	return (new_args);
 }
