@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/30 10:34:01 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/01 09:33:39 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,16 @@
 # include <readline/history.h>
 
 char	**tokenize_input(char *input);
+
+
+typedef struct s_cmd
+{
+	char	**args;
+	char	*infile;
+	char	*outfile;
+	int		append;
+	int		heredoc;
+	struct s_cmd	*next;
+}	t_cmd;
 
 #endif
