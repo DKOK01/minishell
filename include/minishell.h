@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/04 12:29:30 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:30:02 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,10 @@ typedef struct s_cmd
 
 char	**tokenize_input(char *input);
 t_cmd	*parse_tokens(char **tokens);
+
+int		run_builtin(t_cmd *cmd);
+int		ft_echo(t_cmd *cmd);
+int		ft_cd(t_cmd *cmd);
+int		ft_exit(t_cmd *cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 10:46:14 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/04 11:58:23 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:26:44 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int ft_echo(t_cmd *cmd)
 int ft_cd(t_cmd *cmd)
 {
 	char *path;
-	path = cmd->args[1];
 
+	path = cmd->args[1];
 	if (!path)
 	{
 		path = getenv("HOME");
@@ -54,4 +54,18 @@ int ft_cd(t_cmd *cmd)
 		return (1);
 	}
 	return (0);
+}
+
+int ft_exit(t_cmd *cmd)
+{
+	int status;
+	
+	status = 0;
+	if (cmd->args[1])
+	{
+		status = ft_atoi(cmd->args[1]);
+		if (status < 0)
+			status = 256 + status;
+	}
+	exit(status);
 }

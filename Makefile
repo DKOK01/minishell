@@ -1,7 +1,8 @@
 CFLAGS	= -Wall -Wextra -Werror
 
 SRC		= $(shell ls ./src/input/*.c) \
-		  $(shell ls ./src/*.c)
+		  $(shell ls ./src/*.c) \
+		  $(shell ls ./src/execution/*.c)
 
 OBJ		= $(SRC:.c=.o)
 

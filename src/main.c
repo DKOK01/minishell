@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/01 15:08:56 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/05 13:19:49 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,18 @@ int	main(void)
 			add_history(line);
 		tokens = tokenize_input(line);
 		cmd = parse_tokens(tokens);
-		print_cmd_list(cmd);
+		if (cmd)
+		{
+			if (run_builtin(cmd) == -1)
+			{
+				printf("Command not found\n");
+			}
+			// else
+			// {
+			// 	printf("Running command...\n");
+			// }
+		}
+		// print_cmd_list(cmd);
 		free(tokens);
 	}
 }
