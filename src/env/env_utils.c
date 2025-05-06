@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 08:50:59 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/06 10:03:53 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:04:44 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,13 @@ t_env	*create_env(char **envp)
 	return (head);
 }
 
+char	*get_env_value(t_env *env, const char *key)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->key, key) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return ("");
+}

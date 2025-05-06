@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/06 10:13:49 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/06 10:42:48 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,20 @@ void	free_tokens(char **tokens)
 		i++;
 	}
 	free(tokens);
+}
+
+void	free_env_list(t_env *env)
+{
+	t_env	*temp;
+
+	while (env)
+	{
+		temp = env;
+		env = env->next;
+		free(temp->key);
+		free(temp->value);
+		free(temp);
+	}
 }
 
 int	main(int ac, char **av, char **envp)
