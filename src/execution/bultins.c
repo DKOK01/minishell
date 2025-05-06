@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bultins.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 10:46:14 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/06 08:30:07 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:48:25 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ int ft_echo(t_cmd *cmd)
 	return (0);
 }
 
-int ft_cd(t_cmd *cmd)
+int ft_cd(t_cmd *cmd, t_env *env)
 {
 	char *path;
 
 	path = cmd->args[1];
 	if (!path)
 	{
-		path = getenv("HOME");
+		path = get_env_value(env,"HOME");
 		if (!path)
 		{
 			write(2, "cd: HOME not set\n", 17);
@@ -53,6 +53,19 @@ int ft_cd(t_cmd *cmd)
 		perror("cd");
 		return (1);
 	}
+	return (0);
+}
+
+int	ft_pwd(void)
+{
+	char cwd[1024];
+
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	{
+		printf("Error getting current working directory\n");
+		return (1);
+	}
+	printf("%s\n", cwd);
 	return (0);
 }
 
