@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/06 08:32:18 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/06 10:13:49 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,49 @@ void	print_cmd_list(t_cmd *cmd)
 	}
 }
 
-int	main(void)
+void	free_cmd_list(t_cmd *cmd)
+{
+	t_cmd	*temp;
+
+	while (cmd)
+	{
+		temp = cmd;
+		cmd = cmd->next;
+		if (temp->args)
+			free(temp->args);
+		if (temp->infile)
+			free(temp->infile);
+		if (temp->outfile)
+			free(temp->outfile);
+		free(temp);
+	}
+}
+
+void	free_tokens(char **tokens)
+{
+	int	i;
+
+	if (!tokens)
+		return ;
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
+}
+
+int	main(int ac, char **av, char **envp)
 {
 	t_cmd	*cmd;
+	t_env	*env;
 	char	*line;
 	char	**tokens;
 
+	(void)ac;
+	(void)av;
+	env = create_env(envp);
 	while (1)
 	{
 		line = readline("minishell> ");
@@ -57,12 +94,14 @@ int	main(void)
 		cmd = parse_tokens(tokens);
 		if (cmd)
 		{
-			if (run_builtin(cmd) == -1)
-			{
+			if (run_builtin(cmd, env) == -1)
 				printf("Command not found\n");
-			}
 		}
 		// print_cmd_list(cmd);
-		free(tokens);
+		free_tokens(tokens);
+		free_cmd_list(cmd);
+		free(line);
 	}
+	free_env_list(env);
+	return (0);
 }
