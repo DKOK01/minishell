@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/06 08:29:16 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/06 08:32:18 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,6 @@ int	main(void)
 			{
 				printf("Command not found\n");
 			}
-			// else
-			// {
-			// 	printf("Running command...\n");
-			// }
 		}
 		// print_cmd_list(cmd);
 		free(tokens);
