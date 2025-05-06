@@ -6,17 +6,19 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 10:46:14 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/06 13:29:46 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:54:49 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int ft_echo(t_cmd *cmd)
+int	ft_echo(t_cmd *cmd)
 {
-	int i = 1;
-	int newline = 1;
+	int	i;
+	int	newline;
 
+	i = 1;
+	newline = 1;
 	if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n") == 0)
 	{
 		newline = 0;
@@ -34,14 +36,14 @@ int ft_echo(t_cmd *cmd)
 	return (0);
 }
 
-int ft_cd(t_cmd *cmd, t_env *env)
+int	ft_cd(t_cmd *cmd, t_env *env)
 {
-	char *path;
+	char	*path;
 
 	path = cmd->args[1];
 	if (!path)
 	{
-		path = get_env_value(env,"HOME");
+		path = get_env_value(env, "HOME");
 		if (!path)
 		{
 			write(2, "cd: HOME not set\n", 17);
@@ -58,7 +60,7 @@ int ft_cd(t_cmd *cmd, t_env *env)
 
 int	ft_pwd(void)
 {
-	char *cwd;
+	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
@@ -71,9 +73,9 @@ int	ft_pwd(void)
 	return (0);
 }
 
-int ft_exit(t_cmd *cmd)
+int	ft_exit(t_cmd *cmd)
 {
-	int status;
+	int	status;
 
 	status = 0;
 	if (cmd->args[1])
@@ -83,4 +85,15 @@ int ft_exit(t_cmd *cmd)
 			status = 256 + status;
 	}
 	exit(status);
+}
+
+int	ft_env(t_env *env)
+{
+	while (env)
+	{
+		if (env->value)
+			printf("%s=%s\n", env->key, env->value);
+		env = env->next;
+	}
+	return (0);
 }
