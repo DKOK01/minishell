@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 10:46:14 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/06 11:48:25 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:29:46 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,16 @@ int ft_cd(t_cmd *cmd, t_env *env)
 
 int	ft_pwd(void)
 {
-	char cwd[1024];
+	char *cwd;
 
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
 	{
-		printf("Error getting current working directory\n");
+		printf("Error getting current directory\n");
 		return (1);
 	}
 	printf("%s\n", cwd);
+	free(cwd);
 	return (0);
 }
 
