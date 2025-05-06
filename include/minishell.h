@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/06 08:29:26 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/06 08:49:11 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@ typedef struct s_cmd
 	int		heredoc;
 	struct s_cmd	*next;
 }	t_cmd;
+
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+	struct s_env	*next;
+}	t_env;
 
 char	**tokenize_input(char *input);
 t_cmd	*parse_tokens(char **tokens);
