@@ -6,26 +6,26 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 08:46:48 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/05 13:22:28 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:32:01 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	run_builtin(t_cmd *cmd)
+int	run_builtin(t_cmd *cmd, t_env *env)
 {
 	if (ft_strcmp(cmd->args[0], "echo") == 0)
 		return (ft_echo(cmd));
 	else if (ft_strcmp(cmd->args[0], "cd") == 0)
-		return (ft_cd(cmd));
-	// else if (ft_strcmp(cmd->args[0], "pwd") == 0)
-	// 	return (ft_pwd());
+		return (ft_cd(cmd, env));
+	else if (ft_strcmp(cmd->args[0], "pwd") == 0)
+		return (ft_pwd());
 	// else if (ft_strcmp(cmd->args[0], "export") == 0)
-	// 	return (ft_export(cmd));
+	// 	return (ft_export(cmd, &env));
 	// else if (ft_strcmp(cmd->args[0], "unset") == 0)
-	// 	return (ft_unset(cmd));
-	// else if (ft_strcmp(cmd->args[0], "env") == 0)
-	// 	return (ft_env());
+	// 	return (ft_unset(cmd, &env));
+	else if (ft_strcmp(cmd->args[0], "env") == 0)
+		return (ft_env(env));
 	else if (ft_strcmp(cmd->args[0], "exit") == 0)
 		return (ft_exit(cmd));
 	return (-1);
