@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/06 10:42:48 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/06 13:37:20 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	main(int ac, char **av, char **envp)
 	t_env	*env;
 	char	*line;
 	char	**tokens;
+	int		i;
 
 	(void)ac;
 	(void)av;
@@ -105,6 +106,12 @@ int	main(int ac, char **av, char **envp)
 		if (*line)
 			add_history(line);
 		tokens = tokenize_input(line);
+		i = 0;
+		while (tokens[i])
+		{
+			tokens[i] = expand_variable(tokens[i], env);
+			i++;
+		}
 		cmd = parse_tokens(tokens);
 		if (cmd)
 		{
