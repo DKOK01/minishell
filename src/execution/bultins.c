@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 10:46:14 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/06 17:54:49 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:35:04 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	ft_exit(t_cmd *cmd)
 		if (status < 0)
 			status = 256 + status;
 	}
+	printf("exit\n");
 	exit(status);
 }
 
