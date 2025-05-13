@@ -1,0 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/13 09:58:42 by ael-mans          #+#    #+#             */
+/*   Updated: 2025/05/13 09:58:48 by ael-mans         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+int	ft_pwd(void)
+{
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		printf("Error getting current directory\n");
+		return (1);
+	}
+	printf("%s\n", cwd);
+	free(cwd);
+	return (0);
+}
