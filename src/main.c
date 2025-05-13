@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/07 08:56:06 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/13 09:23:07 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ int	main(int ac, char **av, char **envp)
 		free_cmd_list(cmd);
 		free(line);
 	}
+	free(line);
 	free_env_list(env);
 	return (0);
 }
