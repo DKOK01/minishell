@@ -6,33 +6,79 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/06 18:55:48 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/15 15:05:53 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char *expand_variable(char *token, t_env *env)
+char	*ft_strjoin_char(char *str, char c)
 {
-	char	*expanded;
-	char	*value;
-	char	*var_name;
+	int		len;
+	char	*new_str;
 	int		i;
 
-	i = 0;
-	while (token[i] && token[i] != '$')
-		i++;
-	if (token[i] == '$')
+	if (!str)
 	{
-		var_name = ft_strdup(token + i + 1);
-		value = get_env_value(env, var_name);
-		free(var_name);
-		if (!value)
-			return (ft_strdup(token));
-		expanded = ft_strjoin(ft_substr(token, 0, i), value);
-		free(token);
-		return (expanded);
+		new_str = malloc(2);
+		if (!new_str)
+			return (NULL);
+		new_str[0] = c;
+		new_str[1] = '\0';
+		return (new_str);
 	}
-	return (ft_strdup(token));
+	len = ft_strlen(str);
+	new_str = malloc(len + 2);
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		new_str[i] = str[i];
+		i++;
+	}
+	new_str[i++] = c;
+	new_str[i] = '\0';
+	return (new_str);
+}
+
+char	*expand_variable(char *token, t_env *env)
+{
+	char	*result = ft_strdup("");
+	char	*temp;
+	char	var[256];
+	char	*var_value;
+	int		i = 0, j;
+	int		in_single = 0, in_double = 0;
+
+	while (token[i])
+	{
+		if (token[i] == '\'' && !in_double)
+			in_single = !in_single;
+		else if (token[i] == '\"' && !in_single)
+			in_double = !in_double;
+		else if (token[i] == '$' && !in_single &&
+			(ft_isalnum(token[i + 1]) || token[i + 1] == '_'))
+		{
+			i++;
+			j = 0;
+			while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
+				var[j++] = token[i++];
+			var[j] = '\0';
+			var_value = get_env_value(env, var);
+			temp = ft_strjoin(result, var_value);
+			free(result);
+			result = temp;
+			continue;
+		}
+		else
+		{
+			temp = ft_strjoin_char(result, token[i]);
+			free(result);
+			result = temp;
+		}
+		i++;
+	}
+	return (result);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/13 10:05:09 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:36:57 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	**tokenize_input(char *input);
 t_cmd	*parse_tokens(char **tokens);
 
 t_env	*create_env(char **envp);
-
 char	*get_env_value(t_env *env, const char *key);
 char 	*expand_variable(char *token, t_env *env);
 
