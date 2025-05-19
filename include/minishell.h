@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: azedine <azedine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/15 14:36:57 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/19 16:54:13 by azedine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,7 @@ int		ft_pwd(void);
 int		ft_export(t_cmd *cmd, t_env **env);
 int 	ft_unset(t_cmd *cmd, t_env **env);
 int 	ft_env(t_env *env);
+void	print_sorted_export(t_env *env);
+
 
 #endif

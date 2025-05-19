@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 09:57:31 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/13 09:57:43 by ael-mans         ###   ########.fr       */
+/*   Created: 2025/05/13 09:59:09 by ael-mans          #+#    #+#             */
+/*   Updated: 2025/05/19 12:56:02 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_echo(t_cmd *cmd)
+int	ft_exit(t_cmd *cmd)
 {
-	int	i;
-	int	newline;
+	int	status;
 
-	i = 1;
-	newline = 1;
-	if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n") == 0)
+	status = 0;
+	if (cmd->args[1])
 	{
-		newline = 0;
-		i++;
+		status = ft_atoi(cmd->args[1]);
+		if (status < 0)
+			status = 256 + status;
 	}
-	while (cmd->args[i])
-	{
-		printf("%s", cmd->args[i]);
-		if (cmd->args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline)
-		printf("\n");
-	return (0);
+	printf("exit\n");
+	exit(status);
 }

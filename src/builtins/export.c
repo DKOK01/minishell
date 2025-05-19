@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:57:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/13 09:55:31 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:49:36 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	check_if_valid(char *str)
 	return (1);
 }
 
-static t_env	*find_and_update(t_env *env, char *key, char *value)
+t_env	*find_and_update(t_env *env, char *key, char *value)
 {
 	while (env)
 	{
@@ -45,7 +45,7 @@ static t_env	*find_and_update(t_env *env, char *key, char *value)
 	return (NULL);
 }
 
-static t_env	*create_env_node(char *str, char *eq)
+t_env	*create_env_node(char *str, char *eq)
 {
 	t_env	*new;
 	char	*key;
@@ -113,7 +113,7 @@ int	ft_export(t_cmd *cmd, t_env **env)
 	if (!cmd->args[1])
 	{
 		tmp = *env;
-		return (ft_env(tmp));
+		return (print_sorted_export(tmp), 0);
 	}
 	while (cmd->args[++i])
 	{

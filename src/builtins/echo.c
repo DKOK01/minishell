@@ -1,24 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bultins.c                                          :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/03 10:46:14 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/13 09:59:26 by ael-mans         ###   ########.fr       */
+/*   Created: 2025/05/13 09:57:31 by ael-mans          #+#    #+#             */
+/*   Updated: 2025/05/19 12:54:42 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_env(t_env *env)
+int	ft_echo(t_cmd *cmd)
 {
-	while (env)
+	int	i;
+	int	newline;
+
+	i = 1;
+	newline = 1;
+	if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n") == 0)
 	{
-		if (env->value)
-			printf("%s=%s\n", env->key, env->value);
-		env = env->next;
+		newline = 0;
+		i++;
 	}
+	while (cmd->args[i])
+	{
+		printf("%s", cmd->args[i]);
+		if (cmd->args[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (newline)
+		printf("\n");
 	return (0);
 }
