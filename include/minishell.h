@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/13 10:05:09 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:45:55 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,7 @@ int		ft_pwd(void);
 int		ft_export(t_cmd *cmd, t_env **env);
 int 	ft_unset(t_cmd *cmd, t_env **env);
 int 	ft_env(t_env *env);
+void	print_sorted_export(t_env *env);
+
 
 #endif
