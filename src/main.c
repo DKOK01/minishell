@@ -6,11 +6,25 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/13 09:23:07 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/19 13:41:24 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	print_token_list(char **tokens)
+{
+	int	i;
+
+	if (!tokens)
+		return ;
+	i = 0;
+	while (tokens[i])
+	{
+		printf("Token %d: %s\n", i, tokens[i]);
+		i++;
+	}
+}
 
 void	print_cmd_list(t_cmd *cmd)
 {
@@ -107,6 +121,7 @@ int	main(int ac, char **av, char **envp)
 			add_history(line);
 		tokens = tokenize_input(line);
 		i = 0;
+		print_token_list(tokens);
 		while (tokens[i])
 		{
 			tokens[i] = expand_variable(tokens[i], env);
@@ -118,7 +133,7 @@ int	main(int ac, char **av, char **envp)
 			if (run_builtin(cmd, env) == -1)
 				printf("Command not found\n");
 		}
-		// print_cmd_list(cmd);
+		print_cmd_list(cmd);
 		free_tokens(tokens);
 		free_cmd_list(cmd);
 		free(line);

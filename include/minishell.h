@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/15 14:36:57 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/19 13:52:43 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
+
+typedef struct s_token
+{
+	char	*value;
+	int		quoted;
+}	t_token;
 
 typedef struct s_cmd
 {
