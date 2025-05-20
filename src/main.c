@@ -6,13 +6,13 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/19 13:41:24 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/20 14:03:10 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	print_token_list(char **tokens)
+void	print_token_list(t_token **tokens)
 {
 	int	i;
 
@@ -21,7 +21,8 @@ void	print_token_list(char **tokens)
 	i = 0;
 	while (tokens[i])
 	{
-		printf("Token %d: %s\n", i, tokens[i]);
+		printf("Token %d: %s\n", i, tokens[i]->value);
+		printf("Quoted: %d\n", tokens[i]->quoted);
 		i++;
 	}
 }
@@ -69,7 +70,7 @@ void	free_cmd_list(t_cmd *cmd)
 	}
 }
 
-void	free_tokens(char **tokens)
+void	free_tokens(t_token **tokens)
 {
 	int	i;
 
@@ -103,7 +104,7 @@ int	main(int ac, char **av, char **envp)
 	t_cmd	*cmd;
 	t_env	*env;
 	char	*line;
-	char	**tokens;
+	t_token	**tokens;
 	int		i;
 
 	(void)ac;
@@ -122,11 +123,11 @@ int	main(int ac, char **av, char **envp)
 		tokens = tokenize_input(line);
 		i = 0;
 		print_token_list(tokens);
-		while (tokens[i])
-		{
-			tokens[i] = expand_variable(tokens[i], env);
-			i++;
-		}
+		// while (tokens[i])
+		// {
+		// 	tokens[i] = expand_variable(tokens[i], env);
+		// 	i++;
+		// }
 		cmd = parse_tokens(tokens);
 		if (cmd)
 		{

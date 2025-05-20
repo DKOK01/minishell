@@ -5,101 +5,97 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 18:15:17 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/04/30 11:40:57 by aysadeq          ###   ########.fr       */
+/*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
+/*   Updated: 2025/05/20 13:57:44 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	skip_spaces(char *s, int *i)
+t_token	*make_token(char *value, int quoted)
 {
-	while (s[*i] && ft_isspace(s[*i]))
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->value = value;
+	token->quoted = quoted;
+	return (token);
+}
+
+char	*extract_word(char *input, int *i)
+{
+	int		start;
+
+	start = *i;
+	while (input[*i] && !ft_isspace(input[*i]) && input[*i] != '\"' && input[*i] != '\'' && input[*i] != '|' && input[*i] != '>' && input[*i] != '<')
 		(*i)++;
+	return (ft_substr(input, start, *i - start));
 }
 
-int	is_special(char c)
-{
-	return (c == '>' || c == '<' || c == '|');
-}
-
-char	*get_quoted_string(char *s, int *i)
+char	*extract_quoted(char *s, int *i, int *qtype)
 {
 	char	quote;
 	int		start;
-	char	*result;
 
 	quote = s[*i];
-	(*i)++;
-	start = *i;
+	start = ++(*i);
+	if (quote == '\'')
+		*qtype = 1;
+	else
+		*qtype = 2;
 	while (s[*i] && s[*i] != quote)
 		(*i)++;
 	if (s[*i] == quote)
-	{
-		result = ft_substr(s, start, *i - start);
 		(*i)++;
-		return (result);
-	}
-	return (ft_substr(s, start, *i - start));
+	return (ft_substr(s, start, *i - start - 1));
 }
 
-char	**init_token_array(void)
+t_token	**tokenize_input(char *input)
 {
-	char	**tokens;
-
-	tokens = malloc(sizeof(char *) * 1024);
-	if (tokens)
-		tokens[0] = NULL;
-	return (tokens);
-}
-
-void	handle_redir(char *s, int *i, char **tokens, int *j)
-{
-	if ((s[*i] == '>' || s[*i] == '<') && s[*i] == s[*i + 1])
-	{
-		tokens[(*j)++] = ft_substr(s, *i, 2);
-		*i += 2;
-	}
-	else
-	{
-		tokens[(*j)++] = ft_substr(s, *i, 1);
-		(*i)++;
-	}
-}
-
-void	handle_word(char *s, int *i, char **tokens, int *j)
-{
-	int	start;
-
-	start = *i;
-	while (s[*i] && !ft_isspace(s[*i]) && !is_special(s[*i]))
-		(*i)++;
-	tokens[(*j)++] = ft_substr(s, start, *i - start);
-}
-
-char	**tokenize_input(char *s)
-{
+	t_token	**tokens;
 	int		i;
 	int		j;
-	char	**tokens;
+	int 	q;
+	char	*word;
 
 	i = 0;
 	j = 0;
-	tokens = init_token_array();
-	if (!tokens || !s)
+	tokens = malloc(sizeof(t_token *) * (ft_strlen(input) + 1));
+	if (!tokens)
 		return (NULL);
-	while (s[i])
+	while (input[i])
 	{
-		skip_spaces(s, &i);
-		if (!s[i])
-			break ;
-		if (s[i] == '\'' || s[i] == '"')
-			tokens[j++] = get_quoted_string(s, &i);
-		else if (is_special(s[i]))
-			handle_redir(s, &i, tokens, &j);
+		while (input[i] && ft_isspace(input[i]))
+			i++;
+		if (input[i] == '\0')
+			break;
+		q = 0;
+		if ((input[i] == '>' || input[i] == '<') && input[i + 1] == input[i])
+		{
+			word = ft_substr(input, i, 2);
+			tokens[j++] = make_token(word, 0);
+			i+= 2;
+		}
+		else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
+		{
+			word = ft_substr(input, i, 1);
+			tokens[j++] = make_token(word, 0);
+			i++;
+		}
+		else if (input[i] == '\'' || input[i] == '\"')
+		{
+			word = extract_quoted(input, &i, &q);
+			tokens[j++] = make_token(word, q);
+		}
 		else
-			handle_word(s, &i, tokens, &j);
+		{
+			word = extract_word(input, &i);
+			tokens[j++] = make_token(word, 0);
+		}
 	}
 	tokens[j] = NULL;
 	return (tokens);
 }
+

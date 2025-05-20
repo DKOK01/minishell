@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 11:46:59 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/19 13:58:32 by aysadeq          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/minishell.h"
 
-t_cmd	*new_cmd_node(void)
+static t_cmd	*new_cmd_node(void)
 {
 	t_cmd	*cmd;
 
@@ -28,80 +16,71 @@ t_cmd	*new_cmd_node(void)
 	return (cmd);
 }
 
-char	**create_arg_list(char *token)
-{
-	char	**new_args;
-
-	new_args = malloc(sizeof(char *) * 2);
-	if (!new_args)
-		return (NULL);
-	new_args[0] = ft_strdup(token);
-	new_args[1] = NULL;
-	return (new_args);
-}
-
-char	**add_arg(char **args, char *token)
+static char	**add_arg(char **args, char *token)
 {
 	int		i;
-	int		j;
 	char	**new_args;
 
 	if (!args)
-		return (create_arg_list(token));
+	{
+		new_args = malloc(sizeof(char *) * 2);
+		new_args[0] = ft_strdup(token);
+		new_args[1] = NULL;
+		return (new_args);
+	}
 	i = 0;
 	while (args[i])
 		i++;
-	j = i;
 	new_args = malloc(sizeof(char *) * (i + 2));
-	if (!new_args)
-		return (NULL);
-	while (--i >= 0)
-		new_args[i] = args[i];
-	new_args[j] = ft_strdup(token);
-	new_args[j + 1] = NULL;
+	for (int j = 0; j < i; j++)
+		new_args[j] = args[j];
+	new_args[i] = ft_strdup(token);
+	new_args[i + 1] = NULL;
 	free(args);
 	return (new_args);
 }
 
-void	handle_redirection(t_cmd *cmd, char **tokens, int *i)
+static void	handle_redirection(t_cmd *cmd, t_token **tokens, int *i)
 {
-	if (!ft_strcmp(tokens[*i], "<"))
-		cmd->infile = ft_strdup(tokens[++(*i)]);
-	else if (!ft_strcmp(tokens[*i], "<<"))
+	char	*file = NULL;
+
+	if (tokens[*i + 1])
+		file = tokens[*i + 1]->value;
+	if (!ft_strcmp(tokens[*i]->value, "<"))
+		cmd->infile = ft_strdup(file);
+	else if (!ft_strcmp(tokens[*i]->value, "<<"))
 	{
-		cmd->infile = ft_strdup(tokens[++(*i)]);
+		cmd->infile = ft_strdup(file);
 		cmd->heredoc = 1;
 	}
-	else if (!ft_strcmp(tokens[*i], ">"))
-		cmd->outfile = ft_strdup(tokens[++(*i)]);
-	else if (!ft_strcmp(tokens[*i], ">>"))
+	else if (!ft_strcmp(tokens[*i]->value, ">"))
+		cmd->outfile = ft_strdup(file);
+	else if (!ft_strcmp(tokens[*i]->value, ">>"))
 	{
-		cmd->outfile = ft_strdup(tokens[++(*i)]);
+		cmd->outfile = ft_strdup(file);
 		cmd->append = 1;
 	}
+	*i += 1;
 }
 
-t_cmd	*parse_tokens(char **tokens)
+t_cmd	*parse_tokens(t_token **tokens)
 {
-	t_cmd	*head;
-	t_cmd	*current;
-	int		i;
+	t_cmd	*head = new_cmd_node();
+	t_cmd	*current = head;
+	int		i = 0;
 
-	head = new_cmd_node();
-	current = head;
-	i = 0;
 	while (tokens[i])
 	{
-		if (!ft_strcmp(tokens[i], "|"))
+		if (!ft_strcmp(tokens[i]->value, "|"))
 		{
 			current->next = new_cmd_node();
 			current = current->next;
 		}
-		else if (!ft_strcmp(tokens[i], "<") || !ft_strcmp(tokens[i], ">")
-			|| !ft_strcmp(tokens[i], "<<") || !ft_strcmp(tokens[i], ">>"))
+		else if (!ft_strcmp(tokens[i]->value, "<") || !ft_strcmp(tokens[i]->value, ">")
+			|| !ft_strcmp(tokens[i]->value, "<<") || !ft_strcmp(tokens[i]->value, ">>"))
 			handle_redirection(current, tokens, &i);
 		else
-			current->args = add_arg(current->args, tokens[i]);
+			current->args = add_arg(current->args, tokens[i]->value);
 		i++;
 	}
 	return (head);
