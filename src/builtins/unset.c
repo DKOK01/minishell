@@ -6,13 +6,13 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:51:34 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/13 09:55:22 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:52:56 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int is_valid_identifier(char *str)
+int	is_valid_identifier(char *str)
 {
 	if (!str || !*str || !ft_isalpha(*str))
 		return (0);
@@ -24,7 +24,8 @@ int is_valid_identifier(char *str)
 	}
 	return (1);
 }
-void remove_env_var(t_env **env, char *key)
+
+void	remove_env_var(t_env **env, char *key)
 {
 	t_env	*current;
 	t_env	*prev;

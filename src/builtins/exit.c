@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bultins.c                                          :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/03 10:46:14 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/13 09:59:26 by ael-mans         ###   ########.fr       */
+/*   Created: 2025/05/13 09:59:09 by ael-mans          #+#    #+#             */
+/*   Updated: 2025/05/19 12:56:02 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_env(t_env *env)
+int	ft_exit(t_cmd *cmd)
 {
-	while (env)
+	int	status;
+
+	status = 0;
+	if (cmd->args[1])
 	{
-		if (env->value)
-			printf("%s=%s\n", env->key, env->value);
-		env = env->next;
+		status = ft_atoi(cmd->args[1]);
+		if (status < 0)
+			status = 256 + status;
 	}
-	return (0);
+	printf("exit\n");
+	exit(status);
 }

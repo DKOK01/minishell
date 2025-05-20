@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/19 13:52:43 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/20 09:20:33 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,7 @@ int		ft_pwd(void);
 int		ft_export(t_cmd *cmd, t_env **env);
 int 	ft_unset(t_cmd *cmd, t_env **env);
 int 	ft_env(t_env *env);
+void	print_sorted_export(t_env *env);
+
 
 #endif
