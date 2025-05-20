@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: azedine <azedine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:04:48 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/19 12:54:05 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:36:25 by azedine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	sort_env_array(t_env **array)
 		j = 0;
 		while (array[j + 1])
 		{
-			if (strcmp(array[j]->key, array[j + 1]->key) > 0)
+			if (ft_strcmp(array[j]->key, array[j + 1]->key) > 0)
 			{
 				tmp = array[j];
 				array[j] = array[j + 1];
