@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/20 14:20:16 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:04:56 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_cmd	*parse_tokens(t_token **tokens);
 t_env	*create_env(char **envp);
 char	*get_env_value(t_env *env, const char *key);
 // char 	*expand_variable(char *token, t_env *env);
+char	*ft_strjoin_char(char *str, char c);
 
 int		run_builtin(t_cmd *cmd, t_env *env);
 int		ft_echo(t_cmd *cmd);
