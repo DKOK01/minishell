@@ -6,26 +6,11 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 14:17:55 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 15:05:14 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-void	print_token_list(t_token **tokens)
-{
-	int	i;
-
-	if (!tokens)
-		return ;
-	i = 0;
-	while (tokens[i])
-	{
-		printf("Token %d: %s\n", i, tokens[i]->value);
-		printf("Quoted: %d\n", tokens[i]->quoted);
-		i++;
-	}
-}
 
 void	print_cmd_list(t_cmd *cmd)
 {
@@ -70,21 +55,6 @@ void	free_cmd_list(t_cmd *cmd)
 	}
 }
 
-void	free_tokens(t_token **tokens)
-{
-	int	i;
-
-	if (!tokens)
-		return ;
-	i = 0;
-	while (tokens[i])
-	{
-		free(tokens[i]);
-		i++;
-	}
-	free(tokens);
-}
-
 void	free_env_list(t_env *env)
 {
 	t_env	*temp;
@@ -110,6 +80,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	env = create_env(envp);
+	// test_lexer_cases();
 	while (1)
 	{
 		line = readline("minishell> ");
@@ -121,8 +92,8 @@ int	main(int ac, char **av, char **envp)
 		if (*line)
 			add_history(line);
 		tokens = tokenize_input(line);
+		// print_token_list(tokens);
 		i = 0;
-		print_token_list(tokens);
 		// while (tokens[i])
 		// {
 		// 	tokens[i] = expand_variable(tokens[i], env);

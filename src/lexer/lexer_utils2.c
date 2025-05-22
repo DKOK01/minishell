@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:32:38 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 14:33:36 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 15:02:16 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,19 @@ void	skip_spaces(char *input, int *i)
 {
 	while (input[*i] && ft_isspace(input[*i]))
 		(*i)++;
+}
+
+void	free_tokens(t_token **tokens)
+{
+	int	i;
+
+	if (!tokens)
+		return ;
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
 }
