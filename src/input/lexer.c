@@ -6,13 +6,13 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 10:10:50 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 10:53:18 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static t_token	*make_token(char *value, int quoted)
+t_token	*make_token(char *value, int quoted)
 {
 	t_token	*token;
 
@@ -24,7 +24,7 @@ static t_token	*make_token(char *value, int quoted)
 	return (token);
 }
 
-static char	*extract_word(char *input, int *i)
+char	*extract_word(char *input, int *i)
 {
 	char	*result;
 	char	*temp;
@@ -42,7 +42,7 @@ static char	*extract_word(char *input, int *i)
 	return (result);
 }
 
-static char	*extract_quoted(char *s, int *i, int *qtype)
+char	*extract_quoted(char *s, int *i, int *qtype)
 {
 	char	quote;
 	char	*result;
