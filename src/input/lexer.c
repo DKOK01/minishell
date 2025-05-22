@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/21 11:29:39 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 09:48:19 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,17 @@ t_token	*make_token(char *value, int quoted)
 
 char	*extract_word(char *input, int *i)
 {
-	int		start;
-	char	*result = ft_strdup("");
+	char	*result;
 	char	*temp;
 
-	start = *i;
-	while (input[*i] && !ft_isspace(input[*i]) && input[*i] != '\"' && input[*i] != '\'' && input[*i] != '|' && input[*i] != '>' && input[*i] != '<')
+	result = ft_strdup("");
+	while (input[*i] && !ft_isspace(input[*i])
+		&& input[*i] != '"' && input[*i] != '\''
+		&& input[*i] != '|' && input[*i] != '>' && input[*i] != '<')
 	{
-		if (input[*i] == '\\' && input[*i + 1])
-		{
-			(*i)++;
-			temp = ft_strjoin_char(result, input[*i]);
-			free(result);
-			result = temp;
-		}
-		else
-		{
-			temp = ft_strjoin_char(result, input[*i]);
-			free(result);
-			result = temp;
-		}
+		temp = ft_strjoin_char(result, input[*i]);
+		free(result);
+		result = temp;
 		(*i)++;
 	}
 	return (result);
@@ -66,21 +57,7 @@ char	*extract_quoted(char *s, int *i, int *qtype)
 	(*i)++;
 	while (s[*i] && s[*i] != quote)
 	{
-		if (quote == '"' && s[*i] == '\\' && s[*i + 1])
-		{
-			(*i)++;
-			if (s[*i] == '"' || s[*i] == '\\' || s[*i] == '$')
-				temp = ft_strjoin_char(result, s[*i]);
-			else
-			{
-				temp = ft_strjoin_char(result, '\\');
-				char *tmp2 = ft_strjoin_char(temp, s[*i]);
-				free(temp);
-				temp = tmp2;
-			}
-		}
-		else
-			temp = ft_strjoin_char(result, s[*i]);
+		temp = ft_strjoin_char(result, s[*i]);
 		free(result);
 		result = temp;
 		(*i)++;
@@ -90,14 +67,23 @@ char	*extract_quoted(char *s, int *i, int *qtype)
 	return (result);
 }
 
+static void	handle_token(char *input, int *i, int *j, t_token **tokens)
+{
+	if ((input[*i] == '>' || input[*i] == '<') && input[*i + 1] == input[*i])
+		handle_redir_token(input, i, j, tokens);
+	else if (input[*i] == '>' || input[*i] == '<' || input[*i] == '|')
+		handle_single_token(input, i, j, tokens);
+	else if (input[*i] == '\'' || input[*i] == '\"')
+		handle_quote_token(input, i, j, tokens);
+	else
+		handle_word_token(input, i, j, tokens);
+}
 
 t_token	**tokenize_input(char *input)
 {
 	t_token	**tokens;
 	int		i;
 	int		j;
-	int		q;
-	char	*word;
 
 	i = 0;
 	j = 0;
@@ -106,33 +92,10 @@ t_token	**tokenize_input(char *input)
 		return (NULL);
 	while (input[i])
 	{
-		while (input[i] && ft_isspace(input[i]))
-			i++;
+		skip_spaces(input, &i);
 		if (input[i] == '\0')
 			break ;
-		q = 0;
-		if ((input[i] == '>' || input[i] == '<') && input[i + 1] == input[i])
-		{
-			word = ft_substr(input, i, 2);
-			tokens[j++] = make_token(word, 0);
-			i += 2;
-		}
-		else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
-		{
-			word = ft_substr(input, i, 1);
-			tokens[j++] = make_token(word, 0);
-			i++;
-		}
-		else if (input[i] == '\'' || input[i] == '\"')
-		{
-			word = extract_quoted(input, &i, &q);
-			tokens[j++] = make_token(word, q);
-		}
-		else
-		{
-			word = extract_word(input, &i);
-			tokens[j++] = make_token(word, 0);
-		}
+		handle_token(input, &i, &j, tokens);
 	}
 	tokens[j] = NULL;
 	return (tokens);
