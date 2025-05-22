@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 10:53:18 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 11:09:06 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,27 +42,27 @@ char	*extract_word(char *input, int *i)
 	return (result);
 }
 
-char	*extract_quoted(char *s, int *i, int *qtype)
+char	*extract_quoted(char *input, int *i, int *qtype)
 {
 	char	quote;
 	char	*result;
 	char	*temp;
 
 	result = ft_strdup("");
-	quote = s[*i];
+	quote = input[*i];
 	if (quote == '\'')
 		*qtype = 1;
 	else
 		*qtype = 2;
 	(*i)++;
-	while (s[*i] && s[*i] != quote)
+	while (input[*i] && input[*i] != quote)
 	{
-		temp = ft_strjoin_char(result, s[*i]);
+		temp = ft_strjoin_char(result, input[*i]);
 		free(result);
 		result = temp;
 		(*i)++;
 	}
-	if (s[*i] == quote)
+	if (input[*i] == quote)
 		(*i)++;
 	return (result);
 }
