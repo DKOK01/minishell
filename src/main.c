@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 15:05:14 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 15:40:43 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,12 @@ int	main(int ac, char **av, char **envp)
 		tokens = tokenize_input(line);
 		// print_token_list(tokens);
 		i = 0;
-		// while (tokens[i])
-		// {
-		// 	tokens[i] = expand_variable(tokens[i], env);
-		// 	i++;
-		// }
+		while (tokens[i])
+		{
+			if (tokens[i]->quoted != 1)
+				tokens[i]->value = expand_variable(tokens[i]->value, env);
+			i++;
+		}
 		cmd = parse_tokens(tokens);
 		if (cmd)
 		{

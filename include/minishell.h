@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 15:00:55 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 16:12:43 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,19 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_quote_state
+{
+	int in_single;
+	int in_double;
+}	t_quote_state;
+
+typedef struct s_expand_ctx
+{
+	int		*i;
+	char	**result;
+	t_env	*env;
+	t_quote_state *qs;
+}	t_expand_ctx;
 
 //------ lexer functions--------//
 t_token	**tokenize_input(char *input);
@@ -65,7 +78,7 @@ void	print_token_list(t_token **tokens);
 t_cmd	*parse_tokens(t_token **tokens);
 
 //------ expansion functions--------//
-// char 	*expand_variable(char *token, t_env *env);
+char 	*expand_variable(char *token, t_env *env);
 char	*ft_strjoin_char(char *str, char c);
 
 //------- environment functions--------//

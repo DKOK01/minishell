@@ -6,79 +6,79 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/21 11:04:47 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 16:19:46 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*ft_strjoin_char(char *str, char c)
+void	extract_var_name(const char *token, int *i, char *var)
 {
-	int		len;
-	char	*new_str;
-	int		i;
+	int	j;
 
-	if (!str)
-	{
-		new_str = malloc(2);
-		if (!new_str)
-			return (NULL);
-		new_str[0] = c;
-		new_str[1] = '\0';
-		return (new_str);
-	}
-	len = ft_strlen(str);
-	new_str = malloc(len + 2);
-	if (!new_str)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		new_str[i] = str[i];
-		i++;
-	}
-	new_str[i++] = c;
-	new_str[i] = '\0';
-	return (new_str);
+	j = 0;
+	while (token[*i] && (ft_isalnum(token[*i]) || token[*i] == '_'))
+		var[j++] = token[(*i)++];
+	var[j] = '\0';
 }
 
-// char	*expand_variable(t_token *token, t_env *env)
-// {
-// 	char	*result = ft_strdup("");
-// 	char	*temp;
-// 	char	var[256];
-// 	char	*var_value;
-// 	int		i = 0, j;
-// 	int		in_single = 0, in_double = 0;
+static void	append_env_value(char **result, char *var, t_env *env)
+{
+	char	*var_value;
+	char	*temp;
 
-// 	while (token[i])
-// 	{
-// 		if (token[i] == '\'' && !in_double)
-// 			in_single = !in_single;
-// 		else if (token[i] == '\"' && !in_single)
-// 			in_double = !in_double;
-// 		else if (token[i] == '$' && !in_single &&
-// 			(ft_isalnum(token[i + 1]) || token[i + 1] == '_'))
-// 		{
-// 			i++;
-// 			j = 0;
-// 			while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
-// 				var[j++] = token[i++];
-// 			var[j] = '\0';
-// 			var_value = get_env_value(env, var);
-// 			temp = ft_strjoin(result, var_value);
-// 			free(result);
-// 			result = temp;
-// 			continue;
-// 		}
-// 		else
-// 		{
-// 			temp = ft_strjoin_char(result, token[i]);
-// 			free(result);
-// 			result = temp;
-// 		}
-// 		i++;
-// 	}
-// 	return (result);
-// }
+	var_value = get_env_value(env, var);
+	if (!var_value)
+		var_value = "";
+	temp = ft_strjoin(*result, var_value);
+	free(*result);
+	*result = temp;
+}
 
+void	handle_expansion(const char *token, t_expand_ctx *ctx)
+{
+	char	var[256];
+	char	*temp;
+
+	if (token[*(ctx->i)] == '\'' && !(ctx->qs->in_double))
+		ctx->qs->in_single = !(ctx->qs->in_single);
+	else if (token[*(ctx->i)] == '\"' && !(ctx->qs->in_single))
+		ctx->qs->in_double = !(ctx->qs->in_double);
+	else if (token[*(ctx->i)] == '$' && !(ctx->qs->in_single)
+		&& (ft_isalnum(token[*(ctx->i) + 1]) || token[*(ctx->i) + 1] == '_'))
+	{
+		(*(ctx->i))++;
+		extract_var_name(token, ctx->i, var);
+		append_env_value(ctx->result, var, ctx->env);
+		(*(ctx->i))--;
+	}
+	else
+	{
+		temp = ft_strjoin_char(*(ctx->result), token[*(ctx->i)]);
+		free(*(ctx->result));
+		*(ctx->result) = temp;
+	}
+}
+
+char	*expand_variable(char *token, t_env *env)
+{
+	char			*result;
+	int				i;
+	t_quote_state	qs;
+	t_expand_ctx	ctx;
+
+	result = ft_strdup("");
+	i = 0;
+	qs.in_single = 0;
+	qs.in_double = 0;
+	ctx.i = &i;
+	ctx.result = &result;
+	ctx.env = env;
+	ctx.qs = &qs;
+	while (token[i])
+	{
+		handle_expansion(token, &ctx);
+		i++;
+	}
+	return (result);
+}
