@@ -4,7 +4,8 @@ SRC		= $(shell ls ./src/input/*.c) \
 		  $(shell ls ./src/*.c) \
 		  $(shell ls ./src/execution/*.c) \
 		  $(shell ls ./src/builtins/*.c) \
-		  $(shell ls ./src/env/*.c)
+		  $(shell ls ./src/env/*.c) \
+		  $(shell ls ./src/lexer/*.c) 
 
 OBJ		= $(SRC:.c=.o)
 
