@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 16:19:46 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 17:15:59 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ void	handle_expansion(const char *token, t_expand_ctx *ctx)
 	char	var[256];
 	char	*temp;
 
-	if (token[*(ctx->i)] == '\'' && !(ctx->qs->in_double))
-		ctx->qs->in_single = !(ctx->qs->in_single);
-	else if (token[*(ctx->i)] == '\"' && !(ctx->qs->in_single))
-		ctx->qs->in_double = !(ctx->qs->in_double);
-	else if (token[*(ctx->i)] == '$' && !(ctx->qs->in_single)
+	if (token[*(ctx->i)] == '\'' && !(ctx->in_double))
+		ctx->in_single = !(ctx->in_single);
+	else if (token[*(ctx->i)] == '\"' && !(ctx->in_single))
+		ctx->in_double = !(ctx->in_double);
+	else if (token[*(ctx->i)] == '$' && !(ctx->in_single)
 		&& (ft_isalnum(token[*(ctx->i) + 1]) || token[*(ctx->i) + 1] == '_'))
 	{
 		(*(ctx->i))++;
@@ -64,17 +64,15 @@ char	*expand_variable(char *token, t_env *env)
 {
 	char			*result;
 	int				i;
-	t_quote_state	qs;
 	t_expand_ctx	ctx;
 
 	result = ft_strdup("");
 	i = 0;
-	qs.in_single = 0;
-	qs.in_double = 0;
 	ctx.i = &i;
 	ctx.result = &result;
 	ctx.env = env;
-	ctx.qs = &qs;
+	ctx.in_single = 0;
+	ctx.in_double = 0;
 	while (token[i])
 	{
 		handle_expansion(token, &ctx);

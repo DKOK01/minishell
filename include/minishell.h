@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 16:12:43 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 17:15:14 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,13 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_quote_state
-{
-	int in_single;
-	int in_double;
-}	t_quote_state;
-
 typedef struct s_expand_ctx
 {
 	int		*i;
 	char	**result;
 	t_env	*env;
-	t_quote_state *qs;
+	int		in_single;
+	int		in_double;
 }	t_expand_ctx;
 
 //------ lexer functions--------//
