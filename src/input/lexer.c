@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 11:09:06 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 14:34:51 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,17 @@ char	*extract_word(char *input, int *i)
 
 	result = ft_strdup("");
 	while (input[*i] && !ft_isspace(input[*i])
-		&& input[*i] != '"' && input[*i] != '\''
 		&& input[*i] != '|' && input[*i] != '>' && input[*i] != '<')
 	{
-		temp = ft_strjoin_char(result, input[*i]);
-		free(result);
-		result = temp;
-		(*i)++;
+		if (input[*i] == '"' || input[*i] == '\'')
+			append_quoted_part(&result, input, i);
+		else
+		{
+			temp = ft_strjoin_char(result, input[*i]);
+			free(result);
+			result = temp;
+			(*i)++;
+		}
 	}
 	return (result);
 }

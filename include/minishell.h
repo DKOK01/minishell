@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 10:50:01 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 14:33:49 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	handle_single_token(char *input, int *i, int *j, t_token **tokens);
 void	handle_quote_token(char *input, int *i, int *j, t_token **tokens);
 void	handle_word_token(char *input, int *i, int *j, t_token **tokens);
 void	skip_spaces(char *input, int *i);
+void	append_quoted_part(char **result, char *input, int *i);
 
 //------ parser functions--------//
 t_cmd	*parse_tokens(t_token **tokens);

@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 09:50:11 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 09:50:30 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/22 14:33:29 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,4 @@ void	handle_word_token(char *input, int *i, int *j, t_token **tokens)
 
 	word = extract_word(input, i);
 	tokens[(*j)++] = make_token(word, 0);
-}
-
-void	skip_spaces(char *input, int *i)
-{
-	while (input[*i] && ft_isspace(input[*i]))
-		(*i)++;
 }
