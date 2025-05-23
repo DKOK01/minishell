@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 17:15:59 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/23 10:08:14 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	handle_expansion(const char *token, t_expand_ctx *ctx)
 	else if (token[*(ctx->i)] == '\"' && !(ctx->in_single))
 		ctx->in_double = !(ctx->in_double);
 	else if (token[*(ctx->i)] == '$' && !(ctx->in_single)
-		&& (ft_isalnum(token[*(ctx->i) + 1]) || token[*(ctx->i) + 1] == '_'))
+		&& (ft_isalpha(token[*(ctx->i) + 1]) || token[*(ctx->i) + 1] == '_'))
 	{
 		(*(ctx->i))++;
 		extract_var_name(token, ctx->i, var);
