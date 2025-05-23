@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/23 10:08:14 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/23 12:29:04 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	handle_expansion(const char *token, t_expand_ctx *ctx)
 		(*(ctx->i))++;
 		extract_var_name(token, ctx->i, var);
 		append_env_value(ctx->result, var, ctx->env);
-		(*(ctx->i))--;
+		return ;
 	}
 	else
 	{
@@ -58,6 +58,7 @@ void	handle_expansion(const char *token, t_expand_ctx *ctx)
 		free(*(ctx->result));
 		*(ctx->result) = temp;
 	}
+	(*(ctx->i))++;
 }
 
 char	*expand_variable(char *token, t_env *env)
@@ -74,9 +75,6 @@ char	*expand_variable(char *token, t_env *env)
 	ctx.in_single = 0;
 	ctx.in_double = 0;
 	while (token[i])
-	{
 		handle_expansion(token, &ctx);
-		i++;
-	}
 	return (result);
 }
