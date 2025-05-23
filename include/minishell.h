@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 17:15:14 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/23 11:30:37 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 typedef struct s_token
 {
@@ -80,6 +82,7 @@ char	*ft_strjoin_char(char *str, char c);
 void	free_env_list(t_env *env);
 t_env	*create_env(char **envp);
 char	*get_env_value(t_env *env, const char *key);
+char	**env_to_envp(t_env *env);
 
 //------- execution functions--------//
 int		run_builtin(t_cmd *cmd, t_env *env);
@@ -91,5 +94,8 @@ int		ft_export(t_cmd *cmd, t_env **env);
 int 	ft_unset(t_cmd *cmd, t_env **env);
 int 	ft_env(t_env *env);
 void	print_sorted_export(t_env *env);
+int		execution(t_cmd *cmd, t_env *env);
+int		check_builtins(t_cmd *cmd);
+int		count_env(t_env *env);
 
 #endif
