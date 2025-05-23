@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 15:40:43 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/23 11:05:40 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,8 @@ int	main(int ac, char **av, char **envp)
 			i++;
 		}
 		cmd = parse_tokens(tokens);
-		if (cmd)
-		{
-			if (run_builtin(cmd, env) == -1)
-				printf("Command not found\n");
-		}
+		if (cmd && cmd->args)
+			execution(cmd, env);
 		// print_cmd_list(cmd);
 		free_tokens(tokens);
 		free_cmd_list(cmd);
