@@ -6,49 +6,13 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/23 11:41:20 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/25 02:53:48 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3)
-{
-	char	*result;
-	size_t	len1;
-	size_t	len2;
-	size_t	len3;
-
-	if (!s1 || !s2 || !s3)
-		return (NULL);
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	len3 = ft_strlen(s3);
-	result = malloc(len1 + len2 + len3 + 1);
-	if (!result)
-		return (NULL);
-	ft_strlcpy(result, s1, len1 + 1);
-	ft_strlcat(result, s2, len1 + len2 + 1);
-	ft_strlcat(result, s3, len1 + len2 + len3 + 1);
-	return (result);
-}
-
-void	ft_free_split(char **split)
-{
-	int	i;
-
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
-static char	*find_path(char *cmd)
+static char	*find_path(char *cmd, t_env *env)
 {
 	char	*path_env;
 	char	**paths;
@@ -57,7 +21,7 @@ static char	*find_path(char *cmd)
 
 	if (cmd[0] == '/')
 		return (ft_strdup(cmd));
-	path_env = getenv("PATH");
+	path_env = get_env_value(env, "PATH");
 	if (!path_env)
 		return (NULL);
 	paths = ft_split(path_env, ':');
@@ -76,15 +40,15 @@ static char	*find_path(char *cmd)
 	return (NULL);
 }
 
-static void	execute_command(t_cmd *cmd, t_env *env)
+void	execute_command(t_cmd *cmd, t_env *env)
 {
 	char	*path;
 	pid_t	pid;
-	int status;
+	int 	status;
 	char	**envp;
 
 	envp = env_to_envp(env);
-	path = find_path(cmd->args[0]);
+	path = find_path(cmd->args[0], env);
 	status = 0;
 	if (!path)
 	{
@@ -95,6 +59,8 @@ static void	execute_command(t_cmd *cmd, t_env *env)
 	pid = fork();
 	if (pid == 0)
 	{
+		if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
+            check_redirection(cmd);
 		execve(path, cmd->args, envp);
 		perror(cmd->args[0]);
 		exit(0);
@@ -106,9 +72,58 @@ static void	execute_command(t_cmd *cmd, t_env *env)
 
 int	execution(t_cmd *cmd, t_env *env)
 {
-	if (check_builtins(cmd))
-		run_builtin(cmd, env);
-	else
-		execute_command(cmd, env);
+	int		location;
+	int		status;
+	int		saved_stdout;
+	int		saved_stdin;
+
+	status = 0;
+	location = 0;
+	if (cmd && cmd->next)
+	{
+		printf("Am in pipeline\n");
+		handle_pipeline(cmd, env);
+		return (0);
+	}
+	while (cmd)	
+	{
+		if (check_builtins(cmd))
+		{
+			saved_stdin = -1;
+            saved_stdout = -1;
+			if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
+			{
+				saved_stdin = dup(STDIN_FILENO);
+				saved_stdout = dup(STDOUT_FILENO);
+				if (cmd->infile && cmd->heredoc == 0)
+				{
+					printf("AM in infile without herdoc\n");
+					handle_infile(cmd);
+				}
+				if (cmd->outfile || cmd->append)
+					handle_outfile(cmd);
+				else if (cmd->heredoc)
+				{
+					printf("AM in heredoc\n");
+					handle_heredoc(cmd);
+				}
+			}
+			run_builtin(cmd, env);
+			if (saved_stdin != -1)
+            {
+                dup2(saved_stdin, STDIN_FILENO);
+                close(saved_stdin);
+            }
+            if (saved_stdout != -1)
+            {
+                dup2(saved_stdout, STDOUT_FILENO);
+                close(saved_stdout);
+            }
+		}
+		else 
+			execute_command(cmd, env);
+		cmd = cmd->next;
+		location++;
+	}
 	return (0);
 }
