@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/24 15:01:41 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/25 03:37:58 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,18 @@ void	print_sorted_export(t_env *env);
 int		execution(t_cmd *cmd, t_env *env);
 int		check_builtins(t_cmd *cmd);
 int		count_env(t_env *env);
+int		handle_pipeline(t_cmd *cmd, t_env *env);
+void	execute_command(t_cmd *cmd, t_env *env);
+int		handle_heredoc(t_cmd *cmd);
+
+
+//------- redirection functions--------//
+int		check_redirection(t_cmd *cmd);
+int		handle_infile(t_cmd *cmd);
+int		handle_outfile(t_cmd *cmd);
+
+//------- execution utils--------//
+char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3);
+void	ft_free_split(char **split);
 
 #endif

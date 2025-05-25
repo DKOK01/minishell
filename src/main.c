@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/24 15:00:41 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/25 03:01:11 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,8 @@ int	main(int ac, char **av, char **envp)
 			i++;
 		}
 		cmd = parse_tokens(tokens);
-		if (cmd)
-		{
-			if (run_builtin(cmd, env) == -1)
-				printf("Command not found\n");
-		}
+		if (cmd && cmd->args)
+			execution(cmd, env);
 		// print_cmd_list(cmd);
 		free_tokens(tokens);
 		free_cmd_list(cmd);
