@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:58:09 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/25 03:36:22 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/26 09:01:37 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@
 
 void	set_env_value(t_env *env, const char *key, const char *value)
 {
-    if (find_and_update(env, ft_strdup(key), value))
-        return;
+    // if (find_and_update(env, ft_strdup(key), value))
+    //     return;
     // If not found, add new variable
     t_env *last = env;
     while (last && last->next)

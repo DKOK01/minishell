@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/25 03:37:58 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:37:25 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_expand_ctx
 	t_env	*env;
 	int		in_single;
 	int		in_double;
+	int		quoted;
 }	t_expand_ctx;
 
 //------ lexer functions--------//
@@ -75,7 +76,7 @@ void	print_token_list(t_token **tokens);
 t_cmd	*parse_tokens(t_token **tokens);
 
 //------ expansion functions--------//
-char 	*expand_variable(char *token, t_env *env);
+char 	*expand_variable(char *token, t_env *env, int quoted);
 char	*ft_strjoin_char(char *str, char c);
 
 //------- environment functions--------//

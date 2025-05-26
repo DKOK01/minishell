@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/23 12:29:04 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/26 12:42:58 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,56 @@ void	handle_expansion(const char *token, t_expand_ctx *ctx)
 	char	var[256];
 	char	*temp;
 
-	if (token[*(ctx->i)] == '\'' && !(ctx->in_double))
-		ctx->in_single = !(ctx->in_single);
-	else if (token[*(ctx->i)] == '\"' && !(ctx->in_single))
-		ctx->in_double = !(ctx->in_double);
-	else if (token[*(ctx->i)] == '$' && !(ctx->in_single)
-		&& (ft_isalpha(token[*(ctx->i) + 1]) || token[*(ctx->i) + 1] == '_'))
+	if (ctx->quoted == 2)
 	{
-		(*(ctx->i))++;
-		extract_var_name(token, ctx->i, var);
-		append_env_value(ctx->result, var, ctx->env);
-		return ;
+		if (token[*(ctx->i)] == '\"')
+			ctx->in_double = !(ctx->in_double);
+		else if (token[*(ctx->i)] == '$'
+			&& (ft_isalpha(token[*(ctx->i) + 1]) || token[*(ctx->i) + 1] == '_'))
+		{
+			(*(ctx->i))++;
+			extract_var_name(token, ctx->i, var);
+			append_env_value(ctx->result, var, ctx->env);
+			return ;
+		}
+		else
+		{
+			temp = ft_strjoin_char(*(ctx->result), token[*(ctx->i)]);
+			free(*(ctx->result));
+			*(ctx->result) = temp;
+		}
 	}
-	else
+	else if (ctx->quoted == 1)
 	{
 		temp = ft_strjoin_char(*(ctx->result), token[*(ctx->i)]);
 		free(*(ctx->result));
 		*(ctx->result) = temp;
 	}
+	else
+	{
+		if (token[*(ctx->i)] == '\'')
+			ctx->in_single = !(ctx->in_single);
+		else if (token[*(ctx->i)] == '\"')
+			ctx->in_double = !(ctx->in_double);
+		else if (token[*(ctx->i)] == '$' && !(ctx->in_single)
+			&& (ft_isalpha(token[*(ctx->i) + 1]) || token[*(ctx->i) + 1] == '_'))
+		{
+			(*(ctx->i))++;
+			extract_var_name(token, ctx->i, var);
+			append_env_value(ctx->result, var, ctx->env);
+			return ;
+		}
+		else
+		{
+			temp = ft_strjoin_char(*(ctx->result), token[*(ctx->i)]);
+			free(*(ctx->result));
+			*(ctx->result) = temp;
+		}
+	}
 	(*(ctx->i))++;
 }
 
-char	*expand_variable(char *token, t_env *env)
+char	*expand_variable(char *token, t_env *env, int quoted)
 {
 	char			*result;
 	int				i;
@@ -74,6 +102,7 @@ char	*expand_variable(char *token, t_env *env)
 	ctx.env = env;
 	ctx.in_single = 0;
 	ctx.in_double = 0;
+	ctx.quoted = quoted;
 	while (token[i])
 		handle_expansion(token, &ctx);
 	return (result);
