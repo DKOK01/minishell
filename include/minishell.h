@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/27 16:24:43 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:45:10 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ char 	*expand_variable(char *token, t_env *env, int quoted);
 char	*expand_token_segments(t_token *token, t_env *env);
 char	*ft_strjoin_char(char *str, char c);
 char	*ft_strjoin_free(char *s1, char *s2);
+void	append_env_value(char **result, char *var, t_env *env);
+void	extract_var_name(const char *token, int *i, char *var);
 
 //------- environment functions--------//
 void	free_env_list(t_env *env);

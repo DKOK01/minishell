@@ -6,11 +6,23 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:00:25 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/27 16:20:54 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:45:10 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char	*ft_strjoin_char_null(char c)
+{
+	char	*new_str;
+
+	new_str = malloc(2);
+	if (!new_str)
+		return (NULL);
+	new_str[0] = c;
+	new_str[1] = '\0';
+	return (new_str);
+}
 
 char	*ft_strjoin_char(char *str, char c)
 {
@@ -19,14 +31,7 @@ char	*ft_strjoin_char(char *str, char c)
 	int		i;
 
 	if (!str)
-	{
-		new_str = malloc(2);
-		if (!new_str)
-			return (NULL);
-		new_str[0] = c;
-		new_str[1] = '\0';
-		return (new_str);
-	}
+		return (ft_strjoin_char_null(c));
 	len = ft_strlen(str);
 	new_str = malloc(len + 2);
 	if (!new_str)
@@ -51,4 +56,27 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	result = ft_strjoin(s1, s2);
 	free(s1);
 	return (result);
+}
+
+void	extract_var_name(const char *token, int *i, char *var)
+{
+	int	j;
+
+	j = 0;
+	while (token[*i] && (ft_isalnum(token[*i]) || token[*i] == '_'))
+		var[j++] = token[(*i)++];
+	var[j] = '\0';
+}
+
+void	append_env_value(char **result, char *var, t_env *env)
+{
+	char	*var_value;
+	char	*temp;
+
+	var_value = get_env_value(env, var);
+	if (!var_value)
+		var_value = "";
+	temp = ft_strjoin(*result, var_value);
+	free(*result);
+	*result = temp;
 }
