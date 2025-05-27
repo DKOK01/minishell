@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:25:54 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/27 17:28:54 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:54:39 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,10 @@ t_cmd	*parse_tokens(t_token **tokens)
 			current->next = new_cmd_node();
 			current = current->next;
 		}
-		else if (!ft_strcmp(tokens[i]->value, "<") || 
-			!ft_strcmp(tokens[i]->value, ">") || 
-			!ft_strcmp(tokens[i]->value, "<<") || 
-			!ft_strcmp(tokens[i]->value, ">>"))
+		else if (!ft_strcmp(tokens[i]->value, "<")
+			|| !ft_strcmp(tokens[i]->value, ">")
+			|| !ft_strcmp(tokens[i]->value, "<<")
+			|| !ft_strcmp(tokens[i]->value, ">>"))
 			handle_redirection(current, tokens, &i);
 		else
 			current->args = add_arg(current->args, tokens[i]->value);
