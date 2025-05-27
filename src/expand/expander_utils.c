@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:00:25 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 16:00:52 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/27 16:20:54 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,15 @@ char	*ft_strjoin_char(char *str, char c)
 	new_str[i++] = c;
 	new_str[i] = '\0';
 	return (new_str);
+}
+
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*result;
+
+	if (!s1 || !s2)
+		return (NULL);
+	result = ft_strjoin(s1, s2);
+	free(s1);
+	return (result);
 }

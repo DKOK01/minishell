@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:32:38 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/22 15:02:16 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:19:34 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ void	free_tokens(t_token **tokens)
 	i = 0;
 	while (tokens[i])
 	{
+		if (tokens[i]->value)
+			free(tokens[i]->value);
+		if (tokens[i]->segments)
+			free_segments(tokens[i]->segments);
 		free(tokens[i]);
 		i++;
 	}

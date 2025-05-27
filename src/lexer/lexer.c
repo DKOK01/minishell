@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/26 13:02:27 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/27 16:20:54 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_token	*make_token(char *value, int quoted)
 		return (NULL);
 	token->value = value;
 	token->quoted = quoted;
+	token->segments = NULL;
+	token->seg_count = 0;
 	return (token);
 }
 
@@ -77,10 +79,8 @@ static void	handle_token(char *input, int *i, int *j, t_token **tokens)
 		handle_redir_token(input, i, j, tokens);
 	else if (input[*i] == '>' || input[*i] == '<' || input[*i] == '|')
 		handle_single_token(input, i, j, tokens);
-	else if (input[*i] == '\'' || input[*i] == '\"')
-		handle_quote_token(input, i, j, tokens);
 	else
-		handle_word_token(input, i, j, tokens);
+		handle_word_with_segments(input, i, j, tokens);
 }
 
 t_token	**tokenize_input(char *input)

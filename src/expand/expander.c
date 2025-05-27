@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/26 12:42:58 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/27 16:23:45 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,27 @@ char	*expand_variable(char *token, t_env *env, int quoted)
 	ctx.quoted = quoted;
 	while (token[i])
 		handle_expansion(token, &ctx);
+	return (result);
+}
+
+char	*expand_token_segments(t_token *token, t_env *env)
+{
+	char	*result;
+	char	*expanded_segment;
+	char	*temp;
+	int		i;
+
+	if (!token || !token->segments)
+		return (expand_variable(token->value, env, token->quoted));
+	result = ft_strdup("");
+	i = 0;
+	while (i < token->seg_count)
+	{
+		expanded_segment = expand_variable(token->segments[i]->value, env, token->segments[i]->quote_type);
+		temp = ft_strjoin_free(result, expanded_segment);
+		result = temp;
+		free(expanded_segment);
+		i++;
+	}
 	return (result);
 }

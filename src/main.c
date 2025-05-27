@@ -6,11 +6,59 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/26 11:35:36 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:18:08 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	print_token_list(t_token **tokens)
+{
+	int	i;
+	int	j;
+
+	if (!tokens)
+	{
+		printf("No tokens found.\n");
+		return ;
+	}
+	printf("\n=== TOKEN LIST ===\n");
+	i = 0;
+	while (tokens[i])
+	{
+		printf("Token %d:\n", i);
+		printf("  Value: '%s'\n", tokens[i]->value);
+		printf("  Overall quoted: %d\n", tokens[i]->quoted);
+		printf("  Segment count: %d\n", tokens[i]->seg_count);
+		
+		if (tokens[i]->segments && tokens[i]->seg_count > 0)
+		{
+			printf("	Segments:\n");
+			j = 0;
+			while (j < tokens[i]->seg_count)
+			{
+				printf("	[%d] '%s' (quote_type: %d", j, 
+					tokens[i]->segments[j]->value, 
+					tokens[i]->segments[j]->quote_type);
+				if (tokens[i]->segments[j]->quote_type == 0)
+					printf(" - unquoted");
+				else if (tokens[i]->segments[j]->quote_type == 1)
+					printf(" - single quoted");
+				else if (tokens[i]->segments[j]->quote_type == 2)
+					printf(" - double quoted");
+				printf(")\n");
+				j++;
+			}
+		}
+		else
+		{
+			printf("  No segments (legacy token)\n");
+		}
+		printf("\n");
+		i++;
+	}
+	printf("=== END TOKEN LIST ===\n\n");
+}
 
 void	print_cmd_list(t_cmd *cmd)
 {
@@ -69,6 +117,8 @@ void	free_env_list(t_env *env)
 	}
 }
 
+
+
 int	main(int ac, char **av, char **envp)
 {
 	t_cmd	*cmd;
@@ -80,7 +130,6 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	env = create_env(envp);
-	// test_lexer_cases();
 	while (1)
 	{
 		line = readline("minishell> ");
@@ -97,7 +146,11 @@ int	main(int ac, char **av, char **envp)
 		while (tokens[i])
 		{
 			if (tokens[i]->quoted != 1)
-				tokens[i]->value = expand_variable(tokens[i]->value, env, tokens[i]->quoted);
+			{
+				char *expanded = expand_token_segments(tokens[i], env);
+				free(tokens[i]->value);
+				tokens[i]->value = expanded;
+			}
 			i++;
 		}
 		cmd = parse_tokens(tokens);

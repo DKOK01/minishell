@@ -1,6 +1,6 @@
 CFLAGS	= -Wall -Wextra -Werror
 
-SRC		= $(shell ls ./src/input/*.c) \
+SRC		= $(shell ls ./src/parser/*.c) \
 		  $(shell ls ./src/*.c) \
 		  $(shell ls ./src/execution/*.c) \
 		  $(shell ls ./src/builtins/*.c) \

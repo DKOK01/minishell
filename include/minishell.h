@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/26 11:37:25 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/27 16:24:43 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,17 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+typedef struct s_segment
+{
+	char	*value;
+	int		quote_type;
+}	t_segment;
+
 typedef struct s_token
 {
 	char	*value;
+	t_segment	**segments;
+	int		seg_count;
 	int		quoted;
 }	t_token;
 
@@ -60,16 +68,21 @@ typedef struct s_expand_ctx
 //------ lexer functions--------//
 t_token	**tokenize_input(char *input);
 t_token	*make_token(char *value, int quoted);
+t_token	*make_token_with_segments(void);
+t_segment	*create_segment(char *value, int quote_type);
+void	add_segment_to_token(t_token *token, char *value, int quote_type);
 char	*extract_word(char *input, int *i);
 char	*extract_quoted(char *s, int *i, int *qtype);
+char	*extract_unquoted_part(char *input, int *i);
 void	handle_redir_token(char *input, int *i, int *j, t_token **tokens);
 void	handle_single_token(char *input, int *i, int *j, t_token **tokens);
 void	handle_quote_token(char *input, int *i, int *j, t_token **tokens);
 void	handle_word_token(char *input, int *i, int *j, t_token **tokens);
+void	handle_word_with_segments(char *input, int *i, int *j, t_token **tokens);
 void	skip_spaces(char *input, int *i);
 void	append_quoted_part(char **result, char *input, int *i);
 void	free_tokens(t_token **tokens);
-void	test_lexer_cases(void);
+void	free_segments(t_segment **segments);
 void	print_token_list(t_token **tokens);
 
 //------ parser functions--------//
@@ -77,7 +90,9 @@ t_cmd	*parse_tokens(t_token **tokens);
 
 //------ expansion functions--------//
 char 	*expand_variable(char *token, t_env *env, int quoted);
+char	*expand_token_segments(t_token *token, t_env *env);
 char	*ft_strjoin_char(char *str, char c);
+char	*ft_strjoin_free(char *s1, char *s2);
 
 //------- environment functions--------//
 void	free_env_list(t_env *env);
