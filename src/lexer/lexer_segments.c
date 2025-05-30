@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:30:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 09:42:26 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 10:01:05 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,31 @@ static void	add_segment_to_token(t_token *token, char *value, int quote_type)
 	token->seg_count++;
 }
 
+static char	*extract_quoted(char *input, int *i, int *qtype)
+{
+	char	quote;
+	char	*result;
+	char	*temp;
+
+	result = ft_strdup("");
+	quote = input[*i];
+	if (quote == '\'')
+		*qtype = 1;
+	else
+		*qtype = 2;
+	(*i)++;
+	while (input[*i] && input[*i] != quote)
+	{
+		temp = ft_strjoin_char(result, input[*i]);
+		free(result);
+		result = temp;
+		(*i)++;
+	}
+	if (input[*i] == quote)
+		(*i)++;
+	return (result);
+}
+
 static void	process_quoted_segment(char *input, int *i, t_token *token,
 		char **full_value)
 {
@@ -46,8 +71,10 @@ static void	process_quoted_segment(char *input, int *i, t_token *token,
 	free(segment_value);
 }
 
-static char	*extract_unquoted_part(char *input, int *i)
+static void	process_unquoted_segment(char *input, int *i, t_token *token,
+		char **full_value)
 {
+	char	*segment_value;
 	char	*result;
 	int		start;
 
@@ -56,16 +83,7 @@ static char	*extract_unquoted_part(char *input, int *i)
 		&& input[*i] != '|' && input[*i] != '>' && input[*i] != '<'
 		&& input[*i] != '"' && input[*i] != '\'')
 		(*i)++;
-	result = ft_substr(input, start, *i - start);
-	return (result);
-}
-
-static void	process_unquoted_segment(char *input, int *i, t_token *token,
-		char **full_value)
-{
-	char	*segment_value;
-
-	segment_value = extract_unquoted_part(input, i);
+	segment_value = ft_substr(input, start, *i - start);
 	add_segment_to_token(token, segment_value, 0);
 	*full_value = ft_strjoin_free(*full_value, segment_value);
 	free(segment_value);

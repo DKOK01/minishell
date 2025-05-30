@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 09:50:57 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 10:01:43 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,9 @@ typedef struct s_expand_ctx
 
 //------ lexer functions--------//
 t_token		**tokenize_input(char *input);
+void		handle_word_with_segments(char *input, int *i, int *j, t_token **tokens);
 t_token		*make_token_with_segments(void);
 t_segment	*create_segment(char *value, int quote_type);
-char		*extract_quoted(char *s, int *i, int *qtype);
-void		handle_word_with_segments(char *input, int *i, int *j, t_token **tokens);
 void		free_tokens(t_token **tokens);
 
 //------ parser functions--------//
