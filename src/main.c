@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/29 17:16:20 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 09:35:40 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	print_token_list(t_token **tokens)
 	i = 0;
 	while (tokens[i])
 	{
-		printf("Token %d:\n", i);
-		printf("  Value: '%s'\n", tokens[i]->value);
-		printf("  Overall quoted: %d\n", tokens[i]->quoted);
-		printf("  Segment count: %d\n", tokens[i]->seg_count);
+		printf("Token [%d]:\n", i);
+		printf("	Value:	[%s]\n", tokens[i]->value);
+		printf("	Overall quoted:		%d\n", tokens[i]->quoted);
+		printf("	Segment count:		%d\n", tokens[i]->seg_count);
 		
 		if (tokens[i]->segments && tokens[i]->seg_count > 0)
 		{
@@ -67,7 +67,7 @@ void	print_cmd_list(t_cmd *cmd)
 	current = cmd;
 	while (current)
 	{
-		printf("Command:\n");
+		printf("\nCommand:\n");
 		if (current->args)
 		{
 			for (int i = 0; current->args[i]; i++)

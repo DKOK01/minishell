@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:00:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 09:21:02 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 09:47:39 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,33 @@ char	*extract_quoted(char *input, int *i, int *qtype)
 	return (result);
 }
 
-void	free_segments(t_segment **segments)
+t_token	*make_token_with_segments(void)
+{
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->value = NULL;
+	token->segments = NULL;
+	token->seg_count = 0;
+	token->quoted = 0;
+	return (token);
+}
+
+t_segment	*create_segment(char *value, int quote_type)
+{
+	t_segment	*seg;
+
+	seg = malloc(sizeof(t_segment));
+	if (!seg)
+		return (NULL);
+	seg->value = ft_strdup(value);
+	seg->quote_type = quote_type;
+	return (seg);
+}
+
+static void	free_segments(t_segment **segments)
 {
 	int	i;
 
@@ -53,28 +79,21 @@ void	free_segments(t_segment **segments)
 	free(segments);
 }
 
-t_segment	*create_segment(char *value, int quote_type)
+void	free_tokens(t_token **tokens)
 {
-	t_segment	*seg;
+	int	i;
 
-	seg = malloc(sizeof(t_segment));
-	if (!seg)
-		return (NULL);
-	seg->value = ft_strdup(value);
-	seg->quote_type = quote_type;
-	return (seg);
-}
-
-t_token	*make_token_with_segments(void)
-{
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->value = NULL;
-	token->segments = NULL;
-	token->seg_count = 0;
-	token->quoted = 0;
-	return (token);
+	if (!tokens)
+		return ;
+	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i]->value)
+			free(tokens[i]->value);
+		if (tokens[i]->segments)
+			free_segments(tokens[i]->segments);
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
 }

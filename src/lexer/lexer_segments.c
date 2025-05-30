@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:30:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 08:45:55 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 09:42:26 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@ static void	add_segment_to_token(t_token *token, char *value, int quote_type)
 	token->seg_count++;
 }
 
+static void	process_quoted_segment(char *input, int *i, t_token *token,
+		char **full_value)
+{
+	char	*segment_value;
+	int		quote_type;
+
+	segment_value = extract_quoted(input, i, &quote_type);
+	add_segment_to_token(token, segment_value, quote_type);
+	*full_value = ft_strjoin_free(*full_value, segment_value);
+	free(segment_value);
+}
+
 static char	*extract_unquoted_part(char *input, int *i)
 {
 	char	*result;
@@ -46,18 +58,6 @@ static char	*extract_unquoted_part(char *input, int *i)
 		(*i)++;
 	result = ft_substr(input, start, *i - start);
 	return (result);
-}
-
-static void	process_quoted_segment(char *input, int *i, t_token *token,
-		char **full_value)
-{
-	char	*segment_value;
-	int		quote_type;
-
-	segment_value = extract_quoted(input, i, &quote_type);
-	add_segment_to_token(token, segment_value, quote_type);
-	*full_value = ft_strjoin_free(*full_value, segment_value);
-	free(segment_value);
 }
 
 static void	process_unquoted_segment(char *input, int *i, t_token *token,
