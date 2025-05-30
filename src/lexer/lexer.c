@@ -6,71 +6,28 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/27 16:20:54 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 09:22:32 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_token	*make_token(char *value, int quoted)
+static void	handle_redir_token(char *input, int *i, int *j, t_token **tokens)
 {
-	t_token	*token;
+	char	*word;
 
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->value = value;
-	token->quoted = quoted;
-	token->segments = NULL;
-	token->seg_count = 0;
-	return (token);
+	word = ft_substr(input, *i, 2);
+	tokens[(*j)++] = make_token(word, 0);
+	*i += 2;
 }
 
-char	*extract_word(char *input, int *i)
+static void	handle_single_token(char *input, int *i, int *j, t_token **tokens)
 {
-	char	*result;
-	char	*temp;
+	char	*word;
 
-	result = ft_strdup("");
-	while (input[*i] && !ft_isspace(input[*i])
-		&& input[*i] != '|' && input[*i] != '>' && input[*i] != '<')
-	{
-		if (input[*i] == '"' || input[*i] == '\'')
-			append_quoted_part(&result, input, i);
-		else
-		{
-			temp = ft_strjoin_char(result, input[*i]);
-			free(result);
-			result = temp;
-			(*i)++;
-		}
-	}
-	return (result);
-}
-
-char	*extract_quoted(char *input, int *i, int *qtype)
-{
-	char	quote;
-	char	*result;
-	char	*temp;
-
-	result = ft_strdup("");
-	quote = input[*i];
-	if (quote == '\'')
-		*qtype = 1;
-	else
-		*qtype = 2;
+	word = ft_substr(input, *i, 1);
+	tokens[(*j)++] = make_token(word, 0);
 	(*i)++;
-	while (input[*i] && input[*i] != quote)
-	{
-		temp = ft_strjoin_char(result, input[*i]);
-		free(result);
-		result = temp;
-		(*i)++;
-	}
-	if (input[*i] == quote)
-		(*i)++;
-	return (result);
 }
 
 static void	handle_token(char *input, int *i, int *j, t_token **tokens)

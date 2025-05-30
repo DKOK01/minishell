@@ -6,11 +6,36 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:00:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 08:43:52 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 09:21:02 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char	*extract_quoted(char *input, int *i, int *qtype)
+{
+	char	quote;
+	char	*result;
+	char	*temp;
+
+	result = ft_strdup("");
+	quote = input[*i];
+	if (quote == '\'')
+		*qtype = 1;
+	else
+		*qtype = 2;
+	(*i)++;
+	while (input[*i] && input[*i] != quote)
+	{
+		temp = ft_strjoin_char(result, input[*i]);
+		free(result);
+		result = temp;
+		(*i)++;
+	}
+	if (input[*i] == quote)
+		(*i)++;
+	return (result);
+}
 
 void	free_segments(t_segment **segments)
 {
