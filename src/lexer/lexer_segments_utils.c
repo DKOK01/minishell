@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_segments.c                                   :+:      :+:    :+:   */
+/*   lexer_segments_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:00:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/27 17:24:47 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 08:43:52 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	free_segments(t_segment **segments)
+{
+	int	i;
+
+	if (!segments)
+		return ;
+	i = 0;
+	while (segments[i])
+	{
+		free(segments[i]->value);
+		free(segments[i]);
+		i++;
+	}
+	free(segments);
+}
 
 t_segment	*create_segment(char *value, int quote_type)
 {
@@ -36,26 +52,4 @@ t_token	*make_token_with_segments(void)
 	token->seg_count = 0;
 	token->quoted = 0;
 	return (token);
-}
-
-void	add_segment_to_token(t_token *token, char *value, int quote_type)
-{
-	t_segment	**new_segments;
-	int			i;
-
-	new_segments = malloc(sizeof(t_segment *) * (token->seg_count + 2));
-	if (!new_segments)
-		return ;
-	i = 0;
-	while (i < token->seg_count)
-	{
-		new_segments[i] = token->segments[i];
-		i++;
-	}
-	new_segments[i] = create_segment(value, quote_type);
-	new_segments[i + 1] = NULL;
-	if (token->segments)
-		free(token->segments);
-	token->segments = new_segments;
-	token->seg_count++;
 }

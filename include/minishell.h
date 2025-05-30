@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/27 18:03:06 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 08:46:47 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,8 @@ t_token		**tokenize_input(char *input);
 t_token		*make_token(char *value, int quoted);
 t_token		*make_token_with_segments(void);
 t_segment	*create_segment(char *value, int quote_type);
-void		add_segment_to_token(t_token *token, char *value, int quote_type);
 char		*extract_word(char *input, int *i);
 char		*extract_quoted(char *s, int *i, int *qtype);
-char		*extract_unquoted_part(char *input, int *i);
 void		handle_redir_token(char *input, int *i, int *j, t_token **tokens);
 void		handle_single_token(char *input, int *i, int *j, t_token **tokens);
 void		handle_quote_token(char *input, int *i, int *j, t_token **tokens);
