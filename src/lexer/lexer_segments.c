@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:30:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 10:01:05 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 11:56:21 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static void	process_unquoted_segment(char *input, int *i, t_token *token,
 		char **full_value)
 {
 	char	*segment_value;
-	char	*result;
 	int		start;
 
 	start = *i;

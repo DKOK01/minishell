@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 09:35:40 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/05/30 14:35:27 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	print_token_list(t_token **tokens)
 	while (tokens[i])
 	{
 		printf("Token [%d]:\n", i);
-		printf("	Value:	[%s]\n", tokens[i]->value);
+		printf("	Value:				[%s]\n", tokens[i]->value);
 		printf("	Overall quoted:		%d\n", tokens[i]->quoted);
 		printf("	Segment count:		%d\n", tokens[i]->seg_count);
 		
@@ -37,7 +37,7 @@ void	print_token_list(t_token **tokens)
 			j = 0;
 			while (j < tokens[i]->seg_count)
 			{
-				printf("	[%d] '%s' (quote_type: %d", j, 
+				printf("	[%d]- -> [%s] (quote_type: %d", j, 
 					tokens[i]->segments[j]->value, 
 					tokens[i]->segments[j]->quote_type);
 				if (tokens[i]->segments[j]->quote_type == 0)
@@ -141,7 +141,7 @@ int	main(int ac, char **av, char **envp)
 		if (*line)
 			add_history(line);
 		tokens = tokenize_input(line);
-		print_token_list(tokens);
+		// print_token_list(tokens);
 		i = 0;
 		while (tokens[i])
 		{
@@ -156,7 +156,7 @@ int	main(int ac, char **av, char **envp)
 		cmd = parse_tokens(tokens);
 		if (cmd && cmd->args)
 			execution(cmd, env);
-		print_cmd_list(cmd);
+		// print_cmd_list(cmd);
 		free_tokens(tokens);
 		free_cmd_list(cmd);
 		free(line);
