@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:30:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/02 10:58:08 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/02 11:08:06 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,7 @@ static char	*extract_quoted(char *input, int *i, int *qtype)
 	if (input[*i] == quote)
 		(*i)++;
 	else
-	{
-		printf("syntax error: unclosed quote\n");
-		free(result);
-		return (NULL);
-	}
+		return (printf("syntax error: unclosed quote\n"), free(result), NULL);
 	return (result);
 }
 
