@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:00:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 10:01:19 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/02 10:46:51 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_segment	*create_segment(char *value, int quote_type)
 	return (seg);
 }
 
-static void	free_segments(t_segment **segments)
+void	free_segments(t_segment **segments)
 {
 	int	i;
 

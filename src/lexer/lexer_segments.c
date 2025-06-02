@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:30:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 11:56:21 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/02 10:58:08 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,28 @@ static char	*extract_quoted(char *input, int *i, int *qtype)
 	}
 	if (input[*i] == quote)
 		(*i)++;
+	else
+	{
+		printf("syntax error: unclosed quote\n");
+		free(result);
+		return (NULL);
+	}
 	return (result);
 }
 
-static void	process_quoted_segment(char *input, int *i, t_token *token,
+static int	process_quoted_segment(char *input, int *i, t_token *token,
 		char **full_value)
 {
 	char	*segment_value;
 	int		quote_type;
 
 	segment_value = extract_quoted(input, i, &quote_type);
+	if (!segment_value)
+		return (0);
 	add_segment_to_token(token, segment_value, quote_type);
 	*full_value = ft_strjoin_free(*full_value, segment_value);
 	free(segment_value);
+	return (1);
 }
 
 static void	process_unquoted_segment(char *input, int *i, t_token *token,
@@ -101,7 +110,15 @@ void	handle_word_with_segments(char *input, int *i, int *j, t_token **tokens)
 		&& input[*i] != '|' && input[*i] != '>' && input[*i] != '<')
 	{
 		if (input[*i] == '"' || input[*i] == '\'')
-			process_quoted_segment(input, i, token, &full_value);
+		{
+			if (!process_quoted_segment(input, i, token, &full_value))
+			{
+				free(full_value);
+				free_segments(token->segments);
+				free(token);
+				return ;
+			}
+		}
 		else
 			process_unquoted_segment(input, i, token, &full_value);
 	}

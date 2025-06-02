@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 10:01:43 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/02 10:47:19 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_token		**tokenize_input(char *input);
 void		handle_word_with_segments(char *input, int *i, int *j, t_token **tokens);
 t_token		*make_token_with_segments(void);
 t_segment	*create_segment(char *value, int quote_type);
+void		free_segments(t_segment **segments);
 void		free_tokens(t_token **tokens);
 
 //------ parser functions--------//
