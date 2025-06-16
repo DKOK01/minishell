@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
 /*   Updated: 2025/06/16 13:08:47 by ael-mans         ###   ########.fr       */
@@ -46,14 +46,17 @@ void	execute_command(t_cmd *cmd, t_env *env)
 	pid_t	pid;
 	int 	status;
 	char	**envp;
+	int		env_count;
 
 	envp = env_to_envp(env);
+	env_count = count_env(env);
 	path = find_path(cmd->args[0], env);
 	status = 0;
 	if (!path)
 	{
 		write(2, cmd->args[0], ft_strlen(cmd->args[0]));
 		write(2, ": command not found\n", 20);
+		free_envp(envp, env_count);
 		return ;
 	}
 	pid = fork();
@@ -68,6 +71,7 @@ void	execute_command(t_cmd *cmd, t_env *env)
 	else if (pid > 0)
 		waitpid(pid, &status, 0);
 	free(path);
+	free_envp(envp, env_count);
 }
 
 int	execution(t_cmd *cmd, t_env **env)

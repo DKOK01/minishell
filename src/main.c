@@ -88,13 +88,22 @@ void	print_cmd_list(t_cmd *cmd)
 void	free_cmd_list(t_cmd *cmd)
 {
 	t_cmd	*temp;
+	int		i;
 
 	while (cmd)
 	{
 		temp = cmd;
 		cmd = cmd->next;
 		if (temp->args)
+		{
+			i = 0;
+			while (temp->args[i])
+			{
+				free(temp->args[i]);
+				i++;
+			}
 			free(temp->args);
+		}
 		if (temp->infile)
 			free(temp->infile);
 		if (temp->outfile)

@@ -90,6 +90,7 @@ void		free_env_list(t_env *env);
 t_env		*create_env(char **envp);
 char		*get_env_value(t_env *env, const char *key);
 char		**env_to_envp(t_env *env);
+void		free_envp(char **envp, int n);
 
 //------- execution functions--------//
 int			run_builtin(t_cmd *cmd, t_env **env);

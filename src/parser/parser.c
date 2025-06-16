@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:25:54 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/16 10:49:33 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/16 11:06:34 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,23 @@ static char	**add_arg(char **args, char *token)
 	return (new_args);
 }
 
-static void	handle_redirection(t_cmd *cmd, t_token **tokens, int *i)
+static int	handle_redirection(t_cmd *cmd, t_token **tokens, int *i)
 {
 	char	*file;
 
 	file = NULL;
 	if (tokens[*i + 1])
 		file = tokens[*i + 1]->value;
-	
 	if (!file)
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
-		return ;
+		return (-1);
 	}
-	
+	if (!ft_strcmp(file, "|"))
+	{
+		printf("minishell: syntax error near unexpected token `|'\n");
+		return (-1);
+	}
 	if (!ft_strcmp(tokens[*i]->value, "<"))
 		cmd->infile = ft_strdup(file);
 	else if (!ft_strcmp(tokens[*i]->value, "<<"))
@@ -86,6 +89,7 @@ static void	handle_redirection(t_cmd *cmd, t_token **tokens, int *i)
 		cmd->append = 1;
 	}
 	*i += 1;
+	return (0);
 }
 
 t_cmd	*parse_tokens(t_token **tokens)
@@ -127,7 +131,13 @@ t_cmd	*parse_tokens(t_token **tokens)
 			|| !ft_strcmp(tokens[i]->value, ">")
 			|| !ft_strcmp(tokens[i]->value, "<<")
 			|| !ft_strcmp(tokens[i]->value, ">>"))
-			handle_redirection(current, tokens, &i);
+		{
+			if (handle_redirection(current, tokens, &i) == -1)
+			{
+				free_cmd_list(head);
+				return (NULL);
+			}
+		}
 		else
 			current->args = add_arg(current->args, tokens[i]->value);
 		i++;
