@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/16 13:05:49 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:59:52 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,11 @@ void		extract_var_name(const char *token, int *i, char *var);
 //------ parser functions--------//
 t_cmd		*parse_tokens(t_token **tokens);
 void		free_cmd_list(t_cmd *cmd);
+t_cmd		*new_cmd_node(void);
+char		**add_arg(char **args, char *token);
+int			validate_redirection_file(char *file);
+void		set_redirection(t_cmd *cmd, char *operator, char *file);
+int			is_redirection_token(char *token);
 
 //------- environment functions--------//
 void		free_env_list(t_env *env);
