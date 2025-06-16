@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/30 14:35:27 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/16 10:31:20 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,11 @@ int	main(int ac, char **av, char **envp)
 		if (*line)
 			add_history(line);
 		tokens = tokenize_input(line);
+		if (!tokens)
+		{
+			free(line);
+			continue;
+		}
 		// print_token_list(tokens);
 		i = 0;
 		while (tokens[i])

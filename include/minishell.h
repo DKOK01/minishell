@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/10 09:08:54 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/16 10:48:17 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void		extract_var_name(const char *token, int *i, char *var);
 
 //------ parser functions--------//
 t_cmd		*parse_tokens(t_token **tokens);
+void		free_cmd_list(t_cmd *cmd);
 
 //------- environment functions--------//
 void		free_env_list(t_env *env);

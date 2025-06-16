@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:25:54 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/05/27 17:54:39 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/16 10:49:33 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ static void	handle_redirection(t_cmd *cmd, t_token **tokens, int *i)
 	file = NULL;
 	if (tokens[*i + 1])
 		file = tokens[*i + 1]->value;
+	
+	if (!file)
+	{
+		printf("minishell: syntax error near unexpected token `newline'\n");
+		return ;
+	}
+	
 	if (!ft_strcmp(tokens[*i]->value, "<"))
 		cmd->infile = ft_strdup(file);
 	else if (!ft_strcmp(tokens[*i]->value, "<<"))
@@ -90,10 +97,29 @@ t_cmd	*parse_tokens(t_token **tokens)
 	head = new_cmd_node();
 	current = head;
 	i = 0;
+	
+	if (tokens[0] && !ft_strcmp(tokens[0]->value, "|"))
+	{
+		printf("minishell: syntax error near unexpected token `|'\n");
+		free(head);
+		return (NULL);
+	}
 	while (tokens[i])
 	{
 		if (!ft_strcmp(tokens[i]->value, "|"))
 		{
+			if (!tokens[i + 1] || !ft_strcmp(tokens[i + 1]->value, "|"))
+			{
+				printf("minishell: syntax error near unexpected token `|'\n");
+				free_cmd_list(head);
+				return (NULL);
+			}
+			if (!current->args)
+			{
+				printf("minishell: syntax error near unexpected token `|'\n");
+				free_cmd_list(head);
+				return (NULL);
+			}
 			current->next = new_cmd_node();
 			current = current->next;
 		}
