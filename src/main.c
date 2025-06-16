@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/16 11:56:05 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/16 12:33:00 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,22 @@ void	print_cmd_list(t_cmd *cmd)
 void	free_cmd_list(t_cmd *cmd)
 {
 	t_cmd	*temp;
+	int		i;
 
 	while (cmd)
 	{
 		temp = cmd;
 		cmd = cmd->next;
 		if (temp->args)
+		{
+			i = 0;
+			while (temp->args[i])
+			{
+				free(temp->args[i]);
+				i++;
+			}
 			free(temp->args);
+		}
 		if (temp->infile)
 			free(temp->infile);
 		if (temp->outfile)

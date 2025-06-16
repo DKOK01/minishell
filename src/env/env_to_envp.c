@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:29:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/27 17:52:09 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/16 12:33:00 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	join_key_value(char *dest, const char *key, const char *value)
 	dest[i + j] = '\0';
 }
 
-static void	free_envp(char **envp, int n)
+void	free_envp(char **envp, int n)
 {
 	int	idx;
 
