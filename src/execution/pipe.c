@@ -6,13 +6,13 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 00:46:16 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/25 00:52:14 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:09:08 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	setup_child_pipe(t_cmd *cmd, int prev_fd, int *pipe_fd, t_env *env)
+static void	setup_child_pipe(t_cmd *cmd, int prev_fd, int *pipe_fd, t_env **env)
 {
     if (prev_fd != -1)
     {
@@ -30,16 +30,17 @@ static void	setup_child_pipe(t_cmd *cmd, int prev_fd, int *pipe_fd, t_env *env)
     if (check_builtins(cmd))
         run_builtin(cmd, env);
     else
-        execute_command(cmd, env);
+        execute_command(cmd, *env);
     exit(0);
 }
 
-int	handle_pipeline(t_cmd *cmd, t_env *env)
+int	handle_pipeline(t_cmd *cmd, t_env **env)
 {
     int		pipe_fd[2];
-    int		prev_fd = -1;
+    int		prev_fd;
     pid_t	pid;
 
+    prev_fd = -1;
     while (cmd)
     {
         if (cmd->next && pipe(pipe_fd) < 0)

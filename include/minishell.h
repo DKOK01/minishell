@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/16 10:48:17 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/16 13:05:49 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,21 +92,23 @@ char		*get_env_value(t_env *env, const char *key);
 char		**env_to_envp(t_env *env);
 
 //------- execution functions--------//
-int			run_builtin(t_cmd *cmd, t_env *env);
+int			run_builtin(t_cmd *cmd, t_env **env);
 int			ft_echo(t_cmd *cmd);
-int			ft_cd(t_cmd *cmd, t_env *env);
+int			ft_cd(t_cmd *cmd, t_env **env);
 int			ft_exit(t_cmd *cmd);
 int			ft_pwd(void);
 int			ft_export(t_cmd *cmd, t_env **env);
 int			ft_unset(t_cmd *cmd, t_env **env);
 int			ft_env(t_env *env);
 void		print_sorted_export(t_env *env);
-int			execution(t_cmd *cmd, t_env *env);
+int			execution(t_cmd *cmd, t_env **env);
 int			check_builtins(t_cmd *cmd);
 int			count_env(t_env *env);
-int			handle_pipeline(t_cmd *cmd, t_env *env);
+int			handle_pipeline(t_cmd *cmd, t_env **env);
 void		execute_command(t_cmd *cmd, t_env *env);
 int			handle_heredoc(t_cmd *cmd);
+void		ft_free_split(char **split);
+void		set_env_value(t_env **env, const char *key, const char *value);
 
 //------- redirection functions--------//
 int			check_redirection(t_cmd *cmd);

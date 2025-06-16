@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:57:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/19 12:49:36 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:37:13 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_env	*find_and_update(t_env *env, char *key, char *value)
 		{
 			free(env->value);
 			env->value = ft_strdup(value);
-			free(key);
 			return (env);
 		}
 		env = env->next;
@@ -88,7 +87,11 @@ void	add_env_var(t_env **env, char *str)
 		if (!key)
 			return ;
 		if (find_and_update(*env, key, eq + 1))
+		{
+			free(key);			
 			return ;
+		}
+		free(key);
 	}
 	node = create_env_node(str, eq);
 	if (!node)

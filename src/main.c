@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/16 10:31:20 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/16 13:17:33 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,9 @@ int	main(int ac, char **av, char **envp)
 		}
 		cmd = parse_tokens(tokens);
 		if (cmd && cmd->args)
-			execution(cmd, env);
+			execution(cmd, &env);
+		else if (cmd && cmd->heredoc)
+			handle_heredoc(cmd);
 		// print_cmd_list(cmd);
 		free_tokens(tokens);
 		free_cmd_list(cmd);
