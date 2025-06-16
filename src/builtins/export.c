@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:57:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/19 12:49:36 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 12:41:16 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	add_env_var(t_env **env, char *str)
 			return ;
 		if (find_and_update(*env, key, eq + 1))
 			return ;
+		free(key);
 	}
 	node = create_env_node(str, eq);
 	if (!node)
