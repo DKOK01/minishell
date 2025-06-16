@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:51:34 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/19 12:52:56 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 11:40:37 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,11 @@ int	ft_unset(t_cmd *cmd, t_env **env)
 		if (is_valid_identifier(cmd->args[i]))
 			remove_env_var(env, cmd->args[i]);
 		else
-			printf("unset: `%s': not a valid identifier\n", cmd->args[i]);
+        {
+            write(2, "unset: `", 8);
+            write(2, cmd->args[i], ft_strlen(cmd->args[i]));
+            write(2, "': not a valid identifier\n", 26);
+        }
 		i++;
 	}
 	return (0);

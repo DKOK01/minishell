@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 01:03:20 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/25 02:13:18 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:18:34 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,32 @@ int	handle_heredoc(t_cmd *cmd)
 	int		pipe_fd[2];
 
 	delimiter = ft_strdup(cmd->infile);
-        if (pipe(pipe_fd) < 0)
+    if (!delimiter)
+	    return (1);
+	if (pipe(pipe_fd) < 0)
+	{
+		perror("pipe");
+		free(delimiter);
+		exit(1);
+	}
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write(pipe_fd[1], line, ft_strlen(line));
+		write(pipe_fd[1], "\n", 1);
+		free(line);
+	}
+    if (cmd->args)
     {
-        perror("pipe");
-        exit(1);
+    	close(pipe_fd[1]);
+	    dup2(pipe_fd[0], STDIN_FILENO);
+	    close(pipe_fd[0]);
     }
-    while (1)
-    {
-        line = readline("> ");
-        if (!line || ft_strcmp(line, delimiter) == 0) // use the correct delimiter
-        {
-            free(line);
-            break;
-        }
-        write(pipe_fd[1], line, ft_strlen(line));
-        write(pipe_fd[1], "\n", 1);
-        free(line);
-    }
-    close(pipe_fd[1]);
-    dup2(pipe_fd[0], STDIN_FILENO);
-    close(pipe_fd[0]);
-    return (0);
+    free(delimiter);
+	return (0);
 }

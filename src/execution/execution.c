@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 12:33:00 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/16 13:08:47 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,46 +74,40 @@ void	execute_command(t_cmd *cmd, t_env *env)
 	free_envp(envp, env_count);
 }
 
-int	execution(t_cmd *cmd, t_env *env)
+int	execution(t_cmd *cmd, t_env **env)
 {
-	int		location;
-	int		status;
-	int		saved_stdout;
-	int		saved_stdin;
+    int		location;
+    int		status;
+    int		saved_stdout;
+    int		saved_stdin;
 
-	status = 0;
-	location = 0;
-	if (cmd && cmd->next)
-	{
-		printf("Am in pipeline\n");
-		handle_pipeline(cmd, env);
-		return (0);
-	}
-	while (cmd)	
-	{
-		if (check_builtins(cmd))
-		{
-			saved_stdin = -1;
+    status = 0;
+    location = 0;
+    if (cmd && cmd->next)
+    {
+        printf("Am in pipeline\n");
+        handle_pipeline(cmd, env);
+        return (0);
+    }
+    while (cmd)
+    {
+        if (check_builtins(cmd))
+        {
+            saved_stdin = -1;
             saved_stdout = -1;
-			if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
-			{
-				saved_stdin = dup(STDIN_FILENO);
-				saved_stdout = dup(STDOUT_FILENO);
-				if (cmd->infile && cmd->heredoc == 0)
-				{
-					printf("AM in infile without herdoc\n");
-					handle_infile(cmd);
-				}
-				if (cmd->outfile || cmd->append)
-					handle_outfile(cmd);
-				else if (cmd->heredoc)
-				{
-					printf("AM in heredoc\n");
-					handle_heredoc(cmd);
-				}
-			}
-			run_builtin(cmd, env);
-			if (saved_stdin != -1)
+            if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
+            {
+                saved_stdin = dup(STDIN_FILENO);
+                saved_stdout = dup(STDOUT_FILENO);
+                if (cmd->infile && cmd->heredoc == 0)
+                    handle_infile(cmd);
+                if (cmd->outfile || cmd->append)
+                    handle_outfile(cmd);
+                else if (cmd->heredoc)
+                    handle_heredoc(cmd);
+            }
+            run_builtin(cmd, env);
+            if (saved_stdin != -1)
             {
                 dup2(saved_stdin, STDIN_FILENO);
                 close(saved_stdin);
@@ -123,11 +117,11 @@ int	execution(t_cmd *cmd, t_env *env)
                 dup2(saved_stdout, STDOUT_FILENO);
                 close(saved_stdout);
             }
-		}
-		else 
-			execute_command(cmd, env);
-		cmd = cmd->next;
-		location++;
-	}
-	return (0);
+        }
+        else
+            execute_command(cmd, *env);
+        cmd = cmd->next;
+        location++;
+    }
+    return (0);
 }
