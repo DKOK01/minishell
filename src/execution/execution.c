@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 13:08:47 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:08:08 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	execution(t_cmd *cmd, t_env **env)
     location = 0;
     if (cmd && cmd->next)
     {
-        printf("Am in pipeline\n");
         handle_pipeline(cmd, env);
         return (0);
     }

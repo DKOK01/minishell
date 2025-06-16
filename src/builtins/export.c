@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:57:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 11:37:13 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:01:34 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,11 @@ void	add_env_var(t_env **env, char *str)
 int	ft_export(t_cmd *cmd, t_env **env)
 {
 	int		i;
+	int		return_value;
 	t_env	*tmp;
 
 	i = 0;
+	return_value = 0;
 	if (!cmd->args[1])
 	{
 		tmp = *env;
@@ -123,9 +125,10 @@ int	ft_export(t_cmd *cmd, t_env **env)
 		if (!check_if_valid(cmd->args[i]))
 		{
 			printf("export: '%s': not a valid identifier\n", cmd->args[i]);
-			return (1);
+			return_value = 1;
 		}
-		add_env_var(env, cmd->args[i]);
+		else
+			add_env_var(env, cmd->args[i]);
 	}
-	return (0);
+	return (return_value);
 }

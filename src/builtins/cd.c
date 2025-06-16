@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:58:09 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 13:05:07 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:11:41 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,11 @@ int	ft_cd(t_cmd *cmd, t_env **env)
     char	*path;
     char	*oldpwd;
 
+    if (cmd->args[1] && cmd->args[2])
+    {
+        write(2, "cd: too many arguments\n", 23);
+        return (1);
+    }
     oldpwd = getcwd(NULL, 0);
     if (!oldpwd)
     {
@@ -96,9 +101,8 @@ int	ft_cd(t_cmd *cmd, t_env **env)
     }
     if (chdir(path) != 0)
     {
-        perror("cd");
-        free(oldpwd);
-        return (1);
+        printf("minishell: cd: %s: No such file or directory\n", path);
+        return (free(oldpwd), 1);
     }
     update_env_pwd(env, oldpwd);
     free(oldpwd);

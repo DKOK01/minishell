@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:58:42 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/19 12:54:22 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:59:52 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_pwd(void)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		printf("Error getting current directory\n");
+		write(2, "pwd: error retrieving current directory\n", 40);
 		return (1);
 	}
 	printf("%s\n", cwd);
