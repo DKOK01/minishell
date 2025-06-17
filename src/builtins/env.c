@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 10:46:14 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/05/19 12:54:10 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:02:01 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	ft_env(t_env *env)
+int	ft_env(t_cmd *cmd, t_env *env)
 {
+	if (cmd->args[1])
+    {
+        write(2, "env: ", 5);
+        write(2, cmd->args[1], ft_strlen(cmd->args[1]));
+        write(2, ": No such file or directory\n", 28);
+        return (127);
+    }
+	if (!env)
+		return (1);
 	while (env)
 	{
 		if (env->value)
