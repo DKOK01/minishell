@@ -6,56 +6,11 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:25:54 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/16 11:06:34 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/16 13:59:35 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static t_cmd	*new_cmd_node(void)
-{
-	t_cmd	*cmd;
-
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (NULL);
-	cmd->args = NULL;
-	cmd->infile = NULL;
-	cmd->outfile = NULL;
-	cmd->append = 0;
-	cmd->heredoc = 0;
-	cmd->next = NULL;
-	return (cmd);
-}
-
-static char	**add_arg(char **args, char *token)
-{
-	int		i;
-	int		j;
-	char	**new_args;
-
-	if (!args)
-	{
-		new_args = malloc(sizeof(char *) * 2);
-		new_args[0] = ft_strdup(token);
-		new_args[1] = NULL;
-		return (new_args);
-	}
-	i = 0;
-	while (args[i])
-		i++;
-	new_args = malloc(sizeof(char *) * (i + 2));
-	j = 0;
-	while (j < i)
-	{
-		new_args[j] = args[j];
-		j++;
-	}
-	new_args[i] = ft_strdup(token);
-	new_args[i + 1] = NULL;
-	free(args);
-	return (new_args);
-}
 
 static int	handle_redirection(t_cmd *cmd, t_token **tokens, int *i)
 {
@@ -64,31 +19,44 @@ static int	handle_redirection(t_cmd *cmd, t_token **tokens, int *i)
 	file = NULL;
 	if (tokens[*i + 1])
 		file = tokens[*i + 1]->value;
-	if (!file)
-	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
+	if (validate_redirection_file(file) == -1)
 		return (-1);
-	}
-	if (!ft_strcmp(file, "|"))
+	set_redirection(cmd, tokens[*i]->value, file);
+	*i += 1;
+	return (0);
+}
+
+static int	handle_pipe_token(t_cmd **current, t_token **tokens, int i)
+{
+	if (!tokens[i + 1] || !ft_strcmp(tokens[i + 1]->value, "|"))
 	{
 		printf("minishell: syntax error near unexpected token `|'\n");
 		return (-1);
 	}
-	if (!ft_strcmp(tokens[*i]->value, "<"))
-		cmd->infile = ft_strdup(file);
-	else if (!ft_strcmp(tokens[*i]->value, "<<"))
+	if (!(*current)->args)
 	{
-		cmd->infile = ft_strdup(file);
-		cmd->heredoc = 1;
+		printf("minishell: syntax error near unexpected token `|'\n");
+		return (-1);
 	}
-	else if (!ft_strcmp(tokens[*i]->value, ">"))
-		cmd->outfile = ft_strdup(file);
-	else if (!ft_strcmp(tokens[*i]->value, ">>"))
+	(*current)->next = new_cmd_node();
+	*current = (*current)->next;
+	return (0);
+}
+
+static int	process_token(t_cmd **current, t_token **tokens, int *i)
+{
+	if (!ft_strcmp(tokens[*i]->value, "|"))
 	{
-		cmd->outfile = ft_strdup(file);
-		cmd->append = 1;
+		if (handle_pipe_token(current, tokens, *i) == -1)
+			return (-1);
 	}
-	*i += 1;
+	else if (is_redirection_token(tokens[*i]->value))
+	{
+		if (handle_redirection(*current, tokens, i) == -1)
+			return (-1);
+	}
+	else
+		(*current)->args = add_arg((*current)->args, tokens[*i]->value);
 	return (0);
 }
 
@@ -101,7 +69,6 @@ t_cmd	*parse_tokens(t_token **tokens)
 	head = new_cmd_node();
 	current = head;
 	i = 0;
-	
 	if (tokens[0] && !ft_strcmp(tokens[0]->value, "|"))
 	{
 		printf("minishell: syntax error near unexpected token `|'\n");
@@ -110,36 +77,11 @@ t_cmd	*parse_tokens(t_token **tokens)
 	}
 	while (tokens[i])
 	{
-		if (!ft_strcmp(tokens[i]->value, "|"))
+		if (process_token(&current, tokens, &i) == -1)
 		{
-			if (!tokens[i + 1] || !ft_strcmp(tokens[i + 1]->value, "|"))
-			{
-				printf("minishell: syntax error near unexpected token `|'\n");
-				free_cmd_list(head);
-				return (NULL);
-			}
-			if (!current->args)
-			{
-				printf("minishell: syntax error near unexpected token `|'\n");
-				free_cmd_list(head);
-				return (NULL);
-			}
-			current->next = new_cmd_node();
-			current = current->next;
+			free_cmd_list(head);
+			return (NULL);
 		}
-		else if (!ft_strcmp(tokens[i]->value, "<")
-			|| !ft_strcmp(tokens[i]->value, ">")
-			|| !ft_strcmp(tokens[i]->value, "<<")
-			|| !ft_strcmp(tokens[i]->value, ">>"))
-		{
-			if (handle_redirection(current, tokens, &i) == -1)
-			{
-				free_cmd_list(head);
-				return (NULL);
-			}
-		}
-		else
-			current->args = add_arg(current->args, tokens[i]->value);
 		i++;
 	}
 	return (head);
