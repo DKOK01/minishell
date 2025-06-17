@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/16 15:02:46 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:40:10 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ char		*ft_strjoin_char(char *str, char c);
 char		*ft_strjoin_free(char *s1, char *s2);
 void		append_env_value(char **result, char *var, t_env *env);
 void		extract_var_name(const char *token, int *i, char *var);
+void		append_exit_status(char **result);
 
 //------ parser functions--------//
 t_cmd		*parse_tokens(t_token **tokens);
@@ -124,5 +125,8 @@ int			handle_outfile(t_cmd *cmd);
 //------- execution utils--------//
 char		*ft_strjoin_three(const char *s1, const char *s2, const char *s3);
 void		ft_free_split(char **split);
+
+//------- exit status--------//
+extern int	g_exit_status;
 
 #endif
