@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 16:08:08 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/17 07:47:54 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,11 @@ int	execution(t_cmd *cmd, t_env **env)
     location = 0;
     if (cmd && cmd->next)
     {
+		// if (cmd->heredoc)
+		// {
+		// 	printf("Heredoc detected\n");			
+		// 	handle_heredoc(cmd);
+		// }
         handle_pipeline(cmd, env);
         return (0);
     }
@@ -100,10 +105,10 @@ int	execution(t_cmd *cmd, t_env **env)
                 saved_stdout = dup(STDOUT_FILENO);
                 if (cmd->infile && cmd->heredoc == 0)
                     handle_infile(cmd);
-                if (cmd->outfile || cmd->append)
-                    handle_outfile(cmd);
-                else if (cmd->heredoc)
-                    handle_heredoc(cmd);
+                if (cmd->heredoc)
+					handle_heredoc(cmd);
+				if (cmd->outfile || cmd->append)
+					handle_outfile(cmd);
             }
             run_builtin(cmd, env);
             if (saved_stdin != -1)
@@ -117,8 +122,17 @@ int	execution(t_cmd *cmd, t_env **env)
                 close(saved_stdout);
             }
         }
-        else
-            execute_command(cmd, *env);
+        else if (!cmd->args || !cmd->args[0])
+		{
+			if (cmd->heredoc)
+				handle_heredoc(cmd);
+			else if (cmd->infile)
+				handle_infile(cmd);
+			if (cmd->outfile || cmd->append)
+				handle_outfile(cmd);
+		}
+		else
+			execute_command(cmd, *env);
         cmd = cmd->next;
         location++;
     }

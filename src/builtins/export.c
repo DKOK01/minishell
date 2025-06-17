@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:57:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 14:01:34 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/17 09:01:57 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ t_env	*find_and_update(t_env *env, char *key, char *value)
 		if (!ft_strncmp(env->key, key, ft_strlen(key))
 			&& env->key[ft_strlen(key)] == '\0')
 		{
+			char *new_value = ft_strdup(value);
+            if (!new_value)
+                return (NULL);
 			free(env->value);
 			env->value = ft_strdup(value);
 			return (env);

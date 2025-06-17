@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 00:46:16 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 13:09:08 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/17 07:36:13 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@ static void	setup_child_pipe(t_cmd *cmd, int prev_fd, int *pipe_fd, t_env **env)
         dup2(pipe_fd[1], STDOUT_FILENO);
         close(pipe_fd[1]);
     }
-    if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
-        check_redirection(cmd);
+    check_redirection(cmd);
     if (check_builtins(cmd))
         run_builtin(cmd, env);
-    else
+    else if (cmd->args && cmd->args[0])
         execute_command(cmd, *env);
     exit(0);
 }

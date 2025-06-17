@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 01:03:20 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 13:18:34 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/17 09:15:46 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,9 @@ int	handle_heredoc(t_cmd *cmd)
 		write(pipe_fd[1], "\n", 1);
 		free(line);
 	}
-    if (cmd->args)
-    {
-    	close(pipe_fd[1]);
-	    dup2(pipe_fd[0], STDIN_FILENO);
-	    close(pipe_fd[0]);
-    }
+	close(pipe_fd[1]);
+	dup2(pipe_fd[0], STDIN_FILENO);
+	close(pipe_fd[0]);
     free(delimiter);
 	return (0);
 }
