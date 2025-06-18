@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/17 12:40:10 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/18 18:31:07 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,7 @@ static char	*find_path(char *cmd, t_env *env)
 	int		i;
 
 	if (cmd[0] == '/')
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
-	}
+		return (ft_strdup(cmd));
 	path_env = get_env_value(env, "PATH");
 	if (!path_env)
 		return (NULL);
@@ -60,7 +56,6 @@ void	execute_command(t_cmd *cmd, t_env *env)
 	{
 		write(2, cmd->args[0], ft_strlen(cmd->args[0]));
 		write(2, ": command not found\n", 20);
-		g_exit_status = 127;
 		free_envp(envp, env_count);
 		return ;
 	}
@@ -71,16 +66,10 @@ void	execute_command(t_cmd *cmd, t_env *env)
             check_redirection(cmd);
 		execve(path, cmd->args, envp);
 		perror(cmd->args[0]);
-		exit(126);
+		exit(0);
 	}
 	else if (pid > 0)
-	{
 		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			g_exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			g_exit_status = 128 + WTERMSIG(status);
-	}
 	free(path);
 	free_envp(envp, env_count);
 }
@@ -121,7 +110,7 @@ int	execution(t_cmd *cmd, t_env **env)
 				if (cmd->outfile || cmd->append)
 					handle_outfile(cmd);
             }
-            g_exit_status = run_builtin(cmd, env);
+            run_builtin(cmd, env);
             if (saved_stdin != -1)
             {
                 dup2(saved_stdin, STDIN_FILENO);

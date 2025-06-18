@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:00:25 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/17 12:40:10 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/18 18:31:07 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,17 +78,5 @@ void	append_env_value(char **result, char *var, t_env *env)
 		var_value = "";
 	temp = ft_strjoin(*result, var_value);
 	free(*result);
-	*result = temp;
-}
-
-void	append_exit_status(char **result)
-{
-	char	*status_str;
-	char	*temp;
-
-	status_str = ft_itoa(g_exit_status);
-	temp = ft_strjoin(*result, status_str);
-	free(*result);
-	free(status_str);
 	*result = temp;
 }

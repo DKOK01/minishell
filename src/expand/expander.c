@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/17 12:40:10 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/18 18:31:07 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,11 @@ static void	handle_double_quoted(const char *token, t_expand_ctx *ctx)
 		ctx->in_double = !(ctx->in_double);
 	else if (token[*(ctx->i)] == '$'
 		&& (ft_isalpha(token[*(ctx->i) + 1])
-			|| token[*(ctx->i) + 1] == '_'
-			|| token[*(ctx->i) + 1] == '?'))
+			|| token[*(ctx->i) + 1] == '_'))
 	{
 		(*(ctx->i))++;
-		if (token[*(ctx->i)] == '?')
-		{
-			append_exit_status(ctx->result);
-			(*(ctx->i))++;
-		}
-		else
-		{
-			extract_var_name(token, ctx->i, var);
-			append_env_value(ctx->result, var, ctx->env);
-		}
+		extract_var_name(token, ctx->i, var);
+		append_env_value(ctx->result, var, ctx->env);
 		return ;
 	}
 	else
@@ -57,20 +48,11 @@ static void	handle_unquoted(const char *token, t_expand_ctx *ctx)
 		ctx->in_double = !(ctx->in_double);
 	else if (token[*(ctx->i)] == '$' && !(ctx->in_single)
 		&& (ft_isalpha(token[*(ctx->i) + 1])
-			|| token[*(ctx->i) + 1] == '_'
-			|| token[*(ctx->i) + 1] == '?'))
+			|| token[*(ctx->i) + 1] == '_'))
 	{
 		(*(ctx->i))++;
-		if (token[*(ctx->i)] == '?')
-		{
-			append_exit_status(ctx->result);
-			(*(ctx->i))++;
-		}
-		else
-		{
-			extract_var_name(token, ctx->i, var);
-			append_env_value(ctx->result, var, ctx->env);
-		}
+		extract_var_name(token, ctx->i, var);
+		append_env_value(ctx->result, var, ctx->env);
 		return ;
 	}
 	else

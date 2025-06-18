@@ -6,13 +6,11 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/17 12:40:10 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/18 18:31:07 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-int	g_exit_status = 0;
 
 void	print_token_list(t_token **tokens)
 {
