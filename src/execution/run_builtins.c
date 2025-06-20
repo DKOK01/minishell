@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 08:46:48 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 15:04:03 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:02:10 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	run_builtin(t_cmd *cmd, t_env **env)
     else if (ft_strcmp(cmd->args[0], "cd") == 0)
         return (ft_cd(cmd, env));
     else if (ft_strcmp(cmd->args[0], "pwd") == 0)
-        return (ft_pwd());
+        return (ft_pwd(*env));
     else if (ft_strcmp(cmd->args[0], "export") == 0)
         return (ft_export(cmd, env));
     else if (ft_strcmp(cmd->args[0], "unset") == 0)
