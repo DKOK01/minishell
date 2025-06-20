@@ -6,11 +6,24 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:58:09 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 15:11:41 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/20 10:42:48 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+t_env *create_node(const char *key, const char *value)
+{
+    t_env	*new_node;
+
+    new_node = malloc(sizeof(t_env));
+    if (!new_node)
+        return (NULL);
+    new_node->key = ft_strdup(key);
+    new_node->value = ft_strdup(value);
+    new_node->next = NULL;
+    return (new_node);
+}
 
 void	set_env_value(t_env **env, const char *key, const char *value)
 {
@@ -31,12 +44,9 @@ void	set_env_value(t_env **env, const char *key, const char *value)
         last = current;
         current = current->next;
     }
-    new_node = malloc(sizeof(t_env));
+    new_node = create_node(key, value);
     if (!new_node)
         return ;
-    new_node->key = ft_strdup(key);
-    new_node->value = ft_strdup(value);
-    new_node->next = NULL;
     if (!*env)
         *env = new_node;
     else

@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/17 07:47:54 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:30:43 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ static char	*find_path(char *cmd, t_env *env)
 	return (NULL);
 }
 
-void	execute_command(t_cmd *cmd, t_env *env)
+int	execute_command(t_cmd *cmd, t_env *env)
 {
 	char	*path;
 	pid_t	pid;
 	int 	status;
 	char	**envp;
 	int		env_count;
+	struct stat	file_stat;
 
 	envp = env_to_envp(env);
 	env_count = count_env(env);
@@ -54,16 +55,24 @@ void	execute_command(t_cmd *cmd, t_env *env)
 	status = 0;
 	if (!path)
 	{
-		write(2, cmd->args[0], ft_strlen(cmd->args[0]));
-		write(2, ": command not found\n", 20);
+		if (stat(cmd->args[0], &file_stat) == 0)
+		{
+			write(2, cmd->args[0], ft_strlen(cmd->args[0]));
+			write(2, ": is a directory\n", 17);
+		}
+		else
+		{
+			write(2, cmd->args[0], ft_strlen(cmd->args[0]));
+			write(2, ": command not found\n", 20);
+		}
 		free_envp(envp, env_count);
-		return ;
+		return (1);
 	}
 	pid = fork();
 	if (pid == 0)
 	{
 		if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
-            check_redirection(cmd);
+			check_redirection(cmd);
 		execve(path, cmd->args, envp);
 		perror(cmd->args[0]);
 		exit(0);
@@ -72,25 +81,21 @@ void	execute_command(t_cmd *cmd, t_env *env)
 		waitpid(pid, &status, 0);
 	free(path);
 	free_envp(envp, env_count);
+	return (status);
 }
 
 int	execution(t_cmd *cmd, t_env **env)
 {
-    int		location;
     int		status;
     int		saved_stdout;
     int		saved_stdin;
+	int		exit_status;
 
     status = 0;
-    location = 0;
+	exit_status = 0;
     if (cmd && cmd->next)
     {
-		// if (cmd->heredoc)
-		// {
-		// 	printf("Heredoc detected\n");			
-		// 	handle_heredoc(cmd);
-		// }
-        handle_pipeline(cmd, env);
+        exit_status = handle_pipeline(cmd, env);
         return (0);
     }
     while (cmd)
@@ -110,7 +115,7 @@ int	execution(t_cmd *cmd, t_env **env)
 				if (cmd->outfile || cmd->append)
 					handle_outfile(cmd);
             }
-            run_builtin(cmd, env);
+            exit_status = run_builtin(cmd, env);
             if (saved_stdin != -1)
             {
                 dup2(saved_stdin, STDIN_FILENO);
@@ -122,19 +127,18 @@ int	execution(t_cmd *cmd, t_env **env)
                 close(saved_stdout);
             }
         }
-        else if (!cmd->args || !cmd->args[0])
-		{
-			if (cmd->heredoc)
-				handle_heredoc(cmd);
-			else if (cmd->infile)
-				handle_infile(cmd);
-			if (cmd->outfile || cmd->append)
-				handle_outfile(cmd);
-		}
-		else
-			execute_command(cmd, *env);
+        else if (cmd->args && cmd->args[0] && cmd->args[0][0] != '\0')
+            exit_status = execute_command(cmd, *env);
+        else
+        {
+            if (cmd->heredoc)
+                handle_heredoc(cmd);
+            else if (cmd->infile)
+                handle_infile(cmd);
+            if (cmd->outfile || cmd->append)
+                handle_outfile(cmd);
+        }
         cmd = cmd->next;
-        location++;
     }
-    return (0);
+    return (exit_status);
 }
