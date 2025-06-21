@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 09:41:46 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/21 17:59:13 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,27 @@
 
 static void	handle_double_quoted(const char *token, t_expand_ctx *ctx)
 {
-	char	var[256];
-	char	*temp;
-
 	if (token[*(ctx->i)] == '\"')
 		ctx->in_double = !(ctx->in_double);
 	else if (token[*(ctx->i)] == '$'
 		&& (ft_isalpha(token[*(ctx->i) + 1])
 			|| token[*(ctx->i) + 1] == '_'))
 	{
-		(*(ctx->i))++;
-		extract_var_name(token, ctx->i, var);
-		append_env_value(ctx->result, var, ctx->env);
+		handle_variable_expansion(token, ctx);
 		return ;
 	}
 	else if (token[*(ctx->i)] == '$' && token[*(ctx->i) + 1] == '?')
 	{
-		(*(ctx->i)) += 2;
-		append_exit_status(ctx->result);
+		handle_exit_status(ctx);
 		return ;
 	}
 	else
-	{
-		temp = ft_strjoin_char(*(ctx->result), token[*(ctx->i)]);
-		free(*(ctx->result));
-		*(ctx->result) = temp;
-	}
+		append_char_to_result(ctx, token);
 	(*(ctx->i))++;
 }
 
 static void	handle_unquoted(const char *token, t_expand_ctx *ctx)
 {
-	char	var[256];
-	char	*temp;
-
 	if (token[*(ctx->i)] == '\'')
 		ctx->in_single = !(ctx->in_single);
 	else if (token[*(ctx->i)] == '\"')
@@ -56,24 +43,17 @@ static void	handle_unquoted(const char *token, t_expand_ctx *ctx)
 		&& (ft_isalpha(token[*(ctx->i) + 1])
 			|| token[*(ctx->i) + 1] == '_'))
 	{
-		(*(ctx->i))++;
-		extract_var_name(token, ctx->i, var);
-		append_env_value(ctx->result, var, ctx->env);
+		handle_variable_expansion(token, ctx);
 		return ;
 	}
 	else if (token[*(ctx->i)] == '$' && !(ctx->in_single)
 		&& token[*(ctx->i) + 1] == '?')
 	{
-		(*(ctx->i)) += 2;
-		append_exit_status(ctx->result);
+		handle_exit_status(ctx);
 		return ;
 	}
 	else
-	{
-		temp = ft_strjoin_char(*(ctx->result), token[*(ctx->i)]);
-		free(*(ctx->result));
-		*(ctx->result) = temp;
-	}
+		append_char_to_result(ctx, token);
 	(*(ctx->i))++;
 }
 

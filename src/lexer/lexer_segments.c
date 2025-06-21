@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:30:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 11:10:54 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/21 17:57:40 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	handle_word_with_segments(char *input, int *i, int *j, t_token **tokens)
 		if (input[*i] == '"' || input[*i] == '\'')
 		{
 			if (!process_quoted_segment(input, i, token, &full_value))
-				return (cleanup_failed_token(token, full_value), 0);
+				return (cleanup_failed_token(token, full_value), (void)0);
 		}
 		else
 			(process_unquoted_segment(input, i, token, &full_value),

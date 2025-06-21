@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 11:42:04 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 18:58:11 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ char		*ft_strjoin_free(char *s1, char *s2);
 void		append_env_value(char **result, char *var, t_env *env);
 void		append_exit_status(char **result);
 void		extract_var_name(const char *token, int *i, char *var);
+void		handle_variable_expansion(const char *token, t_expand_ctx *ctx);
+void		handle_exit_status(t_expand_ctx *ctx);
+void		append_char_to_result(t_expand_ctx *ctx, const char *token);
 
 //------ parser functions--------//
 t_cmd		*parse_tokens(t_token **tokens);

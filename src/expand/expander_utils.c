@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:00:25 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 09:41:55 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/21 17:59:13 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,32 +66,4 @@ void	extract_var_name(const char *token, int *i, char *var)
 	while (token[*i] && (ft_isalnum(token[*i]) || token[*i] == '_'))
 		var[j++] = token[(*i)++];
 	var[j] = '\0';
-}
-
-void	append_env_value(char **result, char *var, t_env *env)
-{
-	char	*var_value;
-	char	*temp;
-
-	var_value = get_env_value(env, var);
-	if (!var_value)
-		var_value = "";
-	temp = ft_strjoin(*result, var_value);
-	free(*result);
-	*result = temp;
-}
-
-void	append_exit_status(char **result)
-{
-	char	*exit_str;
-	char	*temp;
-	extern int g_exit_status;
-
-	exit_str = ft_itoa(g_exit_status);
-	if (!exit_str)
-		return ;
-	temp = ft_strjoin(*result, exit_str);
-	free(*result);
-	free(exit_str);
-	*result = temp;
 }
