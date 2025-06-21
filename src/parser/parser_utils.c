@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 13:54:01 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/16 14:00:08 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/21 10:13:07 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_cmd	*new_cmd_node(void)
 	cmd->outfile = NULL;
 	cmd->append = 0;
 	cmd->heredoc = 0;
+	cmd->heredoc_quoted = 0;
 	cmd->next = NULL;
 	return (cmd);
 }
@@ -72,7 +73,7 @@ int	validate_redirection_file(char *file)
 	return (0);
 }
 
-void	set_redirection(t_cmd *cmd, char *operator, char *file)
+void	set_redirection(t_cmd *cmd, char *operator, char *file, int quoted)
 {
 	if (!ft_strcmp(operator, "<"))
 		cmd->infile = ft_strdup(file);
@@ -80,6 +81,7 @@ void	set_redirection(t_cmd *cmd, char *operator, char *file)
 	{
 		cmd->infile = ft_strdup(file);
 		cmd->heredoc = 1;
+		cmd->heredoc_quoted = quoted;
 	}
 	else if (!ft_strcmp(operator, ">"))
 		cmd->outfile = ft_strdup(file);

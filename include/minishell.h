@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 08:32:56 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 10:13:07 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_cmd
 	char			*outfile;
 	int				append;
 	int				heredoc;
+	int				heredoc_quoted;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -92,7 +93,7 @@ void		free_cmd_list(t_cmd *cmd);
 t_cmd		*new_cmd_node(void);
 char		**add_arg(char **args, char *token);
 int			validate_redirection_file(char *file);
-void		set_redirection(t_cmd *cmd, char *operator, char *file);
+void		set_redirection(t_cmd *cmd, char *operator, char *file, int quoted);
 int			is_redirection_token(char *token);
 
 //------- environment functions--------//
@@ -118,12 +119,12 @@ int			count_env(t_env *env);
 int			handle_pipeline(t_cmd *cmd, t_env **env);
 int			execute_command(t_cmd *cmd, t_env *env);
 void		execute_command_direct(t_cmd *cmd, t_env *env);
-int			handle_heredoc(t_cmd *cmd);
+int			handle_heredoc(t_cmd *cmd, t_env *env);
 void		ft_free_split(char **split);
 void		set_env_value(t_env **env, const char *key, const char *value);
 
 //------- redirection functions--------//
-int			check_redirection(t_cmd *cmd);
+int			check_redirection(t_cmd *cmd, t_env *env);
 int			handle_infile(t_cmd *cmd);
 int			handle_outfile(t_cmd *cmd);
 

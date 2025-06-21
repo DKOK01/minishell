@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 08:33:01 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 10:13:07 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void	handle_command_not_found(char *cmd_name, char **envp, int env_count)
 	free_envp(envp, env_count);
 }
 
-static void	handle_child_process(t_cmd *cmd, char *path, char **envp)
+static void	handle_child_process(t_cmd *cmd, char *path, char **envp, t_env *env)
 {
 	if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
-		check_redirection(cmd);
+		check_redirection(cmd, env);
 	execve(path, cmd->args, envp);
 	perror(cmd->args[0]);
 	exit(127);
@@ -96,7 +96,7 @@ int	execute_command(t_cmd *cmd, t_env *env)
 	}
 	pid = fork();
 	if (pid == 0)
-		handle_child_process(cmd, path, envp);
+		handle_child_process(cmd, path, envp, env);
 	else if (pid > 0)
 		handle_parent_process(pid);
 	free(path);
@@ -123,14 +123,14 @@ void	execute_command_direct(t_cmd *cmd, t_env *env)
 	exit(127);
 }
 
-static void	handle_builtin_redirections(t_cmd *cmd, int *saved_stdin, int *saved_stdout)
+static void	handle_builtin_redirections(t_cmd *cmd, int *saved_stdin, int *saved_stdout, t_env *env)
 {
 	*saved_stdin = dup(STDIN_FILENO);
 	*saved_stdout = dup(STDOUT_FILENO);
 	if (cmd->infile && cmd->heredoc == 0)
 		handle_infile(cmd);
 	if (cmd->heredoc)
-		handle_heredoc(cmd);
+		handle_heredoc(cmd, env);
 	if (cmd->outfile || cmd->append)
 		handle_outfile(cmd);
 }
@@ -149,10 +149,10 @@ static void	restore_redirections(int saved_stdin, int saved_stdout)
 	}
 }
 
-static void	handle_empty_command_redirections(t_cmd *cmd)
+static void	handle_empty_command_redirections(t_cmd *cmd, t_env *env)
 {
 	if (cmd->heredoc)
-		handle_heredoc(cmd);
+		handle_heredoc(cmd, env);
 	else if (cmd->infile)
 		handle_infile(cmd);
 	if (cmd->outfile || cmd->append)
@@ -169,14 +169,14 @@ static int	process_single_command(t_cmd *cmd, t_env **env)
 	if (check_builtins(cmd))
 	{
 		if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
-			handle_builtin_redirections(cmd, &saved_stdin, &saved_stdout);
+			handle_builtin_redirections(cmd, &saved_stdin, &saved_stdout, *env);
 		g_exit_status = run_builtin(cmd, env);
 		restore_redirections(saved_stdin, saved_stdout);
 	}
 	else if (cmd->args && cmd->args[0] && cmd->args[0][0] != '\0')
 		execute_command(cmd, *env);
 	else
-		handle_empty_command_redirections(cmd);
+		handle_empty_command_redirections(cmd, *env);
 	return (g_exit_status);
 }
 

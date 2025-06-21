@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 00:46:16 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 08:32:52 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 10:13:07 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	setup_child_pipe(t_cmd *cmd, int prev_fd, int *pipe_fd, t_env **env)
 
 	setup_child_signals();
 	if (cmd->heredoc)
-		handle_heredoc(cmd);
+		handle_heredoc(cmd, *env);
 	else if (cmd->infile)
 		handle_infile(cmd);
 	else if (prev_fd != -1)
