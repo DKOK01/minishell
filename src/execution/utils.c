@@ -47,4 +47,3 @@ void	ft_free_split(char **split)
 	}
 	free(split);
 }
-

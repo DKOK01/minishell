@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 10:13:07 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/21 11:42:04 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int			ft_echo(t_cmd *cmd);
 int			ft_cd(t_cmd *cmd, t_env **env);
 int			ft_exit(t_cmd *cmd);
 int			ft_pwd(t_env *env);
+t_env		*find_and_update(t_env *env, char *key, char *value);
 int			ft_export(t_cmd *cmd, t_env **env);
 int			ft_unset(t_cmd *cmd, t_env **env);
 int			ft_env(t_cmd *cmd, t_env *env);
@@ -122,6 +123,19 @@ void		execute_command_direct(t_cmd *cmd, t_env *env);
 int			handle_heredoc(t_cmd *cmd, t_env *env);
 void		ft_free_split(char **split);
 void		set_env_value(t_env **env, const char *key, const char *value);
+int			process_single_command(t_cmd *cmd, t_env **env);
+char		*find_path(char *cmd, t_env *env);
+void		handle_command_not_found(char *cmd_name, char **envp, int env_count);
+void		setup_child_pipe(t_cmd *cmd, int prev_fd, int *pipe_fd, t_env **env);
+void		wait_for_children(pid_t last_pid, int *status);
+char		*handle_variable_expansion(const char *line, int *i, t_env *env,
+				char *result);
+char		*handle_exit_status_expansion(char *result, int *i);
+char		*append_char_to_result(char *result, char c);
+void		write_heredoc_line(int pipe_fd, char *line, t_env *env,
+				int should_expand);
+int			setup_heredoc_pipe(int *pipe_fd);
+char		*expand_heredoc_line(const char *line, t_env *env);
 
 //------- redirection functions--------//
 int			check_redirection(t_cmd *cmd, t_env *env);
@@ -135,8 +149,6 @@ void		ft_free_split(char **split);
 //------- signal handling--------//
 void		setup_parent_signals(void);
 void		sigint_handler(int signum);
-char		*find_path(char *cmd, t_env *env);
-void		handle_command_not_found(char *cmd_name, char **envp, int env_count);
 
 
 #endif
