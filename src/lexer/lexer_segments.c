@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:30:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 10:13:07 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/21 11:10:54 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,38 +110,13 @@ void	handle_word_with_segments(char *input, int *i, int *j, t_token **tokens)
 		if (input[*i] == '"' || input[*i] == '\'')
 		{
 			if (!process_quoted_segment(input, i, token, &full_value))
-			{
-				free(full_value);
-				free_segments(token->segments);
-				free(token);
-				return ;
-			}
+				return (cleanup_failed_token(token, full_value), 0);
 		}
 		else
-		{
-			process_unquoted_segment(input, i, token, &full_value);
-			has_unquoted_segments = 1;
-		}
+			(process_unquoted_segment(input, i, token, &full_value),
+				has_unquoted_segments = 1);
 	}
 	token->value = full_value;
-	// Set quoted field based on whether there are any unquoted segments
-	// If token has only quoted segments and no unquoted segments, it's considered quoted
-	if (token->seg_count > 0 && !has_unquoted_segments)
-	{
-		// Check if all segments are single-quoted (type 1)
-		int i = 0;
-		int all_single_quoted = 1;
-		while (i < token->seg_count)
-		{
-			if (token->segments[i]->quote_type != 1)
-			{
-				all_single_quoted = 0;
-				break;
-			}
-			i++;
-		}
-		if (all_single_quoted)
-			token->quoted = 1;  // Only single-quoted tokens should not be expanded
-	}
+	set_token_quoted_status(token, has_unquoted_segments);
 	tokens[(*j)++] = token;
 }
