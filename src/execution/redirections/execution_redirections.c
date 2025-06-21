@@ -12,8 +12,6 @@
 
 #include "../../../include/minishell.h"
 
-extern int	g_exit_status;
-
 static void	handle_builtin_redirections(t_cmd *cmd, int *saved_stdin,
 		int *saved_stdout, t_env *env)
 {

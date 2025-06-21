@@ -6,13 +6,11 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 10:30:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 14:38:49 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:46:14 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-
-extern int	g_exit_status;
 
 static void	extract_heredoc_var_name(const char *line, int *i, char *var_name)
 {

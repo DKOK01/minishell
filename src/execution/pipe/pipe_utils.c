@@ -6,13 +6,11 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 10:30:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 14:33:35 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:54:23 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-
-extern int	g_exit_status;
 
 static void	setup_child_signals(void)
 {
