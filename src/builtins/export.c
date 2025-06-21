@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:57:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 07:36:05 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 11:05:05 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,6 @@ int	check_if_valid(char *str)
 		i++;
 	}
 	return (1);
-}
-
-t_env	*find_and_update(t_env *env, char *key, char *value)
-{
-	char	*new_value;
-
-	while (env)
-	{
-		if (!ft_strncmp(env->key, key, ft_strlen(key))
-			&& env->key[ft_strlen(key)] == '\0')
-		{
-			new_value = ft_strdup(value);
-			if (!new_value)
-				return (NULL);
-			free(env->value);
-			env->value = ft_strdup(value);
-			return (env);
-		}
-		env = env->next;
-	}
-	return (NULL);
 }
 
 t_env	*create_env_node(char *str, char *eq)
@@ -78,10 +57,19 @@ t_env	*create_env_node(char *str, char *eq)
 	return (new);
 }
 
+void	add_to_end(t_env **env, t_env *node)
+{
+	t_env	*last;
+
+	last = *env;
+	while (last->next)
+		last = last->next;
+	last->next = node;
+}
+
 void	add_env_var(t_env **env, char *str)
 {
 	t_env	*node;
-	t_env	*last;
 	char	*eq;
 	char	*key;
 
@@ -92,10 +80,7 @@ void	add_env_var(t_env **env, char *str)
 		if (!key)
 			return ;
 		if (find_and_update(*env, key, eq + 1))
-		{
-			free(key);			
-			return ;
-    	}
+			return (free(key));
 		free(key);
 	}
 	node = create_env_node(str, eq);
@@ -104,12 +89,7 @@ void	add_env_var(t_env **env, char *str)
 	if (!*env)
 		*env = node;
 	else
-	{
-		last = *env;
-		while (last->next)
-			last = last->next;
-		last->next = node;
-	}
+		add_to_end(env, node);
 }
 
 int	ft_export(t_cmd *cmd, t_env **env)

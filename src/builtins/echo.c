@@ -6,28 +6,33 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:57:31 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 07:33:49 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 11:00:03 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+static int	check_n_flag(char *arg)
+{
+	int	j;
+
+	if (!arg || arg[0] != '-' || arg[1] != 'n')
+		return (0);
+	j = 1;
+	while (arg[j] == 'n')
+		j++;
+	return (arg[j] == '\0');
+}
+
 int	ft_echo(t_cmd *cmd)
 {
 	int	i;
-	int	j;
 	int	newline;
 
 	i = 1;
-	j = 0;
 	newline = 1;
-	while (cmd->args[i] && cmd->args[i][0] == '-' && cmd->args[i][1] == 'n')
+	while (cmd->args[i] && check_n_flag(cmd->args[i]))
 	{
-		j = 1;
-		while (cmd->args[i][j] == 'n')
-			j++;
-		if (cmd->args[i][j] != '\0')
-			break;
 		newline = 0;
 		i++;
 	}

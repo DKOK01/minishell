@@ -62,12 +62,12 @@ int	ft_unset(t_cmd *cmd, t_env **env)
 		if (is_valid_identifier(cmd->args[i]))
 			remove_env_var(env, cmd->args[i]);
 		else
-        {
-            write(2, "unset: `", 8);
-            write(2, cmd->args[i], ft_strlen(cmd->args[i]));
-            write(2, "': not a valid identifier\n", 26);
+		{
+			write(2, "unset: `", 8);
+			write(2, cmd->args[i], ft_strlen(cmd->args[i]));
+			write(2, "': not a valid identifier\n", 26);
 			return_value = 1;
-        }
+		}
 		i++;
 	}
 	return (return_value);

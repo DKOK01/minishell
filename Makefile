@@ -1,7 +1,12 @@
 CFLAGS	= -Wall -Wextra -Werror
 
+CFLAGS	= -Wall -Wextra -Werror
+
 SRC		= $(shell ls ./src/parser/*.c) \
 		  $(shell ls ./src/*.c) \
+		  $(shell ls ./src/execution/heredoc/*.c) \
+		  $(shell ls ./src/execution/pipe/*.c) \
+		  $(shell ls ./src/execution/redirections/*.c) \
 		  $(shell ls ./src/execution/*.c) \
 		  $(shell ls ./src/builtins/*.c) \
 		  $(shell ls ./src/env/*.c) \

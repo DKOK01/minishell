@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   outfile.c                                          :+:      :+:    :+:   */
+/*   infile.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/24 18:42:18 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 07:33:55 by ael-mans         ###   ########.fr       */
+/*   Created: 2025/05/24 16:33:15 by ael-mans          #+#    #+#             */
+/*   Updated: 2025/06/21 14:33:44 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
-int	handle_outfile(t_cmd *cmd)
+int	handle_infile(t_cmd *cmd)
 {
 	int	fd;
 
-	if (cmd->append)
-		fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open(cmd->infile, O_RDONLY);
 	if (fd < 0)
 	{
-		perror(cmd->outfile);
+		perror(cmd->infile);
 		exit(1);
 	}
-	if (dup2(fd, STDOUT_FILENO) < 0)
+	if (dup2(fd, STDIN_FILENO) < 0)
 	{
 		perror("dup2");
 		close(fd);

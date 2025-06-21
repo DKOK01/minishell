@@ -15,12 +15,12 @@
 int	ft_env(t_cmd *cmd, t_env *env)
 {
 	if (cmd->args[1])
-    {
-        write(2, "env: ", 5);
-        write(2, cmd->args[1], ft_strlen(cmd->args[1]));
-        write(2, ": No such file or directory\n", 28);
-        return (127);
-    }
+	{
+		write(2, "env: ", 5);
+		write(2, cmd->args[1], ft_strlen(cmd->args[1]));
+		write(2, ": No such file or directory\n", 28);
+		return (127);
+	}
 	if (!env)
 		return (1);
 	while (env)

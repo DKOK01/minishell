@@ -35,13 +35,11 @@ int	check_builtins(t_cmd *cmd)
 {
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return (0);
-	if (ft_strcmp(cmd->args[0], "echo") == 0 ||
-		ft_strcmp(cmd->args[0], "cd") == 0 ||
-		ft_strcmp(cmd->args[0], "pwd") == 0 ||
-		ft_strcmp(cmd->args[0], "export") == 0 ||
-		ft_strcmp(cmd->args[0], "unset") == 0 ||
-		ft_strcmp(cmd->args[0], "env") == 0 ||
-		ft_strcmp(cmd->args[0], "exit") == 0)
+	if (ft_strcmp(cmd->args[0], "echo") == 0 || ft_strcmp(cmd->args[0],
+			"cd") == 0 || ft_strcmp(cmd->args[0], "pwd") == 0
+		|| ft_strcmp(cmd->args[0], "export") == 0 || ft_strcmp(cmd->args[0],
+			"unset") == 0 || ft_strcmp(cmd->args[0], "env") == 0
+		|| ft_strcmp(cmd->args[0], "exit") == 0)
 		return (1);
 	return (0);
 }
