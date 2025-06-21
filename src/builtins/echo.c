@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:57:31 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/16 14:16:15 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 07:33:49 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 int	ft_echo(t_cmd *cmd)
 {
 	int	i;
-	int j;
+	int	j;
 	int	newline;
 
 	i = 1;
+	j = 0;
 	newline = 1;
 	while (cmd->args[i] && cmd->args[i][0] == '-' && cmd->args[i][1] == 'n')
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/18 18:31:07 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/21 08:32:56 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
+# include <signal.h>
+
+extern int g_exit_status;
 
 typedef struct s_segment
 {
@@ -79,6 +83,7 @@ char		*expand_token_segments(t_token *token, t_env *env);
 char		*ft_strjoin_char(char *str, char c);
 char		*ft_strjoin_free(char *s1, char *s2);
 void		append_env_value(char **result, char *var, t_env *env);
+void		append_exit_status(char **result);
 void		extract_var_name(const char *token, int *i, char *var);
 
 //------ parser functions--------//
@@ -102,7 +107,7 @@ int			run_builtin(t_cmd *cmd, t_env **env);
 int			ft_echo(t_cmd *cmd);
 int			ft_cd(t_cmd *cmd, t_env **env);
 int			ft_exit(t_cmd *cmd);
-int			ft_pwd(void);
+int			ft_pwd(t_env *env);
 int			ft_export(t_cmd *cmd, t_env **env);
 int			ft_unset(t_cmd *cmd, t_env **env);
 int			ft_env(t_cmd *cmd, t_env *env);
@@ -111,7 +116,8 @@ int			execution(t_cmd *cmd, t_env **env);
 int			check_builtins(t_cmd *cmd);
 int			count_env(t_env *env);
 int			handle_pipeline(t_cmd *cmd, t_env **env);
-void		execute_command(t_cmd *cmd, t_env *env);
+int			execute_command(t_cmd *cmd, t_env *env);
+void		execute_command_direct(t_cmd *cmd, t_env *env);
 int			handle_heredoc(t_cmd *cmd);
 void		ft_free_split(char **split);
 void		set_env_value(t_env **env, const char *key, const char *value);
@@ -124,5 +130,12 @@ int			handle_outfile(t_cmd *cmd);
 //------- execution utils--------//
 char		*ft_strjoin_three(const char *s1, const char *s2, const char *s3);
 void		ft_free_split(char **split);
+
+//------- signal handling--------//
+void		setup_parent_signals(void);
+void		sigint_handler(int signum);
+char		*find_path(char *cmd, t_env *env);
+void		handle_command_not_found(char *cmd_name, char **envp, int env_count);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:57:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/17 09:01:57 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 07:36:05 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,16 @@ int	check_if_valid(char *str)
 
 t_env	*find_and_update(t_env *env, char *key, char *value)
 {
+	char	*new_value;
+
 	while (env)
 	{
 		if (!ft_strncmp(env->key, key, ft_strlen(key))
 			&& env->key[ft_strlen(key)] == '\0')
 		{
-			char *new_value = ft_strdup(value);
-            if (!new_value)
-                return (NULL);
+			new_value = ft_strdup(value);
+			if (!new_value)
+				return (NULL);
 			free(env->value);
 			env->value = ft_strdup(value);
 			return (env);
@@ -93,7 +95,7 @@ void	add_env_var(t_env **env, char *str)
 		{
 			free(key);			
 			return ;
-    }
+    	}
 		free(key);
 	}
 	node = create_env_node(str, eq);
