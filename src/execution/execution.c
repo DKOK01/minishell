@@ -6,13 +6,11 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 11:22:21 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:46:33 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-extern int	g_exit_status;
 
 static void	handle_child_process(t_cmd *cmd, char *path, char **envp,
 		t_env *env)

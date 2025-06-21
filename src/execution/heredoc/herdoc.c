@@ -6,13 +6,11 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 01:03:20 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 14:33:03 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/21 19:46:10 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-
-extern int	g_exit_status;
 
 static char	*process_heredoc_char(const char *line, int *i, t_env *env,
 		char *result)
