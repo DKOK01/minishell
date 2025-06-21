@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 17:59:13 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/21 19:39:05 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ static void	handle_double_quoted(const char *token, t_expand_ctx *ctx)
 		&& (ft_isalpha(token[*(ctx->i) + 1])
 			|| token[*(ctx->i) + 1] == '_'))
 	{
-		handle_variable_expansion(token, ctx);
+		expand_handle_variable_expansion(token, ctx);
 		return ;
 	}
 	else if (token[*(ctx->i)] == '$' && token[*(ctx->i) + 1] == '?')
 	{
-		handle_exit_status(ctx);
+		expand_handle_exit_status(ctx);
 		return ;
 	}
 	else
-		append_char_to_result(ctx, token);
+		expand_append_char_to_result(ctx, token);
 	(*(ctx->i))++;
 }
 
@@ -43,17 +43,17 @@ static void	handle_unquoted(const char *token, t_expand_ctx *ctx)
 		&& (ft_isalpha(token[*(ctx->i) + 1])
 			|| token[*(ctx->i) + 1] == '_'))
 	{
-		handle_variable_expansion(token, ctx);
+		expand_handle_variable_expansion(token, ctx);
 		return ;
 	}
 	else if (token[*(ctx->i)] == '$' && !(ctx->in_single)
 		&& token[*(ctx->i) + 1] == '?')
 	{
-		handle_exit_status(ctx);
+		expand_handle_exit_status(ctx);
 		return ;
 	}
 	else
-		append_char_to_result(ctx, token);
+		expand_append_char_to_result(ctx, token);
 	(*(ctx->i))++;
 }
 
