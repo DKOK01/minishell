@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 19:39:05 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/22 10:12:27 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void		free_envp(char **envp, int n);
 int			run_builtin(t_cmd *cmd, t_env **env);
 int			ft_echo(t_cmd *cmd);
 int			ft_cd(t_cmd *cmd, t_env **env);
-int			ft_exit(t_cmd *cmd);
+int			ft_exit(t_cmd *cmd, t_env **env);
 int			ft_pwd(t_env *env);
 t_env		*find_and_update(t_env *env, char *key, char *value);
 int			ft_export(t_cmd *cmd, t_env **env);
