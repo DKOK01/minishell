@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 10:30:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 19:46:14 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/22 10:12:04 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ char	*handle_variable_expansion(const char *line, int *i, t_env *env,
 	var_value = get_env_value(env, var_name);
 	if (var_value)
 	{
-		temp = ft_strjoin_free(result, ft_strdup(var_value));
+		temp = ft_strjoin(result, var_value);
+		free(result);
 		return (temp);
 	}
 	return (result);
