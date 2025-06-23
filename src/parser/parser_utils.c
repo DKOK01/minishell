@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 13:54:01 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 10:13:07 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/22 16:29:02 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_cmd	*new_cmd_node(void)
 	cmd->append = 0;
 	cmd->heredoc = 0;
 	cmd->heredoc_quoted = 0;
+	cmd->heredoc_fd = -1;
 	cmd->next = NULL;
 	return (cmd);
 }

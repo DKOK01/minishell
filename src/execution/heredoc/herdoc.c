@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 01:03:20 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 19:46:10 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:29:03 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,28 @@ static void	read_heredoc_input(char *delimiter, int pipe_fd, t_env *env,
 		write_heredoc_line(pipe_fd, line, env, should_expand);
 		free(line);
 	}
+}
+
+int	create_heredoc_fd(char *delimiter, t_env *env, int should_expand)
+{
+	char	*line;
+	int		pipe_fd[2];
+	if (pipe(pipe_fd) == -1)
+		return (-1);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || ft_strcmp(line, delimiter) == 0)
+		{
+			if (line)
+				free(line);
+			break ;
+		}
+		write_heredoc_line(pipe_fd[1], line, env, should_expand);
+		free(line);
+	}
+	close(pipe_fd[1]);
+	return (pipe_fd[0]);
 }
 
 int	handle_heredoc(t_cmd *cmd, t_env *env)

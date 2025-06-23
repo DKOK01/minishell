@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/22 10:12:27 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:32:40 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_cmd
 	int				append;
 	int				heredoc;
 	int				heredoc_quoted;
+	int				heredoc_fd;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -127,6 +128,8 @@ int			handle_pipeline(t_cmd *cmd, t_env **env);
 int			execute_command(t_cmd *cmd, t_env *env);
 void		execute_command_direct(t_cmd *cmd, t_env *env);
 int			handle_heredoc(t_cmd *cmd, t_env *env);
+int			process_all_heredocs(t_cmd *cmd, t_env *env);
+int			create_heredoc_fd(char *delimiter, t_env *env, int should_expand);
 void		ft_free_split(char **split);
 void		set_env_value(t_env **env, const char *key, const char *value);
 int			process_single_command(t_cmd *cmd, t_env **env);
@@ -144,7 +147,7 @@ int			setup_heredoc_pipe(int *pipe_fd);
 char		*expand_heredoc_line(const char *line, t_env *env);
 
 //------- redirection functions--------//
-int			check_redirection(t_cmd *cmd, t_env *env);
+int			check_redirection(t_cmd *cmd);
 int			handle_infile(t_cmd *cmd);
 int			handle_outfile(t_cmd *cmd);
 
