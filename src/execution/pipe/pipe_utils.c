@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 10:30:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 19:54:23 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:30:03 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,16 @@ static void	setup_child_signals(void)
 	signal(SIGQUIT, SIG_DFL);
 }
 
-static void	setup_child_input(t_cmd *cmd, int prev_fd, t_env **env)
+static void	setup_child_input(t_cmd *cmd, int prev_fd)
 {
 	if (cmd->heredoc)
-		handle_heredoc(cmd, *env);
+	{
+		if (cmd->heredoc_fd != -1)
+		{
+			dup2(cmd->heredoc_fd, STDIN_FILENO);
+			close(cmd->heredoc_fd);
+		}
+	}
 	else if (cmd->infile)
 		handle_infile(cmd);
 	else if (prev_fd != -1)
@@ -48,7 +54,7 @@ void	setup_child_pipe(t_cmd *cmd, int prev_fd, int *pipe_fd, t_env **env)
 	int	exit_status;
 
 	setup_child_signals();
-	setup_child_input(cmd, prev_fd, env);
+	setup_child_input(cmd, prev_fd);
 	setup_child_output(cmd, pipe_fd);
 	if (check_builtins(cmd))
 	{

@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 00:46:16 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 19:46:23 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:29:25 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	handle_pipeline(t_cmd *cmd, t_env **env)
 	pid_t	last_pid;
 	int		status;
 
+	if (process_all_heredocs(cmd, *env) != 0)
+		return (1);
 	prev_fd = -1;
 	status = 0;
 	last_pid = -1;

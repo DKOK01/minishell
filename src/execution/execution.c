@@ -6,17 +6,16 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 19:46:33 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:34:47 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	handle_child_process(t_cmd *cmd, char *path, char **envp,
-		t_env *env)
+static void	handle_child_process(t_cmd *cmd, char *path, char **envp)
 {
 	if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
-		check_redirection(cmd, env);
+		check_redirection(cmd);
 	execve(path, cmd->args, envp);
 	perror(cmd->args[0]);
 	exit(127);
@@ -51,7 +50,7 @@ int	execute_command(t_cmd *cmd, t_env *env)
 	}
 	pid = fork();
 	if (pid == 0)
-		handle_child_process(cmd, path, envp, env);
+		handle_child_process(cmd, path, envp);
 	else if (pid > 0)
 		handle_parent_process(pid);
 	free(path);
