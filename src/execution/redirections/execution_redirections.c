@@ -43,9 +43,13 @@ static void	restore_redirections(int saved_stdin, int saved_stdout)
 	}
 }
 
-static void	handle_empty_command_redirections(t_cmd *cmd, t_env *env)
+static void	handle_empty_command_redirections(t_cmd *cmd)
 {
-	(void)env;
+	int	saved_stdin;
+	int	saved_stdout;
+
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
 	if (cmd->heredoc && cmd->heredoc_fd != -1)
 	{
 		dup2(cmd->heredoc_fd, STDIN_FILENO);
@@ -56,6 +60,7 @@ static void	handle_empty_command_redirections(t_cmd *cmd, t_env *env)
 		handle_infile(cmd);
 	if (cmd->outfile || cmd->append)
 		handle_outfile(cmd);
+	restore_redirections(saved_stdin, saved_stdout);
 }
 
 int	process_single_command(t_cmd *cmd, t_env **env)
@@ -80,6 +85,6 @@ int	process_single_command(t_cmd *cmd, t_env **env)
 	else if (cmd->args && cmd->args[0] && cmd->args[0][0] != '\0')
 		execute_command(cmd, *env);
 	else
-		handle_empty_command_redirections(cmd, *env);
+		handle_empty_command_redirections(cmd);
 	return (g_exit_status);
 }

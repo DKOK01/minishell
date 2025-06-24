@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 10:30:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/22 16:28:59 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/24 11:43:35 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	process_all_heredocs(t_cmd *cmd, t_env *env)
 				return (1);
 			should_expand = !current->heredoc_quoted;
 			current->heredoc_fd = create_heredoc_fd(delimiter, env,
-				should_expand);
+					should_expand);
 			free(delimiter);
 			if (current->heredoc_fd == -1)
 				return (1);
