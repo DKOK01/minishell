@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/22 16:32:40 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/24 11:10:36 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ int			handle_outfile(t_cmd *cmd);
 
 //------- execution utils--------//
 char		*ft_strjoin_three(const char *s1, const char *s2, const char *s3);
-void		ft_free_split(char **split);
 
 //------- signal handling--------//
 void		setup_parent_signals(void);

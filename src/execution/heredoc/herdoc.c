@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 01:03:20 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/22 16:29:03 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/24 11:43:06 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	create_heredoc_fd(char *delimiter, t_env *env, int should_expand)
 {
 	char	*line;
 	int		pipe_fd[2];
+
 	if (pipe(pipe_fd) == -1)
 		return (-1);
 	while (1)
