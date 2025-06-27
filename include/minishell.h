@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/24 11:10:36 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:11:01 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ t_token		*make_token_with_segments(void);
 t_segment	*create_segment(char *value, int quote_type);
 void		free_segments(t_segment **segments);
 void		free_tokens(t_token **tokens);
-int			check_all_single_quoted(t_token *token);
 void		set_token_quoted_status(t_token *token, int has_unquoted_segments);
 void		cleanup_failed_token(t_token *token, char *full_value);
 

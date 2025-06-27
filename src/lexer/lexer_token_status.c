@@ -6,13 +6,13 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:00:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 11:10:21 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/27 18:10:34 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	check_all_single_quoted(t_token *token)
+static int	check_all_single_quoted(t_token *token)
 {
 	int	i;
 
