@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 19:39:05 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/27 19:28:09 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	*expand_token_segments(t_token *token, t_env *env)
 	char	*temp;
 	int		i;
 
-	if (!token || !token->segments)
+	if (!token->segments)
 		return (expand_variable(token->value, env, token->quoted));
 	result = ft_strdup("");
 	i = 0;
