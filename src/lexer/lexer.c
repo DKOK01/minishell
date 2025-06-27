@@ -6,11 +6,17 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/16 10:22:17 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/27 14:21:01 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	skip_whitespace(char *input, int *i)
+{
+	while (input[*i] && ft_isspace(input[*i]))
+		(*i)++;
+}
 
 static t_token	*make_token(char *value, int quoted)
 {
@@ -50,6 +56,8 @@ t_token	**tokenize_input(char *input)
 	int		i;
 	int		j;
 
+	if (!input)
+		return (NULL);
 	i = 0;
 	j = 0;
 	tokens = malloc(sizeof(t_token *) * (ft_strlen(input) + 1));
@@ -57,8 +65,7 @@ t_token	**tokenize_input(char *input)
 		return (NULL);
 	while (input[i])
 	{
-		while (input[i] && ft_isspace(input[i]))
-			i++;
+		skip_whitespace(input, &i);
 		if (input[i] == '\0')
 			break ;
 		if ((input[i] == '>' || input[i] == '<') && input[i + 1] == input[i])
