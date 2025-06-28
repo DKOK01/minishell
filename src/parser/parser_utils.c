@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 13:54:01 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/22 16:29:02 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/28 13:57:46 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,31 @@ int	is_redirection_token(char *token)
 {
 	return (!ft_strcmp(token, "<") || !ft_strcmp(token, ">")
 		|| !ft_strcmp(token, "<<") || !ft_strcmp(token, ">>"));
+}
+
+void	free_cmd_list(t_cmd *cmd)
+{
+	t_cmd	*temp;
+	int		i;
+
+	while (cmd)
+	{
+		temp = cmd;
+		cmd = cmd->next;
+		if (temp->args)
+		{
+			i = 0;
+			while (temp->args[i])
+			{
+				free(temp->args[i]);
+				i++;
+			}
+			free(temp->args);
+		}
+		if (temp->infile)
+			free(temp->infile);
+		if (temp->outfile)
+			free(temp->outfile);
+		free(temp);
+	}
 }

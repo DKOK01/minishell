@@ -6,15 +6,15 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/27 18:09:49 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/28 14:07:05 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int g_exit_status = 0;
+int	g_exit_status = 0;
 
-void    sigint_handler(int sig)
+void	sigint_handler(int sig)
 {
 	(void)sig;
 	g_exit_status = 130;
@@ -24,140 +24,122 @@ void    sigint_handler(int sig)
 	rl_redisplay();
 }
 
-void    setup_parent_signals(void)
+void	setup_parent_signals(void)
 {
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	print_token_list(t_token **tokens)
-{
-	int	i;
-	int	j;
+// void	print_token_list(t_token **tokens)
+// {
+// 	int	i;
+// 	int	j;
 
-	if (!tokens)
-	{
-		printf("No tokens found.\n");
-		return ;
-	}
-	printf("\n=== TOKEN LIST ===\n");
+// 	if (!tokens)
+// 	{
+// 		printf("No tokens found.\n");
+// 		return ;
+// 	}
+// 	printf("\n=== TOKEN LIST ===\n");
+// 	i = 0;
+// 	while (tokens[i])
+// 	{
+// 		printf("Token [%d]:\n", i);
+// 		printf("	Value:				[%s]\n", tokens[i]->value);
+// 		printf("	Overall quoted:		%d\n", tokens[i]->quoted);
+// 		printf("	Segment count:		%d\n", tokens[i]->seg_count);
+// 		if (tokens[i]->segments && tokens[i]->seg_count > 0)
+// 		{
+// 			printf("	Segments:\n");
+// 			j = 0;
+// 			while (j < tokens[i]->seg_count)
+// 			{
+// 				printf("	[%d]- -> [%s] (quote_type: %d", j, 
+// 					tokens[i]->segments[j]->value, 
+// 					tokens[i]->segments[j]->quote_type);
+// 				if (tokens[i]->segments[j]->quote_type == 0)
+// 					printf(" - unquoted");
+// 				else if (tokens[i]->segments[j]->quote_type == 1)
+// 					printf(" - single quoted");
+// 				else if (tokens[i]->segments[j]->quote_type == 2)
+// 					printf(" - double quoted");
+// 				printf(")\n");
+// 				j++;
+// 			}
+// 		}
+// 		else
+// 		{
+// 			printf("  No segments (legacy token)\n");
+// 		}
+// 		printf("\n");
+// 		i++;
+// 	}
+// 	printf("=== END TOKEN LIST ===\n\n");
+// }
+
+// void	print_cmd_list(t_cmd *cmd)
+// {
+// 	t_cmd	*current;
+
+// 	current = cmd;
+// 	while (current)
+// 	{
+// 		printf("\nCommand:\n");
+// 		if (current->args)
+// 		{
+// 			for (int i = 0; current->args[i]; i++)
+// 				printf("  Arg %d: %s\n", i, current->args[i]);
+// 		}
+// 		if (current->infile)
+// 			printf("  Infile: %s\n", current->infile);
+// 		if (current->outfile)
+// 			printf("  Outfile: %s\n", current->outfile);
+// 		if (current->append)
+// 			printf("  Append: %d\n", current->append);
+// 		if (current->heredoc)
+// 			printf("  Heredoc: %d\n", current->heredoc);
+// 		current = current->next;
+// 	}
+// }
+
+static void	expand_tokens(t_token **tokens, t_env *env)
+{
+	int		i;
+	char	*expanded;
+
 	i = 0;
 	while (tokens[i])
 	{
-		printf("Token [%d]:\n", i);
-		printf("	Value:				[%s]\n", tokens[i]->value);
-		printf("	Overall quoted:		%d\n", tokens[i]->quoted);
-		printf("	Segment count:		%d\n", tokens[i]->seg_count);
-		
-		if (tokens[i]->segments && tokens[i]->seg_count > 0)
+		if (tokens[i]->quoted != 1 && tokens[i]->seg_count > 0)
 		{
-			printf("	Segments:\n");
-			j = 0;
-			while (j < tokens[i]->seg_count)
-			{
-				printf("	[%d]- -> [%s] (quote_type: %d", j, 
-					tokens[i]->segments[j]->value, 
-					tokens[i]->segments[j]->quote_type);
-				if (tokens[i]->segments[j]->quote_type == 0)
-					printf(" - unquoted");
-				else if (tokens[i]->segments[j]->quote_type == 1)
-					printf(" - single quoted");
-				else if (tokens[i]->segments[j]->quote_type == 2)
-					printf(" - double quoted");
-				printf(")\n");
-				j++;
-			}
+			expanded = expand_token_segments(tokens[i], env);
+			free(tokens[i]->value);
+			tokens[i]->value = expanded;
 		}
-		else
-		{
-			printf("  No segments (legacy token)\n");
-		}
-		printf("\n");
 		i++;
 	}
-	printf("=== END TOKEN LIST ===\n\n");
 }
 
-void	print_cmd_list(t_cmd *cmd)
-{
-	t_cmd	*current;
-
-	current = cmd;
-	while (current)
-	{
-		printf("\nCommand:\n");
-		if (current->args)
-		{
-			for (int i = 0; current->args[i]; i++)
-				printf("  Arg %d: %s\n", i, current->args[i]);
-		}
-		if (current->infile)
-			printf("  Infile: %s\n", current->infile);
-		if (current->outfile)
-			printf("  Outfile: %s\n", current->outfile);
-		if (current->append)
-			printf("  Append: %d\n", current->append);
-		if (current->heredoc)
-			printf("  Heredoc: %d\n", current->heredoc);
-		current = current->next;
-	}
-}
-
-void	free_cmd_list(t_cmd *cmd)
-{
-	t_cmd	*temp;
-	int		i;
-
-	while (cmd)
-	{
-		temp = cmd;
-		cmd = cmd->next;
-		if (temp->args)
-		{
-			i = 0;
-			while (temp->args[i])
-			{
-				free(temp->args[i]);
-				i++;
-			}
-			free(temp->args);
-		}
-		if (temp->infile)
-			free(temp->infile);
-		if (temp->outfile)
-			free(temp->outfile);
-		free(temp);
-	}
-}
-
-void	free_env_list(t_env *env)
-{
-	t_env	*temp;
-
-	while (env)
-	{
-		temp = env;
-		env = env->next;
-		free(temp->key);
-		free(temp->value);
-		free(temp);
-	}
-}
-
-
-
-int	main(int ac, char **av, char **envp)
+static void	process_input_line(char *line, t_env **env)
 {
 	t_cmd	*cmd;
-	t_env	*env;
-	char	*line;
 	t_token	**tokens;
-	int		i;
 
-	(void)ac;
-	(void)av;
-	env = create_env(envp);
-	setup_parent_signals();
+	tokens = tokenize_input(line);
+	if (!tokens)
+		return ;
+	expand_tokens(tokens, *env);
+	cmd = parse_tokens(tokens);
+	if (cmd)
+		execution(cmd, env);
+	free_tokens(tokens);
+	free_cmd_list(cmd);
+}
+
+static void	main_loop(t_env *env)
+{
+	char	*line;
+
 	while (1)
 	{
 		line = readline("minishell> ");
@@ -168,33 +150,20 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (*line)
 			add_history(line);
-		tokens = tokenize_input(line);
-		if (!tokens)
-		{
-			free(line);
-			continue;
-		}
-		// print_token_list(tokens);
-		i = 0;
-		while (tokens[i])
-		{
-			if (tokens[i]->quoted != 1)
-			{
-				char *expanded = expand_token_segments(tokens[i], env);
-				free(tokens[i]->value);
-				tokens[i]->value = expanded;
-			}
-			i++;
-		}
-		cmd = parse_tokens(tokens);
-		if (cmd)
-			execution(cmd, &env);
-		// print_cmd_list(cmd);
-		free_tokens(tokens);
-		free_cmd_list(cmd);
+		process_input_line(line, &env);
 		free(line);
 	}
-	free(line);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_env	*env;
+
+	(void)ac;
+	(void)av;
+	env = create_env(envp);
+	setup_parent_signals();
+	main_loop(env);
 	free_env_list(env);
 	return (0);
 }
