@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: azedine <azedine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/22 16:34:47 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/28 16:31:55 by azedine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,27 @@ int	execute_command(t_cmd *cmd, t_env *env)
 
 static int	execute_pipeline_or_single(t_cmd *cmd, t_env **env)
 {
-	if (cmd && cmd->next)
+	int	result;
+
+	if (cmd->next)
 	{
-		handle_pipeline(cmd, env);
+		result = handle_pipeline(cmd, env);
+		if (result == 130)
+			return (130);
 		return (0);
 	}
-	while (cmd)
-	{
-		process_single_command(cmd, env);
-		cmd = cmd->next;
-	}
+	result = process_single_command(cmd, env);
+	if (result == 130)
+		return (130);
 	return (g_exit_status);
 }
 
 int	execution(t_cmd *cmd, t_env **env)
 {
-	return (execute_pipeline_or_single(cmd, env));
+	int	result;
+
+	setup_exec_signals();
+	result = execute_pipeline_or_single(cmd, env);
+	setup_parent_signals();
+	return (result);
 }

@@ -3,9 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: azedine <azedine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
+/*   Updated: 2025/06/28 17:08:44 by azedine          ###   ########.fr       */
 /*   Updated: 2025/06/28 14:07:05 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -13,22 +14,6 @@
 #include "../include/minishell.h"
 
 int	g_exit_status = 0;
-
-void	sigint_handler(int sig)
-{
-	(void)sig;
-	g_exit_status = 130;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-void	setup_parent_signals(void)
-{
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
-}
 
 // void	print_token_list(t_token **tokens)
 // {

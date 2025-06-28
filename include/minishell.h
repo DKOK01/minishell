@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: azedine <azedine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/27 18:11:01 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/28 17:33:57 by azedine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,12 @@ char		*ft_strjoin_three(const char *s1, const char *s2, const char *s3);
 
 //------- signal handling--------//
 void		setup_parent_signals(void);
-void		sigint_handler(int signum);
+void		setup_exec_signals(void);
+void		setup_heredoc_signals(void);
+void		setup_child_signals(void);
+void		sigint_handler(int sig);
+void		exec_sigint_handler(int sig);
+void		heredoc_sigint_handler(int sig);
 
 
 #endif
