@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: azedine <azedine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 00:46:16 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/22 16:29:25 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/28 16:29:14 by azedine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,15 @@ int	handle_pipeline(t_cmd *cmd, t_env **env)
 	int		prev_fd;
 	pid_t	last_pid;
 	int		status;
+	int		heredoc_result;
 
-	if (process_all_heredocs(cmd, *env) != 0)
+	heredoc_result = process_all_heredocs(cmd, *env);
+	if (heredoc_result != 0)
+	{
+		if (heredoc_result == 130)
+			return (130);
 		return (1);
+	}
 	prev_fd = -1;
 	status = 0;
 	last_pid = -1;

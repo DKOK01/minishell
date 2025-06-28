@@ -67,13 +67,19 @@ int	process_single_command(t_cmd *cmd, t_env **env)
 {
 	int	saved_stdin;
 	int	saved_stdout;
+	int	heredoc_result;
 
 	saved_stdin = -1;
 	saved_stdout = -1;
 	if (cmd->heredoc)
 	{
-		if (process_all_heredocs(cmd, *env) != 0)
+		heredoc_result = process_all_heredocs(cmd, *env);
+		if (heredoc_result != 0)
+		{
+			if (heredoc_result == 130)
+				return (130);
 			return (1);
+		}
 	}
 	if (check_builtins(cmd))
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_io.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: azedine <azedine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 10:30:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/24 11:43:35 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/28 16:35:11 by azedine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ int	process_all_heredocs(t_cmd *cmd, t_env *env)
 					should_expand);
 			free(delimiter);
 			if (current->heredoc_fd == -1)
+			{
+				if (g_exit_status == 130)
+					return (130);
 				return (1);
+			}
 		}
 		current = current->next;
 	}
