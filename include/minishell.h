@@ -78,7 +78,6 @@ t_token		*make_token_with_segments(void);
 t_segment	*create_segment(char *value, int quote_type);
 void		free_segments(t_segment **segments);
 void		free_tokens(t_token **tokens);
-int			check_all_single_quoted(t_token *token);
 void		set_token_quoted_status(t_token *token, int has_unquoted_segments);
 void		cleanup_failed_token(t_token *token, char *full_value);
 

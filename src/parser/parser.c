@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:25:54 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 10:13:07 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/27 18:21:59 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,27 @@ static int	handle_redirection(t_cmd *cmd, t_token **tokens, int *i)
 {
 	char	*file;
 	int		file_quoted;
+	int		j;
 
 	file = NULL;
 	if (tokens[*i + 1])
 		file = tokens[*i + 1]->value;
 	if (validate_redirection_file(file) == -1)
 		return (-1);
-	
-	// For heredoc, check if the delimiter token was quoted (any type of quotes)
 	file_quoted = 0;
 	if (tokens[*i + 1] && tokens[*i + 1]->segments)
 	{
-		int j = 0;
+		j = 0;
 		while (j < tokens[*i + 1]->seg_count)
 		{
 			if (tokens[*i + 1]->segments[j]->quote_type > 0)
 			{
 				file_quoted = 1;
-				break;
+				break ;
 			}
 			j++;
 		}
 	}
-	
 	set_redirection(cmd, tokens[*i]->value, file, file_quoted);
 	*i += 1;
 	return (0);
