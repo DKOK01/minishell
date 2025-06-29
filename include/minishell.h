@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 19:00:30 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 20:05:09 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void		free_segments(t_segment **segments);
 void		free_tokens(t_token **tokens);
 void		set_token_quoted_status(t_token *token, int has_unquoted_segments);
 void		cleanup_failed_token(t_token *token, char *full_value);
+void		skip_whitespace(char *input, int *i);
+t_token		*make_token(char *value, int quoted);
 
 //------ expansion functions--------//
 char		*expand_token_segments(t_token *token, t_env *env);

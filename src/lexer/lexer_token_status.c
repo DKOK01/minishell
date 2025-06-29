@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:00:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/27 18:10:34 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 20:05:37 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,10 @@ void	cleanup_failed_token(t_token *token, char *full_value)
 	free(full_value);
 	free_segments(token->segments);
 	free(token);
+}
+
+void	skip_whitespace(char *input, int *i)
+{
+	while (input[*i] && ft_isspace(input[*i]))
+		(*i)++;
 }

@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:00:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 11:05:49 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 20:04:27 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,18 @@ void	free_tokens(t_token **tokens)
 		i++;
 	}
 	free(tokens);
+}
+
+t_token	*make_token(char *value, int quoted)
+{
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->value = value;
+	token->quoted = quoted;
+	token->segments = NULL;
+	token->seg_count = 0;
+	return (token);
 }

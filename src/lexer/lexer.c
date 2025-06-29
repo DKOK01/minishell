@@ -6,31 +6,11 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 19:00:33 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 20:04:13 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static void	skip_whitespace(char *input, int *i)
-{
-	while (input[*i] && ft_isspace(input[*i]))
-		(*i)++;
-}
-
-static t_token	*make_token(char *value, int quoted)
-{
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->value = value;
-	token->quoted = quoted;
-	token->segments = NULL;
-	token->seg_count = 0;
-	return (token);
-}
 
 static void	handle_redir_token(char *input, int *i, int *j, t_token **tokens)
 {
@@ -50,19 +30,27 @@ static void	handle_single_token(char *input, int *i, int *j, t_token **tokens)
 	(*i)++;
 }
 
-t_token	**tokenize_input(char *input)
+static t_token	**init_tokens(char *input)
 {
 	t_token	**tokens;
-	int		i;
-	int		j;
+	int		k;
 
-	if (!input)
-		return (NULL);
-	i = 0;
-	j = 0;
 	tokens = malloc(sizeof(t_token *) * (ft_strlen(input) + 1));
 	if (!tokens)
 		return (NULL);
+	k = 0;
+	while (k <= (int)ft_strlen(input))
+		tokens[k++] = NULL;
+	return (tokens);
+}
+
+static int	process_tokens(char *input, t_token **tokens)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
 	while (input[i])
 	{
 		skip_whitespace(input, &i);
@@ -75,12 +63,23 @@ t_token	**tokenize_input(char *input)
 		else
 		{
 			if (!handle_word_with_segments(input, &i, &j, tokens))
-			{
-				free_tokens(tokens);
-				return (NULL);
-			}
+				return (0);
 		}
 	}
 	tokens[j] = NULL;
+	return (1);
+}
+
+t_token	**tokenize_input(char *input)
+{
+	t_token	**tokens;
+
+	if (!input)
+		return (NULL);
+	tokens = init_tokens(input);
+	if (!tokens)
+		return (NULL);
+	if (!process_tokens(input, tokens))
+		return (free_tokens(tokens), NULL);
 	return (tokens);
 }
