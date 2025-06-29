@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azedine <azedine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/28 17:33:57 by azedine          ###   ########.fr       */
+/*   Updated: 2025/06/29 08:55:00 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -82,7 +83,6 @@ void		set_token_quoted_status(t_token *token, int has_unquoted_segments);
 void		cleanup_failed_token(t_token *token, char *full_value);
 
 //------ expansion functions--------//
-char		*expand_variable(char *token, t_env *env, int quoted);
 char		*expand_token_segments(t_token *token, t_env *env);
 char		*ft_strjoin_char(char *str, char c);
 char		*ft_strjoin_free(char *s1, char *s2);

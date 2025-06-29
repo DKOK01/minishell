@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/28 13:39:38 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/28 15:03:02 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	handle_unquoted(const char *token, t_expand_ctx *ctx)
 	(*(ctx->i))++;
 }
 
-void	handle_expansion(const char *token, t_expand_ctx *ctx)
+static void	handle_expansion(const char *token, t_expand_ctx *ctx)
 {
 	char	*temp;
 
@@ -74,7 +74,7 @@ void	handle_expansion(const char *token, t_expand_ctx *ctx)
 		handle_unquoted(token, ctx);
 }
 
-char	*expand_variable(char *token, t_env *env, int quoted)
+static char	*expand_variable(char *token, t_env *env, int quoted)
 {
 	char			*result;
 	int				i;
