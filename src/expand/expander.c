@@ -6,13 +6,13 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 10:44:13 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 15:18:58 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	expand_handle_variable_expansion(const char *token, t_expand_ctx *ctx)
+static void	variable_expansion(const char *token, t_expand_ctx *ctx)
 {
 	char	var[256];
 	int		j;
@@ -21,7 +21,8 @@ static void	expand_handle_variable_expansion(const char *token, t_expand_ctx *ct
 
 	(*(ctx->i))++;
 	j = 0;
-	while (token[*(ctx->i)] && (ft_isalnum(token[*(ctx->i)]) || token[*(ctx->i)] == '_'))
+	while (token[*(ctx->i)] && (ft_isalnum(token[*(ctx->i)])
+			|| token[*(ctx->i)] == '_'))
 		var[j++] = token[(*(ctx->i))++];
 	var[j] = '\0';
 	env_value = get_env_value(ctx->env, var);
@@ -32,11 +33,11 @@ static void	expand_handle_variable_expansion(const char *token, t_expand_ctx *ct
 	}
 }
 
-static void	expand_handle_exit_status(t_expand_ctx *ctx)
+static void	handle_exit_status(t_expand_ctx *ctx)
 {
 	char	*status_str;
 	char	*temp;
-	
+
 	(*(ctx->i)) += 2;
 	status_str = ft_itoa(g_exit_status);
 	temp = ft_strjoin_free(*(ctx->result), status_str);
@@ -51,12 +52,12 @@ static void	handle_expansion(const char *token, t_expand_ctx *ctx)
 		&& (ft_isalpha(token[*(ctx->i) + 1])
 			|| token[*(ctx->i) + 1] == '_'))
 	{
-		expand_handle_variable_expansion(token, ctx);
+		variable_expansion(token, ctx);
 		return ;
 	}
 	else if (token[*(ctx->i)] == '$' && token[*(ctx->i) + 1] == '?')
 	{
-		expand_handle_exit_status(ctx);
+		handle_exit_status(ctx);
 		return ;
 	}
 	else
