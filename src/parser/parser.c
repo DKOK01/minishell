@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:25:54 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/27 18:21:59 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 19:00:38 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,13 @@ static int	handle_pipe_token(t_cmd **current, t_token **tokens, int i)
 	if (!tokens[i + 1] || !ft_strcmp(tokens[i + 1]->value, "|"))
 	{
 		printf("minishell: syntax error near unexpected token `|'\n");
+		g_exit_status = 2;
 		return (-1);
 	}
 	if (!(*current)->args)
 	{
 		printf("minishell: syntax error near unexpected token `|'\n");
+		g_exit_status = 2;
 		return (-1);
 	}
 	(*current)->next = new_cmd_node();
@@ -88,6 +90,7 @@ t_cmd	*parse_tokens(t_token **tokens)
 	if (tokens[0] && !ft_strcmp(tokens[0]->value, "|"))
 	{
 		printf("minishell: syntax error near unexpected token `|'\n");
+		g_exit_status = 2;
 		free(head);
 		return (NULL);
 	}

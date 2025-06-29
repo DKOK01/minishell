@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 13:54:01 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/28 13:57:46 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 19:00:28 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,13 @@ int	validate_redirection_file(char *file)
 	if (!file)
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
+		g_exit_status = 2;
 		return (-1);
 	}
 	if (!ft_strcmp(file, "|"))
 	{
 		printf("minishell: syntax error near unexpected token `|'\n");
+		g_exit_status = 2;
 		return (-1);
 	}
 	return (0);

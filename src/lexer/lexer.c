@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/27 14:21:01 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 19:00:33 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,13 @@ t_token	**tokenize_input(char *input)
 		else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
 			handle_single_token(input, &i, &j, tokens);
 		else
-			handle_word_with_segments(input, &i, &j, tokens);
+		{
+			if (!handle_word_with_segments(input, &i, &j, tokens))
+			{
+				free_tokens(tokens);
+				return (NULL);
+			}
+		}
 	}
 	tokens[j] = NULL;
 	return (tokens);

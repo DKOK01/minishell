@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:30:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 17:57:40 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 19:00:36 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	*extract_quoted(char *input, int *i, int *qtype)
 	if (input[*i] == quote)
 		(*i)++;
 	else
-		return (printf("syntax error: unclosed quote\n"), free(result), NULL);
+		return (printf("syntax error: unclosed quote\n"), g_exit_status = 2, free(result), NULL);
 	return (result);
 }
 
@@ -93,7 +93,7 @@ static void	process_unquoted_segment(char *input, int *i, t_token *token,
 	free(segment_value);
 }
 
-void	handle_word_with_segments(char *input, int *i, int *j, t_token **tokens)
+int	handle_word_with_segments(char *input, int *i, int *j, t_token **tokens)
 {
 	t_token	*token;
 	char	*full_value;
@@ -101,7 +101,7 @@ void	handle_word_with_segments(char *input, int *i, int *j, t_token **tokens)
 
 	token = make_token_with_segments();
 	if (!token)
-		return ;
+		return (-1);
 	full_value = ft_strdup("");
 	has_unquoted_segments = 0;
 	while (input[*i] && !ft_isspace(input[*i])
@@ -110,7 +110,7 @@ void	handle_word_with_segments(char *input, int *i, int *j, t_token **tokens)
 		if (input[*i] == '"' || input[*i] == '\'')
 		{
 			if (!process_quoted_segment(input, i, token, &full_value))
-				return (cleanup_failed_token(token, full_value), (void)0);
+				return (cleanup_failed_token(token, full_value), 0);
 		}
 		else
 			(process_unquoted_segment(input, i, token, &full_value),
@@ -119,4 +119,5 @@ void	handle_word_with_segments(char *input, int *i, int *j, t_token **tokens)
 	token->value = full_value;
 	set_token_quoted_status(token, has_unquoted_segments);
 	tokens[(*j)++] = token;
+	return (1);
 }
