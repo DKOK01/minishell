@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 08:55:00 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 10:46:10 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ typedef struct s_expand_ctx
 	int		*i;
 	char	**result;
 	t_env	*env;
-	int		in_single;
-	int		in_double;
 	int		quoted;
 }	t_expand_ctx;
 
@@ -86,12 +84,6 @@ void		cleanup_failed_token(t_token *token, char *full_value);
 char		*expand_token_segments(t_token *token, t_env *env);
 char		*ft_strjoin_char(char *str, char c);
 char		*ft_strjoin_free(char *s1, char *s2);
-void		append_env_value(char **result, char *var, t_env *env);
-void		append_exit_status(char **result);
-void		extract_var_name(const char *token, int *i, char *var);
-void		expand_handle_variable_expansion(const char *token, t_expand_ctx *ctx);
-void		expand_handle_exit_status(t_expand_ctx *ctx);
-void		expand_append_char_to_result(t_expand_ctx *ctx, const char *token);
 
 //------ parser functions--------//
 t_cmd		*parse_tokens(t_token **tokens);

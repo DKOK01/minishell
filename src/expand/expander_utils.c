@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:00:25 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/21 17:59:13 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 10:36:38 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,4 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	result = ft_strjoin(s1, s2);
 	free(s1);
 	return (result);
-}
-
-void	extract_var_name(const char *token, int *i, char *var)
-{
-	int	j;
-
-	j = 0;
-	while (token[*i] && (ft_isalnum(token[*i]) || token[*i] == '_'))
-		var[j++] = token[(*i)++];
-	var[j] = '\0';
 }
