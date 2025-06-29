@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 17:07:46 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 18:12:56 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	handle_exit_status(t_expand_ctx *ctx)
 	status_str = ft_itoa(g_exit_status);
 	temp = ft_strjoin_free(*(ctx->result), status_str);
 	*(ctx->result) = temp;
+	free(status_str);
 }
 
 static void	variable_expansion(const char *segment, t_expand_ctx *ctx)
@@ -38,7 +39,7 @@ static void	variable_expansion(const char *segment, t_expand_ctx *ctx)
 		end++;
 	var = ft_substr(segment, start, end - start);
 	env_value = get_env_value(ctx->env, var);
-	temp = ft_strjoin_free(*(ctx->result), ft_strdup(env_value));
+	temp = ft_strjoin_free(*(ctx->result), env_value);
 	*(ctx->result) = temp;
 	free(var);
 	*(ctx->i) = end;
