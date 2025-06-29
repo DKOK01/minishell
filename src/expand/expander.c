@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 16:19:19 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 17:07:46 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,23 @@ static void	handle_exit_status(t_expand_ctx *ctx)
 
 static void	variable_expansion(const char *segment, t_expand_ctx *ctx)
 {
-	char	var[256];
-	int		j;
+	char	*var;
+	int		start;
+	int		end;
 	char	*env_value;
 	char	*temp;
 
-	(*(ctx->i))++;
-	j = 0;
-	while (segment[*(ctx->i)] && (ft_isalnum(segment[*(ctx->i)])
-			|| segment[*(ctx->i)] == '_'))
-		var[j++] = segment[(*(ctx->i))++];
-	var[j] = '\0';
+	start = (*(ctx->i)) + 1;
+	end = start;
+	while (segment[end] && (ft_isalnum(segment[end])
+			|| segment[end] == '_'))
+		end++;
+	var = ft_substr(segment, start, end - start);
 	env_value = get_env_value(ctx->env, var);
-	if (env_value)
-	{
-		temp = ft_strjoin_free(*(ctx->result), ft_strdup(env_value));
-		*(ctx->result) = temp;
-	}
+	temp = ft_strjoin_free(*(ctx->result), ft_strdup(env_value));
+	*(ctx->result) = temp;
+	free(var);
+	*(ctx->i) = end;
 }
 
 static void	handle_expansion(const char *segment, t_expand_ctx *ctx)
