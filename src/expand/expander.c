@@ -6,32 +6,11 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:03:13 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 15:18:58 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/29 16:19:19 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static void	variable_expansion(const char *token, t_expand_ctx *ctx)
-{
-	char	var[256];
-	int		j;
-	char	*env_value;
-	char	*temp;
-
-	(*(ctx->i))++;
-	j = 0;
-	while (token[*(ctx->i)] && (ft_isalnum(token[*(ctx->i)])
-			|| token[*(ctx->i)] == '_'))
-		var[j++] = token[(*(ctx->i))++];
-	var[j] = '\0';
-	env_value = get_env_value(ctx->env, var);
-	if (env_value)
-	{
-		temp = ft_strjoin_free(*(ctx->result), ft_strdup(env_value));
-		*(ctx->result) = temp;
-	}
-}
 
 static void	handle_exit_status(t_expand_ctx *ctx)
 {
@@ -44,47 +23,67 @@ static void	handle_exit_status(t_expand_ctx *ctx)
 	*(ctx->result) = temp;
 }
 
-static void	handle_expansion(const char *token, t_expand_ctx *ctx)
+static void	variable_expansion(const char *segment, t_expand_ctx *ctx)
+{
+	char	var[256];
+	int		j;
+	char	*env_value;
+	char	*temp;
+
+	(*(ctx->i))++;
+	j = 0;
+	while (segment[*(ctx->i)] && (ft_isalnum(segment[*(ctx->i)])
+			|| segment[*(ctx->i)] == '_'))
+		var[j++] = segment[(*(ctx->i))++];
+	var[j] = '\0';
+	env_value = get_env_value(ctx->env, var);
+	if (env_value)
+	{
+		temp = ft_strjoin_free(*(ctx->result), ft_strdup(env_value));
+		*(ctx->result) = temp;
+	}
+}
+
+static void	handle_expansion(const char *segment, t_expand_ctx *ctx)
 {
 	char	*temp;
 
-	if (token[*(ctx->i)] == '$'
-		&& (ft_isalpha(token[*(ctx->i) + 1])
-			|| token[*(ctx->i) + 1] == '_'))
+	if (segment[*(ctx->i)] == '$' && (ft_isalpha(segment[*(ctx->i) + 1])
+			|| segment[*(ctx->i) + 1] == '_'))
 	{
-		variable_expansion(token, ctx);
+		variable_expansion(segment, ctx);
 		return ;
 	}
-	else if (token[*(ctx->i)] == '$' && token[*(ctx->i) + 1] == '?')
+	else if (segment[*(ctx->i)] == '$' && segment[*(ctx->i) + 1] == '?')
 	{
 		handle_exit_status(ctx);
 		return ;
 	}
 	else
 	{
-		temp = ft_strjoin_char(*(ctx->result), token[*(ctx->i)]);
+		temp = ft_strjoin_char(*(ctx->result), segment[*(ctx->i)]);
 		free(*(ctx->result));
 		*(ctx->result) = temp;
 		(*(ctx->i))++;
 	}
 }
 
-static char	*expand_variable(char *token, t_env *env, int quoted)
+static char	*expand_variable(char *segment, t_env *env, int quoted)
 {
 	char			*result;
 	int				i;
 	t_expand_ctx	ctx;
 
 	if (quoted == 1)
-		return (ft_strdup(token));
+		return (ft_strdup(segment));
 	result = ft_strdup("");
 	i = 0;
 	ctx.i = &i;
 	ctx.result = &result;
 	ctx.env = env;
 	ctx.quoted = quoted;
-	while (token[i])
-		handle_expansion(token, &ctx);
+	while (segment[i])
+		handle_expansion(segment, &ctx);
 	return (result);
 }
 
