@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:04:48 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 11:03:37 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/30 12:47:33 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,11 @@ void	print_sorted_export(t_env *env)
 
 t_env	*find_and_update(t_env *env, char *key, char *value)
 {
-	char	*new_value;
-
 	while (env)
 	{
 		if (!ft_strncmp(env->key, key, ft_strlen(key))
 			&& env->key[ft_strlen(key)] == '\0')
 		{
-			new_value = ft_strdup(value);
-			if (!new_value)
-				return (NULL);
 			free(env->value);
 			env->value = ft_strdup(value);
 			return (env);

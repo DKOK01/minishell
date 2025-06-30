@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 13:38:30 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/22 16:29:44 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/30 14:35:57 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,14 @@
 
 int	check_redirection(t_cmd *cmd)
 {
+	int	ret;
+
 	if (cmd->infile && cmd->heredoc == 0)
-		handle_infile(cmd);
+	{
+		ret = handle_infile(cmd);
+		if (ret != 0)
+			return (ret);
+	}
 	if (cmd->heredoc && cmd->heredoc_fd != -1)
 	{
 		dup2(cmd->heredoc_fd, STDIN_FILENO);
@@ -23,6 +29,10 @@ int	check_redirection(t_cmd *cmd)
 		cmd->heredoc_fd = -1;
 	}
 	if (cmd->outfile)
-		handle_outfile(cmd);
+	{
+		ret = handle_outfile(cmd);
+		if (ret != 0)
+			return (ret);
+	}
 	return (0);
 }
