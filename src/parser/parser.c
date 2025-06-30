@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:25:54 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 19:00:38 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/30 11:10:54 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,13 @@ static int	handle_redirection(t_cmd *cmd, t_token **tokens, int *i)
 {
 	char	*file;
 	int		file_quoted;
-	int		j;
 
 	file = NULL;
 	if (tokens[*i + 1])
 		file = tokens[*i + 1]->value;
 	if (validate_redirection_file(file) == -1)
 		return (-1);
-	file_quoted = 0;
-	if (tokens[*i + 1] && tokens[*i + 1]->segments)
-	{
-		j = 0;
-		while (j < tokens[*i + 1]->seg_count)
-		{
-			if (tokens[*i + 1]->segments[j]->quote_type > 0)
-			{
-				file_quoted = 1;
-				break ;
-			}
-			j++;
-		}
-	}
+	file_quoted = check_file_quoted(tokens[*i + 1]);
 	set_redirection(cmd, tokens[*i]->value, file, file_quoted);
 	*i += 1;
 	return (0);
@@ -44,25 +30,19 @@ static int	handle_redirection(t_cmd *cmd, t_token **tokens, int *i)
 
 static int	handle_pipe_token(t_cmd **current, t_token **tokens, int i)
 {
-	if (!tokens[i + 1] || !ft_strcmp(tokens[i + 1]->value, "|"))
-	{
-		printf("minishell: syntax error near unexpected token `|'\n");
-		g_exit_status = 2;
+	if (check_pipe_syntax(tokens, i, current) == -1)
 		return (-1);
-	}
-	if (!(*current)->args)
-	{
-		printf("minishell: syntax error near unexpected token `|'\n");
-		g_exit_status = 2;
-		return (-1);
-	}
 	(*current)->next = new_cmd_node();
+	if (!(*current)->next)
+		return (-1);
 	*current = (*current)->next;
 	return (0);
 }
 
 static int	process_token(t_cmd **current, t_token **tokens, int *i)
 {
+	char	**new_args;
+
 	if (!ft_strcmp(tokens[*i]->value, "|"))
 	{
 		if (handle_pipe_token(current, tokens, *i) == -1)
@@ -74,7 +54,26 @@ static int	process_token(t_cmd **current, t_token **tokens, int *i)
 			return (-1);
 	}
 	else
-		(*current)->args = add_arg((*current)->args, tokens[*i]->value);
+	{
+		new_args = add_arg((*current)->args, tokens[*i]->value);
+		if (!new_args)
+			return (-1);
+		(*current)->args = new_args;
+	}
+	return (0);
+}
+
+static int	process_all_tokens(t_token **tokens, t_cmd **current, t_cmd *head)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (process_token(current, tokens, &i) == -1)
+			return (free_cmd_list(head), -1);
+		i++;
+	}
 	return (0);
 }
 
@@ -82,26 +81,17 @@ t_cmd	*parse_tokens(t_token **tokens)
 {
 	t_cmd	*head;
 	t_cmd	*current;
-	int		i;
 
 	head = new_cmd_node();
+	if (!head)
+		return (NULL);
 	current = head;
-	i = 0;
-	if (tokens[0] && !ft_strcmp(tokens[0]->value, "|"))
+	if (check_initial_pipe_error(tokens) == -1)
 	{
-		printf("minishell: syntax error near unexpected token `|'\n");
-		g_exit_status = 2;
-		free(head);
+		free_cmd_list(head);
 		return (NULL);
 	}
-	while (tokens[i])
-	{
-		if (process_token(&current, tokens, &i) == -1)
-		{
-			free_cmd_list(head);
-			return (NULL);
-		}
-		i++;
-	}
+	if (process_all_tokens(tokens, &current, head) == -1)
+		return (NULL);
 	return (head);
 }

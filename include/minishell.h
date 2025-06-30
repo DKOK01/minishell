@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 20:05:09 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/30 11:09:12 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,9 @@ char		**add_arg(char **args, char *token);
 int			validate_redirection_file(char *file);
 void		set_redirection(t_cmd *cmd, char *operator, char *file, int quoted);
 int			is_redirection_token(char *token);
+int			check_pipe_syntax(t_token **tokens, int i, t_cmd **current);
+int			check_initial_pipe_error(t_token **tokens);
+int			check_file_quoted(t_token *token);
 
 //------- environment functions--------//
 void		free_env_list(t_env *env);

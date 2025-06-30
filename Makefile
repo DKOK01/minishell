@@ -1,5 +1,4 @@
-CFLAGS	= -Wall -Wextra -Werror
-
+CC		= cc
 CFLAGS	= -Wall -Wextra -Werror
 
 SRC		= $(shell ls ./src/parser/*.c) \
