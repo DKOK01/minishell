@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/30 17:20:06 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:56:27 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -27,7 +26,7 @@
 # include <sys/stat.h>
 # include <signal.h>
 
-extern int g_exit_status;
+extern int	g_exit_status;
 
 typedef struct s_segment
 {
@@ -72,7 +71,8 @@ typedef struct s_expand_ctx
 
 //------ lexer functions--------//
 t_token		**tokenize_input(char *input);
-int			handle_word_with_segments(char *input, int *i, int *j, t_token **tokens);
+int			handle_word_with_segments(char *input, int *i, int *j,
+				t_token **tokens);
 t_token		*make_token_with_segments(void);
 t_segment	*create_segment(char *value, int quote_type);
 void		free_segments(t_segment **segments);
@@ -130,8 +130,10 @@ void		ft_free_split(char **split);
 void		set_env_value(t_env **env, const char *key, const char *value);
 int			process_single_command(t_cmd *cmd, t_env **env);
 char		*find_path(char *cmd, t_env *env);
-void		handle_command_not_found(char *cmd_name, char **envp, int env_count);
-void		setup_child_pipe(t_cmd *cmd, int prev_fd, int *pipe_fd, t_env **env);
+void		handle_command_not_found(char *cmd_name, char **envp,
+				int env_count);
+void		setup_child_pipe(t_cmd *cmd, int prev_fd, int *pipe_fd,
+				t_env **env);
 void		wait_for_children(pid_t last_pid, int *status);
 char		*handle_variable_expansion(const char *line, int *i, t_env *env,
 				char *result);
@@ -161,6 +163,5 @@ void		setup_child_signals(void);
 void		sigint_handler(int sig);
 void		exec_sigint_handler(int sig);
 void		heredoc_sigint_handler(int sig);
-
 
 #endif

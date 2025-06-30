@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 10:55:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/30 16:09:42 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/30 17:31:31 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	validate_redirection_file(char *file)
 {
 	if (!file)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+		ft_putstr_fd("minishell: syntax error near "
+			"unexpected token `newline'\n", 2);
 		g_exit_status = 2;
 		return (-1);
 	}
@@ -39,7 +40,8 @@ int	check_pipe_syntax(t_token **tokens, int i, t_cmd **current)
 {
 	if (!tokens[i + 1])
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected token "
+			"`newline'\n", 2);
 		g_exit_status = 2;
 		return (-1);
 	}
