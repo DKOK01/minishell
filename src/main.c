@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/30 17:40:16 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/30 19:31:49 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,31 +59,6 @@ int	g_exit_status;
 // 		i++;
 // 	}
 // 	printf("=== END TOKEN LIST ===\n\n");
-// }
-
-// void	print_cmd_list(t_cmd *cmd)
-// {
-// 	t_cmd	*current;
-
-// 	current = cmd;
-// 	while (current)
-// 	{
-// 		printf("\nCommand:\n");
-// 		if (current->args)
-// 		{
-// 			for (int i = 0; current->args[i]; i++)
-// 				printf("  Arg %d: %s\n", i, current->args[i]);
-// 		}
-// 		if (current->infile)
-// 			printf("  Infile: %s\n", current->infile);
-// 		if (current->outfile)
-// 			printf("  Outfile: %s\n", current->outfile);
-// 		if (current->append)
-// 			printf("  Append: %d\n", current->append);
-// 		if (current->heredoc)
-// 			printf("  Heredoc: %d\n", current->heredoc);
-// 		current = current->next;
-// 	}
 // }
 
 static void	expand_tokens(t_token **tokens, t_env *env)
