@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 10:55:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/30 11:09:12 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/30 16:09:42 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ int	validate_redirection_file(char *file)
 {
 	if (!file)
 	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
+		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
 		g_exit_status = 2;
 		return (-1);
 	}
 	if (!ft_strcmp(file, "|"))
 	{
-		printf("minishell: syntax error near unexpected token `|'\n");
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 		g_exit_status = 2;
 		return (-1);
 	}
@@ -39,19 +39,19 @@ int	check_pipe_syntax(t_token **tokens, int i, t_cmd **current)
 {
 	if (!tokens[i + 1])
 	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
+		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
 		g_exit_status = 2;
 		return (-1);
 	}
 	if (!ft_strcmp(tokens[i + 1]->value, "|"))
 	{
-		printf("minishell: syntax error near unexpected token `|'\n");
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 		g_exit_status = 2;
 		return (-1);
 	}
 	if (!(*current)->args)
 	{
-		printf("minishell: syntax error near unexpected token `|'\n");
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 		g_exit_status = 2;
 		return (-1);
 	}
@@ -62,7 +62,7 @@ int	check_initial_pipe_error(t_token **tokens)
 {
 	if (tokens[0] && !ft_strcmp(tokens[0]->value, "|"))
 	{
-		printf("minishell: syntax error near unexpected token `|'\n");
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 		g_exit_status = 2;
 		return (-1);
 	}
