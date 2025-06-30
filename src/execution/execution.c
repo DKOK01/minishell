@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azedine <azedine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/28 16:31:55 by azedine          ###   ########.fr       */
+/*   Updated: 2025/06/30 14:35:57 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,14 @@
 
 static void	handle_child_process(t_cmd *cmd, char *path, char **envp)
 {
+	int	ret;
+
 	if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
-		check_redirection(cmd);
+	{
+		ret = check_redirection(cmd);
+		if (ret != 0)
+			exit(ret);
+	}
 	execve(path, cmd->args, envp);
 	perror(cmd->args[0]);
 	exit(127);

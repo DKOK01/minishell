@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:06:28 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 10:50:01 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/30 17:22:59 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,52 @@
 
 int	g_exit_status = 0;
 
-void	print_token_list(t_token **tokens)
-{
-	int	i;
-	int	j;
+// void	print_token_list(t_token **tokens)
+// {
+// 	int	i;
+// 	int	j;
 
-	if (!tokens)
-	{
-		printf("No tokens found.\n");
-		return ;
-	}
-	printf("\n=== TOKEN LIST ===\n");
-	i = 0;
-	while (tokens[i])
-	{
-		printf("Token [%d]:\n", i);
-		printf("	Value:				[%s]\n", tokens[i]->value);
-		printf("	Overall quoted:		%d\n", tokens[i]->quoted);
-		printf("	Segment count:		%d\n", tokens[i]->seg_count);
-		if (tokens[i]->segments && tokens[i]->seg_count > 0)
-		{
-			printf("	Segments:\n");
-			j = 0;
-			while (j < tokens[i]->seg_count)
-			{
-				printf("	[%d]- -> [%s] (quote_type: %d", j, 
-					tokens[i]->segments[j]->value, 
-					tokens[i]->segments[j]->quote_type);
-				if (tokens[i]->segments[j]->quote_type == 0)
-					printf(" - unquoted");
-				else if (tokens[i]->segments[j]->quote_type == 1)
-					printf(" - single quoted");
-				else if (tokens[i]->segments[j]->quote_type == 2)
-					printf(" - double quoted");
-				printf(")\n");
-				j++;
-			}
-		}
-		else
-		{
-			printf("  No segments (legacy token)\n");
-		}
-		printf("\n");
-		i++;
-	}
-	printf("=== END TOKEN LIST ===\n\n");
-}
+// 	if (!tokens)
+// 	{
+// 		printf("No tokens found.\n");
+// 		return ;
+// 	}
+// 	printf("\n=== TOKEN LIST ===\n");
+// 	i = 0;
+// 	while (tokens[i])
+// 	{
+// 		printf("Token [%d]:\n", i);
+// 		printf("	Value:				[%s]\n", tokens[i]->value);
+// 		printf("	Overall quoted:		%d\n", tokens[i]->quoted);
+// 		printf("	Segment count:		%d\n", tokens[i]->seg_count);
+// 		if (tokens[i]->segments && tokens[i]->seg_count > 0)
+// 		{
+// 			printf("	Segments:\n");
+// 			j = 0;
+// 			while (j < tokens[i]->seg_count)
+// 			{
+// 				printf("	[%d]- -> [%s] (quote_type: %d", j, 
+// 					tokens[i]->segments[j]->value, 
+// 					tokens[i]->segments[j]->quote_type);
+// 				if (tokens[i]->segments[j]->quote_type == 0)
+// 					printf(" - unquoted");
+// 				else if (tokens[i]->segments[j]->quote_type == 1)
+// 					printf(" - single quoted");
+// 				else if (tokens[i]->segments[j]->quote_type == 2)
+// 					printf(" - double quoted");
+// 				printf(")\n");
+// 				j++;
+// 			}
+// 		}
+// 		else
+// 		{
+// 			printf("  No segments (legacy token)\n");
+// 		}
+// 		printf("\n");
+// 		i++;
+// 	}
+// 	printf("=== END TOKEN LIST ===\n\n");
+// }
 
 // void	print_cmd_list(t_cmd *cmd)
 // {
@@ -112,7 +112,6 @@ static void	process_input_line(char *line, t_env **env)
 	tokens = tokenize_input(line);
 	if (!tokens)
 		return ;
-	// print_token_list(tokens);
 	expand_tokens(tokens, *env);
 	cmd = parse_tokens(tokens);
 	if (cmd)

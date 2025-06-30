@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/30 11:09:12 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/06/30 17:20:06 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,9 @@ int			handle_outfile(t_cmd *cmd);
 
 //------- execution utils--------//
 char		*ft_strjoin_three(const char *s1, const char *s2, const char *s3);
+
+//------- builtins handling--------//
+int			handle_builtin_cmd(t_cmd *cmd, t_env **env);
 
 //------- signal handling--------//
 void		setup_parent_signals(void);
