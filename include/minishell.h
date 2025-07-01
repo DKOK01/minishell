@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/30 17:56:27 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/07/01 09:14:31 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ void		write_heredoc_line(int pipe_fd, char *line, t_env *env,
 				int should_expand);
 int			setup_heredoc_pipe(int *pipe_fd);
 char		*expand_heredoc_line(const char *line, t_env *env);
+char		*process_heredoc_char(const char *line, int *i, t_env *env,
+			char *result);
 
 //------- redirection functions--------//
 int			check_redirection(t_cmd *cmd);
