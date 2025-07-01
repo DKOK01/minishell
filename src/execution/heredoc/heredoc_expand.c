@@ -6,11 +6,31 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 10:30:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/22 10:12:04 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/07/01 09:17:31 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
+
+char	*process_heredoc_char(const char *line, int *i, t_env *env,
+		char *result)
+{
+	int	in_single;
+	int	in_double;
+
+	in_single = 0;
+	in_double = 0;
+	if (line[*i] == '\'' && !in_double)
+		in_single = !in_single;
+	else if (line[*i] == '"' && !in_single)
+		in_double = !in_double;
+	else if (line[*i] == '$' && (ft_isalpha(line[*i + 1])
+			|| line[*i + 1] == '_'))
+		return (handle_variable_expansion(line, i, env, result));
+	else if (line[*i] == '$' && line[*i + 1] == '?')
+		return (handle_exit_status_expansion(result, i));
+	return (append_char_to_result(result, line[*i]));
+}
 
 static void	extract_heredoc_var_name(const char *line, int *i, char *var_name)
 {

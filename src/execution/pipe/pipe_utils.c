@@ -6,14 +6,16 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 10:30:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/30 13:29:10 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/07/01 19:37:11 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-static void	setup_child_input(t_cmd *cmd, int prev_fd)
+static int	setup_child_input(t_cmd *cmd, int prev_fd)
 {
+	int ret;
+
 	if (cmd->heredoc)
 	{
 		if (cmd->heredoc_fd != -1)
@@ -23,12 +25,17 @@ static void	setup_child_input(t_cmd *cmd, int prev_fd)
 		}
 	}
 	else if (cmd->infile)
-		handle_infile(cmd);
+	{
+		ret = handle_infile(cmd);
+		if (ret != 0)
+			return (ret);
+	}
 	else if (prev_fd != -1)
 	{
 		dup2(prev_fd, STDIN_FILENO);
 		close(prev_fd);
 	}
+	return (0);
 }
 
 static void	setup_child_output(t_cmd *cmd, int *pipe_fd)
@@ -48,7 +55,9 @@ void	setup_child_pipe(t_cmd *cmd, int prev_fd, int *pipe_fd, t_env **env)
 	int	exit_status;
 
 	setup_child_signals();
-	setup_child_input(cmd, prev_fd);
+	exit_status = setup_child_input(cmd, prev_fd);
+	if (exit_status != 0)
+		exit(exit_status);
 	setup_child_output(cmd, pipe_fd);
 	if (check_builtins(cmd))
 	{
@@ -69,6 +78,7 @@ void	wait_for_children(pid_t last_pid, int *status)
 	pid_t	wpid;
 	int		tmp_status;
 
+	*status = 0;
 	wpid = waitpid(-1, &tmp_status, 0);
 	while (wpid > 0)
 	{
