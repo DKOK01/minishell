@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 09:57:00 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 11:05:05 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:44:38 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	ft_export(t_cmd *cmd, t_env **env)
 	{
 		if (!check_if_valid(cmd->args[i]))
 		{
-			printf("export: '%s': not a valid identifier\n", cmd->args[i]);
+			ft_putstr_fd("export: not a valid identifier\n", 2);
 			return_value = 1;
 		}
 		else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:58:09 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/21 11:07:51 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:42:20 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 		return (free(oldpwd), 1);
 	if (chdir(path) != 0)
 	{
-		printf("minishell: cd: %s: No such file or directory\n", path);
+		ft_putstr_fd("minishell: cd: No such file or directory\n", 2);
 		return (free(oldpwd), 1);
 	}
 	update_env_pwd(env, oldpwd);
