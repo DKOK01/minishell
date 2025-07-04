@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:04:29 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/07/04 09:01:11 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/07/04 14:32:18 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void		set_token_quoted_status(t_token *token, int has_unquoted_segments);
 void		cleanup_failed_token(t_token *token, char *full_value);
 void		skip_whitespace(char *input, int *i);
 t_token		*make_token(char *value, int quoted);
+int			check_invalid_redirection(char *input, int i);
 
 //------ expansion functions--------//
 char		*expand_token_segments(t_token *token, t_env *env);
@@ -98,6 +99,7 @@ int			is_redirection_token(char *token);
 int			check_pipe_syntax(t_token **tokens, int i, t_cmd **current);
 int			check_initial_pipe_error(t_token **tokens);
 int			check_file_quoted(t_token *token);
+int			check_invalid_redirection_sequence(t_token **tokens);
 
 //------- environment functions--------//
 void		free_env_list(t_env *env);

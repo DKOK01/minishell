@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 10:55:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/30 17:31:31 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/07/04 14:34:00 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,6 @@ int	validate_redirection_file(char *file)
 		return (-1);
 	}
 	return (0);
-}
-
-int	is_redirection_token(char *token)
-{
-	return (!ft_strcmp(token, "<") || !ft_strcmp(token, ">")
-		|| !ft_strcmp(token, "<<") || !ft_strcmp(token, ">>"));
 }
 
 int	check_pipe_syntax(t_token **tokens, int i, t_cmd **current)
@@ -83,6 +77,30 @@ int	check_file_quoted(t_token *token)
 		if (token->segments[j]->quote_type > 0)
 			return (1);
 		j++;
+	}
+	return (0);
+}
+
+int	check_invalid_redirection_sequence(t_token **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (is_redirection_token(tokens[i]->value))
+		{
+			if (tokens[i + 1] && is_redirection_token(tokens[i + 1]->value))
+			{
+				ft_putstr_fd("minishell: syntax error near unexpected token `",
+					2);
+				ft_putstr_fd(tokens[i + 1]->value, 2);
+				ft_putstr_fd("'\n", 2);
+				g_exit_status = 2;
+				return (-1);
+			}
+		}
+		i++;
 	}
 	return (0);
 }

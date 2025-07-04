@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:00:00 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 20:05:37 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/07/04 14:30:30 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,26 @@ void	skip_whitespace(char *input, int *i)
 {
 	while (input[*i] && ft_isspace(input[*i]))
 		(*i)++;
+}
+
+int	check_invalid_redirection(char *input, int i)
+{
+	int		consecutive_count;
+	char	redirection_char;
+
+	if (input[i] != '>' && input[i] != '<')
+		return (0);
+	redirection_char = input[i];
+	consecutive_count = 0;
+	while (input[i + consecutive_count] == redirection_char)
+		consecutive_count++;
+	if (consecutive_count > 2)
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+		ft_putchar_fd(redirection_char, 2);
+		ft_putstr_fd("'\n", 2);
+		g_exit_status = 2;
+		return (1);
+	}
+	return (0);
 }

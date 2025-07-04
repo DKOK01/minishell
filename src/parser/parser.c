@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:25:54 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/30 11:10:54 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/07/04 14:25:50 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,11 @@ t_cmd	*parse_tokens(t_token **tokens)
 		return (NULL);
 	current = head;
 	if (check_initial_pipe_error(tokens) == -1)
+	{
+		free_cmd_list(head);
+		return (NULL);
+	}
+	if (check_invalid_redirection_sequence(tokens) == -1)
 	{
 		free_cmd_list(head);
 		return (NULL);

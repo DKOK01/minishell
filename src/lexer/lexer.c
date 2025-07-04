@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 09:31:47 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/06/29 20:04:13 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/07/04 14:30:11 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static int	process_tokens(char *input, t_token **tokens)
 		skip_whitespace(input, &i);
 		if (input[i] == '\0')
 			break ;
+		if (check_invalid_redirection(input, i))
+			return (0);
 		if ((input[i] == '>' || input[i] == '<') && input[i + 1] == input[i])
 			handle_redir_token(input, &i, &j, tokens);
 		else if (input[i] == '>' || input[i] == '<' || input[i] == '|')
