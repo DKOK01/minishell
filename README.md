@@ -2,7 +2,6 @@
 
 [![42 School](https://img.shields.io/badge/42-School-000000?style=flat&logo=42&logoColor=white)](https://42.fr/)
 [![C](https://img.shields.io/badge/C-00599C?style=flat&logo=c&logoColor=white)](https://en.wikipedia.org/wiki/C_(programming_language))
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 > A minimal shell implementation in C that mimics the behavior of bash, featuring command execution, built-in commands, pipes, redirections, and signal handling.
 
@@ -320,9 +319,6 @@ minishell$ ps aux | grep minishell | wc -l
 - **aysadeq** - *parsing part* - [@DKOK](https://github.com/DKOK01)
 - **ael-mans** - *execution part* - [@aziddine](https://github.com/aziddineelm)
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
