@@ -6,7 +6,7 @@
 /*   By: ael-mans <ael-mans@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 09:18:40 by ael-mans          #+#    #+#             */
-/*   Updated: 2025/06/30 14:35:57 by ael-mans         ###   ########.fr       */
+/*   Updated: 2025/07/12 08:14:06 by ael-mans         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	handle_child_process(t_cmd *cmd, char *path, char **envp)
 {
 	int	ret;
 
+	setup_child_signals();
 	if (cmd->infile || cmd->append || cmd->heredoc || cmd->outfile)
 	{
 		ret = check_redirection(cmd);
@@ -35,7 +36,11 @@ static void	handle_parent_process(pid_t pid)
 	if (WIFEXITED(status))
 		g_exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+			ft_putstr_fd("Quit (core dumped)\n", 2);
 		g_exit_status = 128 + WTERMSIG(status);
+	}
 }
 
 int	execute_command(t_cmd *cmd, t_env *env)
